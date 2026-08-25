@@ -251,7 +251,7 @@ check("total info bubbles >= 4 heroes + 3 sections + 8 channels + active charts"
 // Open every bubble and confirm it renders content naming at least one real
 // cell. Cell refs are marked up as <code> elements, so inspect those rather
 // than the concatenated textContent (where "Value" + "D25" glues together).
-const CELL_RE = /^[A-S]\d{1,2}(:[A-S]\d{1,2})?$/;
+const CELL_RE = /^[A-Z]{1,2}\d{1,3}(:[A-Z]{1,2}\d{1,3})?$/;
 const bubbleProblems = [];
 bubbles.forEach(b => {
   b.dispatchEvent(new dom.window.MouseEvent("click", {bubbles: true}));

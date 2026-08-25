@@ -6,7 +6,7 @@
  *
  * Usage:
  *   node build-data.js ["EXTERNAL_ CAB Digital Report.xlsx"]
- *        [-d digital-report-data.json] [-p paid-media-data.json]
+ *        [-d digital-report-data.json] [-p paid-media-data.json] [-s p2p-data.json]
  */
 const fs = require("fs");
 const path = require("path");
@@ -21,12 +21,13 @@ function arg(flag, dflt) {
 }
 
 (async function main() {
+  const flags = ["-d", "-p", "-s"];
   const positional = process.argv.slice(2).filter(a => !a.startsWith("-") &&
-    process.argv[process.argv.indexOf(a) - 1] !== "-d" &&
-    process.argv[process.argv.indexOf(a) - 1] !== "-p");
+    flags.indexOf(process.argv[process.argv.indexOf(a) - 1]) < 0);
   const wbPath = positional[0] || "EXTERNAL_ CAB Digital Report.xlsx";
   const outD = arg("-d", "digital-report-data.json");
   const outP = arg("-p", "paid-media-data.json");
+  const outS = arg("-s", "p2p-data.json");
 
   if (!fs.existsSync(wbPath)) {
     console.error("workbook not found: " + wbPath);
@@ -57,6 +58,12 @@ function arg(flag, dflt) {
     fs.writeFileSync(outP, JSON.stringify(out.paid, null, 2));
     console.log("wrote " + outP + " (" + out.paid.quarters.length + " quarters, " +
       out.paid.months.length + " months, " + out.paid.detail.length + " detail rows)");
+  }
+  if (out.p2p) {
+    fs.writeFileSync(outS, JSON.stringify(out.p2p, null, 2));
+    console.log("wrote " + outS + " (" + out.p2p.months.length + " months, " +
+      out.p2p.detail.length + " detail rows, " + out.p2p.audiences.length + " audiences, " +
+      out.p2p.topics.length + " topics)");
   }
   if (rep.warnings) console.log(rep.warnings + " warning(s) — see above.");
 })().catch(e => { console.error(e.stack || String(e)); process.exit(1); });

@@ -301,8 +301,9 @@ footer.page code{font-family:var(--mono)}
       <p>Drop an <code>.xlsx</code> anywhere on this page, or choose a file below.
          It is read in your browser — nothing is uploaded anywhere.</p>
       <button class="btn big" type="button" id="btnPickEmpty">Choose a workbook…</button>
-      <p class="esnote">Expects a <code>Digital Report</code> tab and a
-         <code>Paid Media Report</code> tab. Rows, channels and placements are found by their
+      <p class="esnote">Expects a <code>Digital Report</code> tab, a
+         <code>Paid Media Report</code> tab, and/or a <code>P2P Statistics</code> tab — any
+         combination works. Rows, channels, placements and columns are found by their
          headings, so a workbook that has grown since last quarter still reads correctly.</p>
       <div id="esWarn"></div>
     </div>
@@ -329,6 +330,7 @@ footer.page code{font-family:var(--mono)}
   <div class="tabs" role="tablist">
     <button class="tab" role="tab" aria-selected="true" aria-controls="p-overview" id="t-overview">Overview</button>
     <button class="tab" role="tab" aria-selected="false" aria-controls="p-paid" id="t-paid">Paid Media</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="p-p2p" id="t-p2p">P2P</button>
   </div>
 
   <div class="panel" role="tabpanel" id="p-overview" aria-labelledby="t-overview">
@@ -454,6 +456,61 @@ footer.page code{font-family:var(--mono)}
         <div class="sechead sub"><h3>Placement leaderboard</h3></div>
         <p class="note">Click any column heading to re-sort. Bars are scaled within each column.</p>
         <div class="chartwrap" id="pmLeader"></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="panel" role="tabpanel" id="p-p2p" aria-labelledby="t-p2p" hidden>
+    <div class="scope" id="p2Scope"></div>
+
+    <section id="p2-hero">
+      <div class="sechead"><h2>Quarter-to-date toplines</h2></div>
+      <p class="note" id="p2HeroNote"></p>
+      <div class="heroes" id="p2Heroes"></div>
+    </section>
+
+    <section id="p2-month">
+      <div class="sechead"><h2>Monthly toplines</h2></div>
+      <p class="note" id="p2MonthNote"></p>
+      <div class="duo">
+        <div class="card pad">
+          <div class="legend" id="p2LgMoney"></div>
+          <div class="chartwrap" id="p2ChMoney"></div>
+        </div>
+        <div class="card pad">
+          <div class="legend" id="p2LgDonors"></div>
+          <div class="chartwrap" id="p2ChDonors"></div>
+        </div>
+      </div>
+      <div class="card pad" style="margin-top:14px">
+        <details class="data" style="border-top:0;padding-top:0"><summary>Show the numbers behind these charts</summary><div id="p2TbMonth"></div></details>
+      </div>
+    </section>
+
+    <section id="p2-accum">
+      <div class="sechead"><h2>Cumulative by category</h2></div>
+      <p class="note" id="p2AccumNote">Running totals per month, split by category. Pick a metric and a category to break down by. Hover any point for exact figures.</p>
+      <div class="card pad">
+        <div class="filters" id="p2AccumFilters"></div>
+      </div>
+      <div class="smgrid" id="p2Accum" style="margin-top:14px"></div>
+      <div class="card pad" style="margin-top:14px">
+        <details class="data" style="border-top:0;padding-top:0"><summary>Show the numbers behind these charts</summary><div id="p2TbAccum"></div></details>
+      </div>
+    </section>
+
+    <section id="p2-detail">
+      <div class="sechead"><h2>Row-by-row breakdown</h2></div>
+      <p class="note" id="p2DetailNote"></p>
+      <div class="card pad">
+        <div class="filters" id="p2Filters"></div>
+        <div class="fstat" id="p2FilterStat"></div>
+      </div>
+
+      <div class="card pad" style="margin-top:14px">
+        <div class="sechead sub"><h3>Leaderboard</h3></div>
+        <p class="note">Click any column heading to re-sort. Bars are scaled within each column.</p>
+        <div class="chartwrap" id="p2Leader"></div>
       </div>
     </section>
   </div>
@@ -2220,6 +2277,649 @@ function renderPaidMedia() {
   });
 }
 
+/* ============================================================
+   P2P TAB
+   The P2P Statistics sheet is one flat detail table — one row per
+   date × topic × audience segment — with no stored monthly or quarterly
+   rollup. So unlike the other two tabs, every month total, quarter-to-date
+   total and cumulative series here is computed on this page from the detail
+   rows, always flagged computed:true and always citing the rows it summed.
+   ============================================================ */
+let P2P = /*__P2P_DATA__*/;
+
+function renderP2P() {
+  const tabBtn = document.getElementById("t-p2p");
+  const panel = document.getElementById("p-p2p");
+  const usable = P2P && P2P.detail && P2P.detail.length && P2P.months && P2P.months.length;
+  if (tabBtn) tabBtn.hidden = !usable;
+  if (!usable) {
+    if (panel) panel.hidden = true;
+    if (tabBtn && tabBtn.getAttribute("aria-selected") === "true") selectTab("t-overview");
+    return;
+  }
+
+  /* ---------- formatting by metric kind ---------- */
+  const KIND = P2P.metric_kinds, LABEL = P2P.metric_labels;
+  const RCOMP = P2P.ratio_components || {};
+  const roas2 = n => n == null ? "—" : n.toFixed(2) + "×";
+  const rate2 = n => n == null ? "—" : pct(n, 2);
+  function fmtKind(kind, v) {
+    if (v == null) return "—";
+    if (kind === "usd") return usd(v);
+    if (kind === "usd2") return usdc(v);
+    if (kind === "count") return int(v);
+    if (kind === "roas") return roas2(v);
+    if (kind === "rate") return rate2(v);
+    return String(v);
+  }
+  const fmtM = (key, v) => fmtKind(KIND[key], v);
+  function compact(kind, v) {
+    if (v == null) return "—";
+    if (kind === "roas") return v.toFixed(1) + "×";
+    if (kind === "rate") return (v * 100).toFixed(1) + "%";
+    const a = Math.abs(v), pre = (kind === "usd" || kind === "usd2") ? "$" : "";
+    if (a >= 1e6) return pre + (v / 1e6).toFixed(1) + "M";
+    if (a >= 1000) return pre + Math.round(v / 1000) + "k";
+    if (kind === "usd2" && a < 100) return pre + v.toFixed(2);
+    return pre + Math.round(v);
+  }
+  const trim = (s, n) => (s && s.length > n) ? s.slice(0, n - 1) + "…" : (s || "");
+  const P2_SHEET = 'Tab <code>' + esc(P2P.meta.sheet) + '</code> of <code>' + esc(P2P.meta.source_workbook) + '</code>.';
+  const P2_YEAR = P2P.meta.year.value, P2_Q = P2P.meta.quarter.value;
+
+  /* Sums additive metrics over an arbitrary subset of rows, then recombines
+     each ratio from those sums via ratio_components — never averages a
+     per-row ratio. Used for the totals row under any filter combination. */
+  function sumOf(rows, key) {
+    let t = 0, any = false;
+    rows.forEach(r => { const v = r.metrics[key].value; if (v != null) { t += v; any = true; } });
+    return any ? t : null;
+  }
+  function totalsOf(rows) {
+    const out = {};
+    P2P.additive.forEach(k => out[k] = sumOf(rows, k));
+    P2P.ratios.forEach(k => {
+      const comp = RCOMP[k];
+      out[k] = (comp && out[comp[1]]) ? out[comp[0]] / out[comp[1]] : null;
+    });
+    return out;
+  }
+
+  /* category colors, shared across the accumulation and leaderboard sections */
+  const AUD_COLOR = {}, TOPIC_COLOR = {};
+  P2P.audiences.forEach((a, i) => AUD_COLOR[a] = "var(--ch" + ((i % 6) + 1) + ")");
+  P2P.topics.forEach((t, i) => TOPIC_COLOR[t] = "var(--ch" + ((i % 6) + 1) + ")");
+
+  /* ---------- local chart helpers (same drawing code as the Paid Media tab, kept
+     local because they close over this tab's own compact()/kind formatting) ---------- */
+  function barChart(host, cfg) {
+    const rows = cfg.rows, ns = cfg.series.length;
+    const W = cfg.width || 480, H = cfg.height || 300;
+    const ML = 58, MR = 12, MT = 14, MB = cfg.sub ? 54 : 36;
+    const iw = W - ML - MR, ih = H - MT - MB;
+    let max = 0;
+    rows.forEach(r => r.values.forEach(v => { if (v != null && v > max) max = v; }));
+    max = max * 1.16 || 1;
+    const y = v => MT + ih - (v / max) * ih;
+    const gw = iw / rows.length;
+    const bw = Math.min(52, (gw * 0.62) / ns), gap = 6;
+    const groupW = bw * ns + gap * (ns - 1);
+
+    let s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(cfg.aria || "") + '">';
+    const nT = 4;
+    for (let t = 0; t <= nT; t++) {
+      const v = max * t / nT, yy = y(v);
+      s += '<line class="grid" x1="' + ML + '" y1="' + yy + '" x2="' + (W - MR) + '" y2="' + yy + '"/>';
+      s += '<text class="tick" x="' + (ML - 8) + '" y="' + (yy + 3.5) + '" text-anchor="end">' +
+           esc(compact(cfg.kind, v)) + '</text>';
+    }
+    s += '<line class="ax" x1="' + ML + '" y1="' + (MT + ih) + '" x2="' + (W - MR) + '" y2="' + (MT + ih) + '"/>';
+
+    rows.forEach((r, i) => {
+      const cx = ML + gw * i + gw / 2, x0 = cx - groupW / 2;
+      r.values.forEach((v, k) => {
+        const bx = x0 + k * (bw + gap);
+        if (v == null) {
+          s += '<text class="vlbl" x="' + (bx + bw / 2) + '" y="' + (MT + ih - 6) +
+               '" text-anchor="middle" style="font-style:italic">n/a</text>';
+          return;
+        }
+        s += '<rect x="' + bx + '" y="' + y(v) + '" width="' + bw + '" height="' + (MT + ih - y(v)) +
+             '" rx="3" fill="' + cfg.series[k].color + '"/>';
+        s += '<text class="vlbl" x="' + (bx + bw / 2) + '" y="' + (y(v) - 5) + '" text-anchor="middle">' +
+             esc(compact(cfg.kind, v)) + '</text>';
+      });
+      s += '<text x="' + cx + '" y="' + (MT + ih + 19) + '" text-anchor="middle" ' +
+           'style="font-size:12.5px;font-weight:600">' + esc(r.label) + '</text>';
+      if (r.sub) {
+        s += '<text x="' + cx + '" y="' + (MT + ih + 37) + '" text-anchor="middle" style="font-size:11.5px;fill:' +
+             (r.subColor || "var(--muted)") + '">' + esc(r.sub) + '</text>';
+      }
+      if (r.tip) {
+        s += '<rect class="hit" data-tip-id="' + registerTip(r.tip) + '" x="' + (ML + gw * i) +
+             '" y="' + MT + '" width="' + gw + '" height="' + ih + '" rx="4"/>';
+      }
+    });
+    s += "</svg>";
+    host.innerHTML = s;
+    bindTips(host);
+    if (cfg.legend) {
+      cfg.legend.innerHTML = cfg.series.map(sr =>
+        '<span><i class="sw" style="background:' + sr.color + '"></i>' + esc(sr.label) + "</span>").join("");
+    }
+  }
+
+  function lineChart(host, cfg) {
+    const pts = cfg.points;
+    const W = 520, H = 210, ML = 62, MR = 16, MT = 14, MB = 30;
+    const iw = W - ML - MR, ih = H - MT - MB;
+    const max = Math.max(...pts.map(p => p.value || 0)) * 1.12 || 1;
+    const x = i => ML + (pts.length === 1 ? iw / 2 : (iw / (pts.length - 1)) * i);
+    const y = v => MT + ih - (v / max) * ih;
+    const col = cfg.color;
+
+    let s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(cfg.aria || "") + '">';
+    const nT = 3;
+    for (let t = 0; t <= nT; t++) {
+      const v = max * t / nT, yy = y(v);
+      s += '<line class="grid" x1="' + ML + '" y1="' + yy + '" x2="' + (W - MR) + '" y2="' + yy + '"/>';
+      s += '<text class="tick" x="' + (ML - 8) + '" y="' + (yy + 3.5) + '" text-anchor="end">' +
+           esc(compact(cfg.kind, v)) + '</text>';
+    }
+    s += '<line class="ax" x1="' + ML + '" y1="' + (MT + ih) + '" x2="' + (W - MR) + '" y2="' + (MT + ih) + '"/>';
+    pts.forEach((p, i) => {
+      s += '<line class="grid" x1="' + x(i) + '" y1="' + MT + '" x2="' + x(i) + '" y2="' + (MT + ih) + '"/>';
+      s += '<text class="tick" x="' + x(i) + '" y="' + (MT + ih + 18) + '" text-anchor="' +
+           (i === 0 ? "start" : i === pts.length - 1 ? "end" : "middle") + '" style="font-size:12px">' +
+           esc(p.label) + '</text>';
+    });
+    const xy = pts.map((p, i) => [x(i), y(p.value || 0)]);
+    s += '<polygon fill="' + col + '" opacity=".1" points="' + ML + "," + (MT + ih) + " " +
+         xy.map(p => p.join(",")).join(" ") + " " + xy[xy.length - 1][0] + "," + (MT + ih) + '"/>';
+    s += '<polyline fill="none" stroke="' + col + '" stroke-width="2.25" stroke-linejoin="round" points="' +
+         xy.map(p => p.join(",")).join(" ") + '"/>';
+    xy.forEach(p => s += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="3.2" fill="' + col + '"/>');
+    const colW = pts.length > 1 ? iw / (pts.length - 1) : iw;
+    pts.forEach((p, i) => {
+      if (!p.tip) return;
+      const edge = (i === 0 || i === pts.length - 1);
+      s += '<rect class="hit" data-tip-id="' + registerTip(p.tip) + '" x="' +
+           Math.max(ML, x(i) - colW / 2) + '" y="' + MT + '" width="' + (edge ? colW / 2 : colW) +
+           '" height="' + ih + '" rx="3"/>';
+    });
+    s += "</svg>";
+    host.innerHTML = s;
+    bindTips(host);
+  }
+
+  /* ---------- scope banner ---------- */
+  document.getElementById("p2Scope").innerHTML =
+    "<div>&#9432;</div><div><b>Scope.</b> Computed from " + P2P.detail.length + " detail row(s) on the " +
+    "P2P Statistics tab (rows " + P2P.detail[0].row + "–" + P2P.detail[P2P.detail.length - 1].row +
+    "), covering " + P2P.months.map(m => m.label).join(", ") + " of Q" + P2_Q + " " + P2_YEAR + ". " +
+    "There is no stored monthly or quarterly rollup on this tab, so every total and running sum below is " +
+    "computed on this page from those rows." +
+    (P2P.unresolvable_ratios.length
+      ? " " + P2P.unresolvable_ratios.map(k => "“" + esc(LABEL[k]) + "”").join(" and ") +
+        " has no stored numerator, so it cannot be recombined across rows and is left blank in every rollup."
+      : "") +
+    "</div>";
+
+  /* ---------- 1. quarter-to-date hero stats ---------- */
+  function renderHeroesP2P() {
+    document.getElementById("p2HeroNote").textContent =
+      "Summed across all " + P2P.detail.length + " detail row(s) — " + P2P.months.map(m => m.label).join(", ") + ".";
+    const T = P2P.totals.metrics;
+    const cards = [
+      {key: "recipients", label: "Recipients"},
+      {key: "gross_spend", label: "Gross spend"},
+      {key: "immediate_raised", label: "Immediate raised", subKey: "immediate_roas"},
+      {key: "donors", label: "Donors"},
+      {key: "average_gift", label: "Average gift"},
+      {key: "donate_rate", label: "Donate rate"},
+      {key: "ntl", label: "NTL added"},
+      {key: "gross_cpa", label: "Gross CPA", subText: "per name added to the list"}
+    ].filter(cd => T[cd.key] && T[cd.key].value != null);
+    const host = document.getElementById("p2Heroes");
+    host.innerHTML = "";
+
+    cards.forEach(cd => {
+      const m = T[cd.key];
+      const isRatio = P2P.ratios.indexOf(cd.key) >= 0;
+      const comp = RCOMP[cd.key];
+      const el = document.createElement("div");
+      el.className = "hero";
+      const lbl = document.createElement("div");
+      lbl.className = "lbl";
+      lbl.appendChild(document.createTextNode(cd.label));
+      lbl.appendChild(infoBubble({
+        title: cd.label + " — quarter to date",
+        rows: isRatio && comp
+          ? [["Numerator", LABEL[comp[0]] + " = " + fmtM(comp[0], T[comp[0]].value) + " (" +
+               cell(T[comp[0]].cells[0]) + "–" + cell(T[comp[0]].cells[T[comp[0]].cells.length - 1]) + ")"],
+             ["Denominator", LABEL[comp[1]] + " = " + fmtM(comp[1], T[comp[1]].value) + " (" +
+               cell(T[comp[1]].cells[0]) + "–" + cell(T[comp[1]].cells[T[comp[1]].cells.length - 1]) + ")"],
+             ["Result", "<b>" + fmtM(cd.key, m.value) + "</b>"]]
+          : [["Value", "<b>" + fmtM(cd.key, m.value) + "</b>"],
+             ["Rows summed", (m.cells || []).length + " cell(s), " +
+               (m.cells && m.cells.length ? cell(m.cells[0]) + "–" + cell(m.cells[m.cells.length - 1]) : "none")]],
+        calc: isRatio && comp
+          ? fmtM(cd.key, m.value) + " = " + fmtM(comp[0], T[comp[0]].value) + " ÷ " + fmtM(comp[1], T[comp[1]].value) +
+            " — computed on this page from the summed components, not averaged from the per-row ratio."
+          : "SUM(" + cells(m.cells || []) + ") = " + fmtM(cd.key, m.value),
+        caveat: "The P2P Statistics tab stores no quarter-to-date total; this is computed on this page from " +
+                "every detail row.",
+        source: P2_SHEET
+      }));
+      el.appendChild(lbl);
+
+      const big = document.createElement("div");
+      big.className = "big";
+      big.textContent = fmtM(cd.key, m.value);
+      el.appendChild(big);
+
+      const of = document.createElement("div");
+      of.className = "of";
+      if (cd.subKey && T[cd.subKey] && T[cd.subKey].value != null) {
+        const rv = T[cd.subKey].value;
+        of.innerHTML = '<span style="color:' + (rv >= 1 ? "var(--good)" : "var(--muted)") +
+          ';font-weight:650">' + roas2(rv) + "</span> immediate ROAS";
+      } else if (cd.subText) {
+        of.textContent = cd.subText;
+      }
+      el.appendChild(of);
+      host.appendChild(el);
+    });
+  }
+
+  /* ---------- 2. monthly toplines ---------- */
+  function renderMonthlyP2P() {
+    const rowsSrc = P2P.months;
+    const moneyRows = rowsSrc.map(m => {
+      const M = m.metrics;
+      return {
+        label: m.label,
+        values: [M.gross_spend.value, M.immediate_raised.value],
+        sub: M.immediate_roas.value == null ? "no ROAS (no spend)" : roas2(M.immediate_roas.value) + " immediate ROAS",
+        subColor: (M.immediate_roas.value != null && M.immediate_roas.value >= 1) ? "var(--good)" : "var(--bad)",
+        tip: {
+          title: m.label + " " + P2_YEAR,
+          rows: [
+            ["Gross spend", fmtM("gross_spend", M.gross_spend.value)],
+            ["Immediate raised", fmtM("immediate_raised", M.immediate_raised.value)],
+            ["Immediate ROAS", roas2(M.immediate_roas.value)]
+          ],
+          foot: m.rows.length + " detail row(s): " + m.rows.join(", ")
+        }
+      };
+    });
+    barChart(document.getElementById("p2ChMoney"), {
+      rows: moneyRows, kind: "usd",
+      series: [{label: "Gross spend", color: "var(--goal-bar)"}, {label: "Immediate raised", color: "var(--actual)"}],
+      legend: document.getElementById("p2LgMoney"),
+      sub: true, aria: "Gross spend versus immediate raised by month"
+    });
+
+    const donorRows = rowsSrc.map(m => {
+      const M = m.metrics;
+      return {
+        label: m.label,
+        values: [M.donors.value],
+        sub: M.donate_rate.value == null ? "—" : rate2(M.donate_rate.value) + " donate rate",
+        subColor: "var(--muted)",
+        tip: {
+          title: m.label + " " + P2_YEAR,
+          rows: [
+            ["Donors", fmtM("donors", M.donors.value)],
+            ["Recipients", fmtM("recipients", M.recipients.value)],
+            ["Donate rate", rate2(M.donate_rate.value)],
+            ["NTL added", fmtM("ntl", M.ntl.value)]
+          ],
+          foot: m.rows.length + " detail row(s): " + m.rows.join(", ")
+        }
+      };
+    });
+    barChart(document.getElementById("p2ChDonors"), {
+      rows: donorRows, kind: "count",
+      series: [{label: "Donors", color: "var(--ch3)"}],
+      legend: document.getElementById("p2LgDonors"),
+      sub: true, aria: "Donors by month"
+    });
+
+    document.getElementById("p2MonthNote").textContent =
+      P2P.months.map(m => m.label).join(", ") + " — each bar sums that month's detail rows; nothing is read " +
+      "from a stored monthly cell because none exists on this tab.";
+
+    const keys = P2P.metric_order;
+    let t = "<table><thead><tr><th>Month</th>" + keys.map(k => "<th>" + esc(LABEL[k]) + "</th>").join("") + "</tr></thead><tbody>";
+    rowsSrc.forEach(m => {
+      t += "<tr><td>" + esc(m.label) + "</td>" +
+        keys.map(k => "<td>" + (m.metrics[k].value == null ? '<span class="pend">—</span>' : esc(fmtM(k, m.metrics[k].value))) + "</td>").join("") +
+        "</tr>";
+    });
+    t += "</tbody><tfoot><tr><td>Quarter to date</td>" +
+      keys.map(k => "<td>" + (P2P.totals.metrics[k].value == null ? "—" : esc(fmtM(k, P2P.totals.metrics[k].value))) + "</td>").join("") +
+      "</tr></tfoot></table>";
+    document.getElementById("p2TbMonth").innerHTML = t;
+
+    document.querySelector("#p2-month .sechead").appendChild(infoBubble({
+      title: "Monthly toplines",
+      rows: P2P.months.map(m => [m.label, m.rows.length + " detail row(s): " +
+        cells(m.metrics.gross_spend.cells)]),
+      calc: "Each bar sums that month's detail rows. ROAS and rate figures are recomputed from the summed " +
+            "components, never averaged from the per-row values.",
+      caveat: "No monthly rollup row exists on this tab — every figure here is computed on this page.",
+      source: P2_SHEET
+    }));
+  }
+
+  /* ---------- 3. cumulative by category ---------- */
+  function renderAccumP2P() {
+    const state = {metric: P2P.accum_keys[0], breakdown: "audience"};
+    const fhost = document.getElementById("p2AccumFilters");
+    fhost.innerHTML = "";
+    function group(labelText, values, key) {
+      const g = document.createElement("div");
+      g.className = "fgroup";
+      const l = document.createElement("span");
+      l.className = "flabel";
+      l.textContent = labelText;
+      g.appendChild(l);
+      values.forEach(([val, text]) => {
+        const b = document.createElement("button");
+        b.className = "chip";
+        b.type = "button";
+        b.setAttribute("data-filter", key);
+        b.setAttribute("data-value", val);
+        b.setAttribute("aria-pressed", String(state[key] === val));
+        b.appendChild(document.createTextNode(text));
+        b.addEventListener("click", () => {
+          state[key] = val;
+          fhost.querySelectorAll('[data-filter="' + key + '"]').forEach(o =>
+            o.setAttribute("aria-pressed", String(o.getAttribute("data-value") === val)));
+          draw();
+        });
+        g.appendChild(b);
+      });
+      fhost.appendChild(g);
+    }
+    group("Metric", P2P.accum_keys.map(k => [k, LABEL[k]]), "metric");
+    group("Breakdown by", [["audience", "Audience"], ["topic", "Topic"]], "breakdown");
+
+    function draw() {
+      const key = state.metric;
+      const byCat = state.breakdown === "audience" ? P2P.cumulative.by_audience : P2P.cumulative.by_topic;
+      const cats = state.breakdown === "audience" ? P2P.audiences : P2P.topics;
+      const colorOf = state.breakdown === "audience" ? AUD_COLOR : TOPIC_COLOR;
+      const dimLabel = state.breakdown === "audience" ? "Audience" : "Topic";
+      const host = document.getElementById("p2Accum");
+      host.innerHTML = "";
+
+      const boxes = [{label: "All categories", series: P2P.cumulative.overall[key], color: "var(--actual)", all: true}]
+        .concat(cats.map(c => ({label: c, series: byCat[c][key], color: colorOf[c]})));
+
+      boxes.forEach(b => {
+        const last = b.series[b.series.length - 1];
+        const box = document.createElement("div");
+        box.className = "sm";
+        const h3 = document.createElement("h3");
+        const sp = document.createElement("span");
+        sp.textContent = b.label;
+        h3.appendChild(sp);
+        h3.appendChild(infoBubble({
+          title: b.label + " — cumulative " + LABEL[key],
+          rows: b.series.map(p => [p.label, p.value == null ? "not yet reported" : fmtM(key, p.value) +
+            (p.step_cells && p.step_cells.length ? " (" + cells(p.step_cells) + ")" : " (no rows that month)")]),
+          calc: "Running sum of the detail rows for " + esc(b.label) + " across " + P2P.months.length +
+                " month(s) — computed on this page, not read from any workbook cell.",
+          caveat: b.all
+            ? "Sums every detail row regardless of " + dimLabel.toLowerCase() + "."
+            : "Only rows where " + dimLabel + " = “" + esc(b.label) + "”. A month with no rows for this " +
+              dimLabel.toLowerCase() + " contributes a real zero, not a gap.",
+          source: P2_SHEET
+        }));
+        box.appendChild(h3);
+
+        const cap = document.createElement("p");
+        cap.className = "cap";
+        cap.textContent = (last.value == null ? "no data yet" : fmtM(key, last.value) + " cumulative");
+        box.appendChild(cap);
+
+        const cw = document.createElement("div");
+        cw.className = "chartwrap";
+        box.appendChild(cw);
+        host.appendChild(box);
+
+        lineChart(cw, {
+          kind: KIND[key], color: b.color,
+          aria: "Cumulative " + LABEL[key] + " for " + b.label,
+          points: b.series.map(p => ({
+            label: p.label, value: p.value,
+            tip: {
+              title: b.label + " — through " + p.label,
+              rows: [
+                ["Cumulative", p.value == null ? "not yet reported" : fmtM(key, p.value)],
+                [p.label + " alone", fmtM(key, p.step)]
+              ],
+              foot: (p.step_cells || []).length + " detail cell(s) that month"
+            }
+          }))
+        });
+      });
+
+      let t = "<table><thead><tr><th>" + esc(dimLabel) + "</th>" +
+        P2P.months.map(m => "<th>" + esc(m.label) + "</th>").join("") + "</tr></thead><tbody>";
+      t += "<tr><td>All categories</td>" +
+        P2P.cumulative.overall[key].map(p => "<td>" + esc(fmtM(key, p.value)) + "</td>").join("") + "</tr>";
+      cats.forEach(c => {
+        t += "<tr><td>" + esc(c) + "</td>" +
+          byCat[c][key].map(p => "<td>" + (p.value == null ? '<span class="pend">—</span>' : esc(fmtM(key, p.value))) + "</td>").join("") +
+          "</tr>";
+      });
+      t += "</tbody></table>";
+      document.getElementById("p2TbAccum").innerHTML = t;
+    }
+    draw();
+
+    document.querySelector("#p2-accum .sechead").appendChild(infoBubble({
+      title: "Cumulative by category",
+      rows: P2P.accum_keys.map(k => [LABEL[k], "additive — summable across rows, e.g. " +
+        cell(P2P.metric_columns[k] + P2P.detail[0].row) + ":" +
+        cell(P2P.metric_columns[k] + P2P.detail[P2P.detail.length - 1].row)]),
+      calc: "Each small chart is a running total across the reported months, filtered to one audience " +
+            "segment or one topic. Ratio metrics (ROAS, CPA, rates) are not offered here because a running " +
+            "total of a ratio is not a meaningful number.",
+      caveat: "A category with zero rows in a given month shows as a real zero (it was not part of that " +
+              "month's sends), not as pending — pending only applies to a month with no data at all yet.",
+      source: P2_SHEET
+    }));
+  }
+
+  /* ---------- 4. row-by-row leaderboard ---------- */
+  function renderDetailP2P() {
+    const state = {month: "all", topic: "all", audience: "all", sort: "immediate_raised", dir: -1};
+    const MONTH_LABELS = P2P.months.map(m => m.label);
+
+    document.getElementById("p2DetailNote").innerHTML =
+      "Every row on the P2P Statistics tab — " + P2P.detail.length + " row(s) from <code>row " +
+      P2P.detail[0].row + "</code> to <code>row " + P2P.detail[P2P.detail.length - 1].row + "</code>. " +
+      "The filters and the leaderboard below share state.";
+
+    function filtered() {
+      return P2P.detail.filter(d =>
+        (state.month === "all" || d.month === state.month) &&
+        (state.topic === "all" || d.topic === state.topic) &&
+        (state.audience === "all" || d.audience === state.audience));
+    }
+
+    (function buildFilters() {
+      const host = document.getElementById("p2Filters");
+      host.innerHTML = "";
+      function group(labelText, values, key, colorFor) {
+        const g = document.createElement("div");
+        g.className = "fgroup";
+        const l = document.createElement("span");
+        l.className = "flabel";
+        l.textContent = labelText;
+        g.appendChild(l);
+        [["all", "All"]].concat(values.map(v => [v, v])).forEach(([val, text]) => {
+          const b = document.createElement("button");
+          b.className = "chip";
+          b.type = "button";
+          b.setAttribute("data-filter", key);
+          b.setAttribute("data-value", val);
+          b.setAttribute("aria-pressed", String(state[key] === val));
+          if (colorFor && val !== "all") {
+            const dot = document.createElement("i");
+            dot.className = "dot";
+            dot.style.background = colorFor(val);
+            b.appendChild(dot);
+          }
+          b.appendChild(document.createTextNode(text));
+          b.addEventListener("click", () => {
+            state[key] = val;
+            host.querySelectorAll('[data-filter="' + key + '"]').forEach(o =>
+              o.setAttribute("aria-pressed", String(o.getAttribute("data-value") === val)));
+            renderDetail();
+          });
+          g.appendChild(b);
+        });
+        host.appendChild(g);
+      }
+      group("Month", MONTH_LABELS, "month", null);
+      group("Topic", P2P.topics, "topic", t => TOPIC_COLOR[t]);
+      group("Audience", P2P.audiences, "audience", a => AUD_COLOR[a]);
+    })();
+
+    const LB_COLS = [
+      {key: "topic", label: "Topic", type: "text"},
+      {key: "audience", label: "Audience", type: "text"},
+      {key: "month", label: "Month", type: "text"},
+      {key: "objective", label: "Objective", type: "text"},
+      {key: "recipients", label: "Recipients", type: "metric", bar: true},
+      {key: "gross_spend", label: "Gross Spend", type: "metric", bar: true},
+      {key: "immediate_raised", label: "Immediate Raised", type: "metric", bar: true},
+      {key: "immediate_roas", label: "Immediate ROAS", type: "metric"},
+      {key: "donors", label: "Donors", type: "metric", bar: true},
+      {key: "average_gift", label: "Avg Gift", type: "metric"},
+      {key: "donate_rate", label: "Donate Rate", type: "metric"},
+      {key: "ntl", label: "NTL", type: "metric"},
+      {key: "gross_cpa", label: "Gross CPA", type: "metric"}
+    ].filter(c => c.type === "text" || P2P.metric_order.indexOf(c.key) >= 0);
+
+    function renderDetail() {
+      const rows = filtered();
+      const fs = document.getElementById("p2FilterStat");
+      if (!rows.length) {
+        fs.innerHTML = "<b>No rows</b> match the current filters.";
+      } else {
+        const tot = totalsOf(rows);
+        fs.innerHTML = "<b>" + rows.length + "</b> of " + P2P.detail.length + " rows · " +
+          "spend <b>" + usd(tot.gross_spend) + "</b> · raised <b>" + usd(tot.immediate_raised) + "</b> · " +
+          "donors <b>" + int(tot.donors) + "</b> · ROAS <b>" + roas2(tot.immediate_roas) + "</b>" +
+          '<span class="pend"> — totals computed on this page from the filtered rows</span>';
+      }
+      renderLeaderboard(rows);
+    }
+
+    function renderLeaderboard(rows) {
+      const host = document.getElementById("p2Leader");
+      if (!rows.length) { host.innerHTML = '<div class="empty">No rows match the current filters.</div>'; return; }
+      const col = LB_COLS.find(c => c.key === state.sort) || LB_COLS[6];
+      const getv = (r, c) => c.type === "text" ? r[c.key] : r.metrics[c.key].value;
+      const sorted = rows.slice().sort((a, b) => {
+        const va = getv(a, col), vb = getv(b, col);
+        if (va == null && vb == null) return 0;
+        if (va == null) return 1;
+        if (vb == null) return -1;
+        if (col.type === "text") return String(va).localeCompare(String(vb)) * state.dir;
+        return (va - vb) * state.dir;
+      });
+      const maxOf = {};
+      LB_COLS.filter(c => c.bar).forEach(c =>
+        maxOf[c.key] = Math.max(...rows.map(r => r.metrics[c.key].value || 0)) || 1);
+
+      let t = '<table class="lb"><thead><tr>';
+      LB_COLS.forEach(c => {
+        const isSort = c.key === state.sort;
+        t += "<th" + (isSort ? ' aria-sort="' + (state.dir < 0 ? "descending" : "ascending") + '"' : "") +
+          ' data-sort="' + c.key + '" title="Sort by ' + esc(c.label) + '">' + esc(c.label) +
+          (isSort ? '<span class="arrow">' + (state.dir < 0 ? "▼" : "▲") + "</span>" : "") + "</th>";
+      });
+      t += "</tr></thead><tbody>";
+      sorted.forEach(r => {
+        const M = r.metrics;
+        t += '<tr data-tip-id="' + registerTip({
+          title: r.topic + " — " + r.audience + " — " + r.month,
+          rows: [["Objective", r.objective || "—"], ["", ""]].concat(
+            P2P.metric_order.map(k => [LABEL[k], fmtM(k, M[k].value)])),
+          foot: "row " + r.row
+        }) + '">';
+        LB_COLS.forEach(c => {
+          if (c.type === "text") {
+            const v = r[c.key];
+            t += '<td class="lbl">' + (c.key === "topic"
+              ? '<i class="chdot" style="background:' + AUD_COLOR[r.audience] + '" title="' + esc(r.audience) + '"></i>' +
+                '<b>' + esc(trim(v, 22)) + "</b>"
+              : esc(trim(v, 18))) + "</td>";
+          } else if (c.bar) {
+            const v = M[c.key].value || 0;
+            t += '<td class="cellwrap"><div class="minibar"><i style="width:' +
+              Math.max(1, (v / maxOf[c.key]) * 100) + "%;background:" + TOPIC_COLOR[r.topic] +
+              '"></i><span>' + esc(fmtM(c.key, M[c.key].value)) + "</span></div></td>";
+          } else {
+            const v = M[c.key].value;
+            t += "<td>" + (v == null ? '<span class="pend">—</span>' : esc(fmtM(c.key, v))) + "</td>";
+          }
+        });
+        t += "</tr>";
+      });
+      const tot = totalsOf(rows);
+      t += "</tbody><tfoot><tr>";
+      LB_COLS.forEach((c, i) => {
+        if (i === 0) { t += '<td class="lbl">' + rows.length + " row(s)</td>"; return; }
+        if (c.type === "text") { t += "<td></td>"; return; }
+        const v = tot[c.key];
+        t += "<td>" + (v == null ? "—" : esc(fmtM(c.key, v))) + "</td>";
+      });
+      t += "</tr></tfoot></table>";
+      host.innerHTML = t;
+
+      host.querySelectorAll("th[data-sort]").forEach(th => {
+        th.addEventListener("click", () => {
+          const k = th.getAttribute("data-sort");
+          if (state.sort === k) state.dir = -state.dir;
+          else { state.sort = k; state.dir = LB_COLS.find(c => c.key === k).type === "text" ? 1 : -1; }
+          renderLeaderboard(filtered());
+        });
+      });
+      bindTips(host);
+    }
+
+    renderDetail();
+
+    document.querySelector("#p2-detail .sechead").appendChild(infoBubble({
+      title: "Row-by-row breakdown",
+      rows: [
+        ["Rows", "one per date × topic × audience, " +
+          cell(P2P.detail[0].topic_cell) + "–" + cell(P2P.detail[P2P.detail.length - 1].topic_cell)],
+        ["Topics", P2P.topics.join(", ")],
+        ["Audiences", P2P.audiences.join(", ")]
+      ],
+      calc: "Sorting and filtering never change a value — only which rows are shown and in what order. The " +
+            "totals row recomputes ratios from the filtered sums rather than averaging the per-row ratios.",
+      caveat: "Bar lengths are comparable within a column but not across columns, since each column is " +
+              "scaled independently.",
+      source: P2_SHEET
+    }));
+  }
+
+  renderHeroesP2P();
+  renderMonthlyP2P();
+  renderAccumP2P();
+  renderDetailP2P();
+}
+
 /* ==================== tabs ==================== */
 function selectTab(tabId) {
   const tab = document.getElementById(tabId);
@@ -2248,7 +2948,10 @@ function resetChrome() {
    "pmHeroes", "pmChQSpend", "pmChQNtl", "pmChMSpend", "pmChMNtl",
    "pmAccumQ", "pmAccumM", "pmTbQ", "pmTbM", "pmTbAcc",
    "pmFilters", "pmFilterStat", "pmChStackSpend", "pmChStackRaised", "pmChScatter", "pmLeader",
-   "pmScope", "lgMonth", "lgChannel", "pmLgQSpend", "pmLgQNtl", "pmLgMSpend", "pmLgMNtl"
+   "pmScope", "lgMonth", "lgChannel", "pmLgQSpend", "pmLgQNtl", "pmLgMSpend", "pmLgMNtl",
+   "p2Scope", "p2Heroes", "p2ChMoney", "p2ChDonors", "p2LgMoney", "p2LgDonors",
+   "p2AccumFilters", "p2Accum", "p2TbMonth", "p2TbAccum",
+   "p2Filters", "p2FilterStat", "p2Leader"
   ].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = ""; });
 }
 
@@ -2256,7 +2959,7 @@ function renderAll() {
   resetChrome();
 
   // Nothing is shown until a workbook has been loaded.
-  const anything = !!(DATA || PM);
+  const anything = !!(DATA || PM || P2P);
   document.getElementById("emptyState").hidden = anything;
   ["pgHeader", "pgFoot"].forEach(id => { document.getElementById(id).hidden = !anything; });
   document.querySelector(".srcbar").hidden = !anything;
@@ -2287,6 +2990,7 @@ function renderAll() {
     document.getElementById("pgFoot").innerHTML = "";
   }
   renderPaidMedia();
+  renderP2P();
 
   // make sure a visible tab is selected
   const tabs = [...document.querySelectorAll(".tab")].filter(t => !t.hidden);
@@ -2376,14 +3080,16 @@ async function loadWorkbookFile(file) {
 
     const digOk = out.digital && !rep.digitalErrors;
     const paidOk = out.paid && !rep.paidErrors;
-    if (!digOk && !paidOk) {
+    const p2pOk = out.p2p && !rep.p2pErrors;
+    if (!digOk && !paidOk && !p2pOk) {
       showReport(rep, {fatal: true});
       return;
     }
-    // A loaded workbook replaces both tabs. A tab that could not be read is
-    // hidden, never left showing the previous file's numbers.
+    // A loaded workbook replaces all three tabs. A tab that could not be read
+    // is hidden, never left showing the previous file's numbers.
     DATA = digOk ? out.digital : null;
     PM = paidOk ? out.paid : null;
+    P2P = p2pOk ? out.p2p : null;
     LOADED = {name: file.name, report: rep};
     renderAll();
     renderSourceBar();
@@ -2407,6 +3113,7 @@ async function loadWorkbookFile(file) {
 function clearWorkbook() {
   DATA = null;
   PM = null;
+  P2P = null;
   LOADED = null;
   renderAll();
   renderSourceBar();
@@ -2463,7 +3170,7 @@ function clearWorkbook() {
    inspect and drive exactly what a user can, without reaching into
    script-scoped bindings. Harmless in normal use. */
 window.__dashboard = {
-  state: () => ({DATA: DATA, PM: PM, LOADED: LOADED}),
+  state: () => ({DATA: DATA, PM: PM, P2P: P2P, LOADED: LOADED}),
   load: f => loadWorkbookFile(f),
   clear: clearWorkbook,
   render: renderAll

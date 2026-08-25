@@ -24,7 +24,7 @@ LIBS = [
 
 # The page starts with nothing loaded. These markers exist so the payload slots
 # are explicit rather than implied.
-DATA_MARKERS = ["/*__DATA__*/", "/*__PM_DATA__*/"]
+DATA_MARKERS = ["/*__DATA__*/", "/*__PM_DATA__*/", "/*__P2P_DATA__*/"]
 
 
 def main():
@@ -57,10 +57,11 @@ def main():
     # must be literal nulls, and no serialised payload key may appear anywhere.
     # (Words like "IMPORTRANGE" legitimately occur in the extractor's own source,
     # so matching on prose would give false positives.)
-    for expect in ("let DATA = null;", "let PM = null;"):
+    for expect in ("let DATA = null;", "let PM = null;", "let P2P = null;"):
         if expect not in html:
             raise SystemExit("refusing to write %s: expected %r in the output" % (args.out, expect))
-    for key in ('"source_workbook"', '"month_keys"', '"metric_order"', '"pending_months"'):
+    for key in ('"source_workbook"', '"month_keys"', '"metric_order"', '"pending_months"',
+                '"audiences"', '"topics"'):
         if key in html:
             raise SystemExit(
                 "refusing to write %s: found the payload key %s, so workbook data has leaked in"

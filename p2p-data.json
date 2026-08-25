@@ -1,0 +1,3158 @@
+{
+  "meta": {
+    "title": "P2P Statistics",
+    "sheet": "P2P Statistics",
+    "source_workbook": "EXTERNAL_ CAB Digital Report.xlsx",
+    "extracted_at": "2026-08-25T22:43:51",
+    "year": {
+      "value": 2026,
+      "cell": "B2"
+    },
+    "quarter": {
+      "value": 3,
+      "cell": "B3"
+    }
+  },
+  "metric_order": [
+    "recipients",
+    "gross_spend",
+    "immediate_raised",
+    "immediate_roas",
+    "click_rate",
+    "donors",
+    "average_gift",
+    "donate_rate",
+    "ntl",
+    "gross_cpa",
+    "ltv_from_ntl",
+    "ltv_roas_from_ntl",
+    "immediate_raised_from_ntl",
+    "unsubs",
+    "unsub_rate"
+  ],
+  "metric_labels": {
+    "recipients": "Recipients",
+    "gross_spend": "Gross Spend",
+    "immediate_raised": "Immediate Raised",
+    "immediate_roas": "Immediate ROAS",
+    "click_rate": "Click Rate",
+    "donors": "Donors",
+    "average_gift": "Average Gift",
+    "donate_rate": "Donate Rate",
+    "ntl": "NTL",
+    "gross_cpa": "Gross CPA",
+    "ltv_from_ntl": "LTV from NTL",
+    "ltv_roas_from_ntl": "LTV ROAS from NTL",
+    "immediate_raised_from_ntl": "Immediate Raised from NTL",
+    "unsubs": "Unsubs",
+    "unsub_rate": "Unsub Rate"
+  },
+  "metric_kinds": {
+    "recipients": "count",
+    "gross_spend": "usd",
+    "immediate_raised": "usd",
+    "immediate_roas": "roas",
+    "click_rate": "rate",
+    "donors": "count",
+    "average_gift": "usd2",
+    "donate_rate": "rate",
+    "ntl": "count",
+    "gross_cpa": "usd2",
+    "ltv_from_ntl": "usd",
+    "ltv_roas_from_ntl": "roas",
+    "immediate_raised_from_ntl": "usd",
+    "unsubs": "count",
+    "unsub_rate": "rate"
+  },
+  "metric_columns": {
+    "recipients": "J",
+    "gross_spend": "K",
+    "immediate_raised": "L",
+    "immediate_roas": "M",
+    "click_rate": "N",
+    "donors": "O",
+    "average_gift": "P",
+    "donate_rate": "Q",
+    "ntl": "R",
+    "gross_cpa": "S",
+    "ltv_from_ntl": "T",
+    "ltv_roas_from_ntl": "U",
+    "immediate_raised_from_ntl": "V",
+    "unsubs": "W",
+    "unsub_rate": "X"
+  },
+  "additive": [
+    "recipients",
+    "gross_spend",
+    "immediate_raised",
+    "donors",
+    "ntl",
+    "ltv_from_ntl",
+    "immediate_raised_from_ntl",
+    "unsubs"
+  ],
+  "ratios": [
+    "immediate_roas",
+    "click_rate",
+    "average_gift",
+    "donate_rate",
+    "gross_cpa",
+    "ltv_roas_from_ntl",
+    "unsub_rate"
+  ],
+  "unresolvable_ratios": [
+    "click_rate"
+  ],
+  "ratio_components": {
+    "immediate_roas": [
+      "immediate_raised",
+      "gross_spend"
+    ],
+    "click_rate": null,
+    "average_gift": [
+      "immediate_raised",
+      "donors"
+    ],
+    "donate_rate": [
+      "donors",
+      "recipients"
+    ],
+    "gross_cpa": [
+      "gross_spend",
+      "ntl"
+    ],
+    "ltv_roas_from_ntl": [
+      "ltv_from_ntl",
+      "gross_spend"
+    ],
+    "unsub_rate": [
+      "unsubs",
+      "recipients"
+    ]
+  },
+  "objective_header": "Goal",
+  "month_keys": [
+    "july_2026",
+    "august_2026"
+  ],
+  "months": [
+    {
+      "label": "July 2026",
+      "rows": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "metrics": {
+        "recipients": {
+          "label": "Recipients",
+          "kind": "count",
+          "value": 63818,
+          "cells": [
+            "J6",
+            "J7",
+            "J8",
+            "J9",
+            "J10"
+          ],
+          "computed": true
+        },
+        "gross_spend": {
+          "label": "Gross Spend",
+          "kind": "usd",
+          "value": 2553.5329032,
+          "cells": [
+            "K6",
+            "K7",
+            "K8",
+            "K9",
+            "K10"
+          ],
+          "computed": true
+        },
+        "immediate_raised": {
+          "label": "Immediate Raised",
+          "kind": "usd",
+          "value": 5734.26,
+          "cells": [
+            "L6",
+            "L7",
+            "L8",
+            "L9",
+            "L10"
+          ],
+          "computed": true
+        },
+        "donors": {
+          "label": "Donors",
+          "kind": "count",
+          "value": 275,
+          "cells": [
+            "O6",
+            "O7",
+            "O8",
+            "O9",
+            "O10"
+          ],
+          "computed": true
+        },
+        "ntl": {
+          "label": "NTL",
+          "kind": "count",
+          "value": 5,
+          "cells": [
+            "R6",
+            "R7",
+            "R8",
+            "R9",
+            "R10"
+          ],
+          "computed": true
+        },
+        "ltv_from_ntl": {
+          "label": "LTV from NTL",
+          "kind": "usd",
+          "value": 161,
+          "cells": [
+            "T6",
+            "T7",
+            "T8",
+            "T9",
+            "T10"
+          ],
+          "computed": true
+        },
+        "immediate_raised_from_ntl": {
+          "label": "Immediate Raised from NTL",
+          "kind": "usd",
+          "value": 131,
+          "cells": [
+            "V6",
+            "V7",
+            "V8",
+            "V9",
+            "V10"
+          ],
+          "computed": true
+        },
+        "unsubs": {
+          "label": "Unsubs",
+          "kind": "count",
+          "value": 1332,
+          "cells": [
+            "W6",
+            "W7",
+            "W8",
+            "W9",
+            "W10"
+          ],
+          "computed": true
+        },
+        "immediate_roas": {
+          "label": "Immediate ROAS",
+          "kind": "roas",
+          "value": 2.245618214989132,
+          "computed": true,
+          "numerator": "immediate_raised",
+          "denominator": "gross_spend",
+          "cells": [
+            "L6",
+            "L7",
+            "L8",
+            "L9",
+            "L10",
+            "K6",
+            "K7",
+            "K8",
+            "K9",
+            "K10"
+          ]
+        },
+        "click_rate": {
+          "label": "Click Rate",
+          "kind": "rate",
+          "value": null,
+          "computed": true,
+          "unresolvable": true
+        },
+        "average_gift": {
+          "label": "Average Gift",
+          "kind": "usd2",
+          "value": 20.851854545454547,
+          "computed": true,
+          "numerator": "immediate_raised",
+          "denominator": "donors",
+          "cells": [
+            "L6",
+            "L7",
+            "L8",
+            "L9",
+            "L10",
+            "O6",
+            "O7",
+            "O8",
+            "O9",
+            "O10"
+          ]
+        },
+        "donate_rate": {
+          "label": "Donate Rate",
+          "kind": "rate",
+          "value": 0.004309129085837852,
+          "computed": true,
+          "numerator": "donors",
+          "denominator": "recipients",
+          "cells": [
+            "O6",
+            "O7",
+            "O8",
+            "O9",
+            "O10",
+            "J6",
+            "J7",
+            "J8",
+            "J9",
+            "J10"
+          ]
+        },
+        "gross_cpa": {
+          "label": "Gross CPA",
+          "kind": "usd2",
+          "value": 510.70658063999997,
+          "computed": true,
+          "numerator": "gross_spend",
+          "denominator": "ntl",
+          "cells": [
+            "K6",
+            "K7",
+            "K8",
+            "K9",
+            "K10",
+            "R6",
+            "R7",
+            "R8",
+            "R9",
+            "R10"
+          ]
+        },
+        "ltv_roas_from_ntl": {
+          "label": "LTV ROAS from NTL",
+          "kind": "roas",
+          "value": 0.06304990227392031,
+          "computed": true,
+          "numerator": "ltv_from_ntl",
+          "denominator": "gross_spend",
+          "cells": [
+            "T6",
+            "T7",
+            "T8",
+            "T9",
+            "T10",
+            "K6",
+            "K7",
+            "K8",
+            "K9",
+            "K10"
+          ]
+        },
+        "unsub_rate": {
+          "label": "Unsub Rate",
+          "kind": "rate",
+          "value": 0.02087185433576734,
+          "computed": true,
+          "numerator": "unsubs",
+          "denominator": "recipients",
+          "cells": [
+            "W6",
+            "W7",
+            "W8",
+            "W9",
+            "W10",
+            "J6",
+            "J7",
+            "J8",
+            "J9",
+            "J10"
+          ]
+        }
+      },
+      "key": "july_2026"
+    },
+    {
+      "label": "August 2026",
+      "rows": [
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
+      ],
+      "metrics": {
+        "recipients": {
+          "label": "Recipients",
+          "kind": "count",
+          "value": 103456,
+          "cells": [
+            "J11",
+            "J12",
+            "J13",
+            "J14",
+            "J15",
+            "J16"
+          ],
+          "computed": true
+        },
+        "gross_spend": {
+          "label": "Gross Spend",
+          "kind": "usd",
+          "value": 4138.24,
+          "cells": [
+            "K11",
+            "K12",
+            "K13",
+            "K14",
+            "K15",
+            "K16"
+          ],
+          "computed": true
+        },
+        "immediate_raised": {
+          "label": "Immediate Raised",
+          "kind": "usd",
+          "value": 9095.98,
+          "cells": [
+            "L11",
+            "L12",
+            "L13",
+            "L14",
+            "L15",
+            "L16"
+          ],
+          "computed": true
+        },
+        "donors": {
+          "label": "Donors",
+          "kind": "count",
+          "value": 444,
+          "cells": [
+            "O11",
+            "O12",
+            "O13",
+            "O14",
+            "O15",
+            "O16"
+          ],
+          "computed": true
+        },
+        "ntl": {
+          "label": "NTL",
+          "kind": "count",
+          "value": 8,
+          "cells": [
+            "R11",
+            "R12",
+            "R13",
+            "R14",
+            "R15",
+            "R16"
+          ],
+          "computed": true
+        },
+        "ltv_from_ntl": {
+          "label": "LTV from NTL",
+          "kind": "usd",
+          "value": 310,
+          "cells": [
+            "T11",
+            "T12",
+            "T13",
+            "T14",
+            "T15",
+            "T16"
+          ],
+          "computed": true
+        },
+        "immediate_raised_from_ntl": {
+          "label": "Immediate Raised from NTL",
+          "kind": "usd",
+          "value": 310,
+          "cells": [
+            "V11",
+            "V12",
+            "V13",
+            "V14",
+            "V15",
+            "V16"
+          ],
+          "computed": true
+        },
+        "unsubs": {
+          "label": "Unsubs",
+          "kind": "count",
+          "value": 945,
+          "cells": [
+            "W11",
+            "W12",
+            "W13",
+            "W14",
+            "W15",
+            "W16"
+          ],
+          "computed": true
+        },
+        "immediate_roas": {
+          "label": "Immediate ROAS",
+          "kind": "roas",
+          "value": 2.198031047015156,
+          "computed": true,
+          "numerator": "immediate_raised",
+          "denominator": "gross_spend",
+          "cells": [
+            "L11",
+            "L12",
+            "L13",
+            "L14",
+            "L15",
+            "L16",
+            "K11",
+            "K12",
+            "K13",
+            "K14",
+            "K15",
+            "K16"
+          ]
+        },
+        "click_rate": {
+          "label": "Click Rate",
+          "kind": "rate",
+          "value": null,
+          "computed": true,
+          "unresolvable": true
+        },
+        "average_gift": {
+          "label": "Average Gift",
+          "kind": "usd2",
+          "value": 20.48644144144144,
+          "computed": true,
+          "numerator": "immediate_raised",
+          "denominator": "donors",
+          "cells": [
+            "L11",
+            "L12",
+            "L13",
+            "L14",
+            "L15",
+            "L16",
+            "O11",
+            "O12",
+            "O13",
+            "O14",
+            "O15",
+            "O16"
+          ]
+        },
+        "donate_rate": {
+          "label": "Donate Rate",
+          "kind": "rate",
+          "value": 0.004291679554593257,
+          "computed": true,
+          "numerator": "donors",
+          "denominator": "recipients",
+          "cells": [
+            "O11",
+            "O12",
+            "O13",
+            "O14",
+            "O15",
+            "O16",
+            "J11",
+            "J12",
+            "J13",
+            "J14",
+            "J15",
+            "J16"
+          ]
+        },
+        "gross_cpa": {
+          "label": "Gross CPA",
+          "kind": "usd2",
+          "value": 517.28,
+          "computed": true,
+          "numerator": "gross_spend",
+          "denominator": "ntl",
+          "cells": [
+            "K11",
+            "K12",
+            "K13",
+            "K14",
+            "K15",
+            "K16",
+            "R11",
+            "R12",
+            "R13",
+            "R14",
+            "R15",
+            "R16"
+          ]
+        },
+        "ltv_roas_from_ntl": {
+          "label": "LTV ROAS from NTL",
+          "kind": "roas",
+          "value": 0.07491107330652645,
+          "computed": true,
+          "numerator": "ltv_from_ntl",
+          "denominator": "gross_spend",
+          "cells": [
+            "T11",
+            "T12",
+            "T13",
+            "T14",
+            "T15",
+            "T16",
+            "K11",
+            "K12",
+            "K13",
+            "K14",
+            "K15",
+            "K16"
+          ]
+        },
+        "unsub_rate": {
+          "label": "Unsub Rate",
+          "kind": "rate",
+          "value": 0.009134317970924838,
+          "computed": true,
+          "numerator": "unsubs",
+          "denominator": "recipients",
+          "cells": [
+            "W11",
+            "W12",
+            "W13",
+            "W14",
+            "W15",
+            "W16",
+            "J11",
+            "J12",
+            "J13",
+            "J14",
+            "J15",
+            "J16"
+          ]
+        }
+      },
+      "key": "august_2026"
+    }
+  ],
+  "totals": {
+    "label": "Quarter to date",
+    "rows": [
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16
+    ],
+    "metrics": {
+      "recipients": {
+        "label": "Recipients",
+        "kind": "count",
+        "value": 167274,
+        "cells": [
+          "J6",
+          "J7",
+          "J8",
+          "J9",
+          "J10",
+          "J11",
+          "J12",
+          "J13",
+          "J14",
+          "J15",
+          "J16"
+        ],
+        "computed": true
+      },
+      "gross_spend": {
+        "label": "Gross Spend",
+        "kind": "usd",
+        "value": 6691.7729032,
+        "cells": [
+          "K6",
+          "K7",
+          "K8",
+          "K9",
+          "K10",
+          "K11",
+          "K12",
+          "K13",
+          "K14",
+          "K15",
+          "K16"
+        ],
+        "computed": true
+      },
+      "immediate_raised": {
+        "label": "Immediate Raised",
+        "kind": "usd",
+        "value": 14830.240000000002,
+        "cells": [
+          "L6",
+          "L7",
+          "L8",
+          "L9",
+          "L10",
+          "L11",
+          "L12",
+          "L13",
+          "L14",
+          "L15",
+          "L16"
+        ],
+        "computed": true
+      },
+      "donors": {
+        "label": "Donors",
+        "kind": "count",
+        "value": 719,
+        "cells": [
+          "O6",
+          "O7",
+          "O8",
+          "O9",
+          "O10",
+          "O11",
+          "O12",
+          "O13",
+          "O14",
+          "O15",
+          "O16"
+        ],
+        "computed": true
+      },
+      "ntl": {
+        "label": "NTL",
+        "kind": "count",
+        "value": 13,
+        "cells": [
+          "R6",
+          "R7",
+          "R8",
+          "R9",
+          "R10",
+          "R11",
+          "R12",
+          "R13",
+          "R14",
+          "R15",
+          "R16"
+        ],
+        "computed": true
+      },
+      "ltv_from_ntl": {
+        "label": "LTV from NTL",
+        "kind": "usd",
+        "value": 471,
+        "cells": [
+          "T6",
+          "T7",
+          "T8",
+          "T9",
+          "T10",
+          "T11",
+          "T12",
+          "T13",
+          "T14",
+          "T15",
+          "T16"
+        ],
+        "computed": true
+      },
+      "immediate_raised_from_ntl": {
+        "label": "Immediate Raised from NTL",
+        "kind": "usd",
+        "value": 441,
+        "cells": [
+          "V6",
+          "V7",
+          "V8",
+          "V9",
+          "V10",
+          "V11",
+          "V12",
+          "V13",
+          "V14",
+          "V15",
+          "V16"
+        ],
+        "computed": true
+      },
+      "unsubs": {
+        "label": "Unsubs",
+        "kind": "count",
+        "value": 2277,
+        "cells": [
+          "W6",
+          "W7",
+          "W8",
+          "W9",
+          "W10",
+          "W11",
+          "W12",
+          "W13",
+          "W14",
+          "W15",
+          "W16"
+        ],
+        "computed": true
+      },
+      "immediate_roas": {
+        "label": "Immediate ROAS",
+        "kind": "roas",
+        "value": 2.2161899715556985,
+        "computed": true,
+        "numerator": "immediate_raised",
+        "denominator": "gross_spend",
+        "cells": [
+          "L6",
+          "L7",
+          "L8",
+          "L9",
+          "L10",
+          "L11",
+          "L12",
+          "L13",
+          "L14",
+          "L15",
+          "L16",
+          "K6",
+          "K7",
+          "K8",
+          "K9",
+          "K10",
+          "K11",
+          "K12",
+          "K13",
+          "K14",
+          "K15",
+          "K16"
+        ]
+      },
+      "click_rate": {
+        "label": "Click Rate",
+        "kind": "rate",
+        "value": null,
+        "computed": true,
+        "unresolvable": true
+      },
+      "average_gift": {
+        "label": "Average Gift",
+        "kind": "usd2",
+        "value": 20.626203059805288,
+        "computed": true,
+        "numerator": "immediate_raised",
+        "denominator": "donors",
+        "cells": [
+          "L6",
+          "L7",
+          "L8",
+          "L9",
+          "L10",
+          "L11",
+          "L12",
+          "L13",
+          "L14",
+          "L15",
+          "L16",
+          "O6",
+          "O7",
+          "O8",
+          "O9",
+          "O10",
+          "O11",
+          "O12",
+          "O13",
+          "O14",
+          "O15",
+          "O16"
+        ]
+      },
+      "donate_rate": {
+        "label": "Donate Rate",
+        "kind": "rate",
+        "value": 0.004298336860480409,
+        "computed": true,
+        "numerator": "donors",
+        "denominator": "recipients",
+        "cells": [
+          "O6",
+          "O7",
+          "O8",
+          "O9",
+          "O10",
+          "O11",
+          "O12",
+          "O13",
+          "O14",
+          "O15",
+          "O16",
+          "J6",
+          "J7",
+          "J8",
+          "J9",
+          "J10",
+          "J11",
+          "J12",
+          "J13",
+          "J14",
+          "J15",
+          "J16"
+        ]
+      },
+      "gross_cpa": {
+        "label": "Gross CPA",
+        "kind": "usd2",
+        "value": 514.7517617846154,
+        "computed": true,
+        "numerator": "gross_spend",
+        "denominator": "ntl",
+        "cells": [
+          "K6",
+          "K7",
+          "K8",
+          "K9",
+          "K10",
+          "K11",
+          "K12",
+          "K13",
+          "K14",
+          "K15",
+          "K16",
+          "R6",
+          "R7",
+          "R8",
+          "R9",
+          "R10",
+          "R11",
+          "R12",
+          "R13",
+          "R14",
+          "R15",
+          "R16"
+        ]
+      },
+      "ltv_roas_from_ntl": {
+        "label": "LTV ROAS from NTL",
+        "kind": "roas",
+        "value": 0.07038493487649114,
+        "computed": true,
+        "numerator": "ltv_from_ntl",
+        "denominator": "gross_spend",
+        "cells": [
+          "T6",
+          "T7",
+          "T8",
+          "T9",
+          "T10",
+          "T11",
+          "T12",
+          "T13",
+          "T14",
+          "T15",
+          "T16",
+          "K6",
+          "K7",
+          "K8",
+          "K9",
+          "K10",
+          "K11",
+          "K12",
+          "K13",
+          "K14",
+          "K15",
+          "K16"
+        ]
+      },
+      "unsub_rate": {
+        "label": "Unsub Rate",
+        "kind": "rate",
+        "value": 0.013612396427418487,
+        "computed": true,
+        "numerator": "unsubs",
+        "denominator": "recipients",
+        "cells": [
+          "W6",
+          "W7",
+          "W8",
+          "W9",
+          "W10",
+          "W11",
+          "W12",
+          "W13",
+          "W14",
+          "W15",
+          "W16",
+          "J6",
+          "J7",
+          "J8",
+          "J9",
+          "J10",
+          "J11",
+          "J12",
+          "J13",
+          "J14",
+          "J15",
+          "J16"
+        ]
+      }
+    }
+  },
+  "detail": [
+    {
+      "row": 6,
+      "client": "CAB",
+      "month": "July 2026",
+      "month_cell": "D6",
+      "day_of_week": "Thu",
+      "date_serial": 46226,
+      "date_cell": "F6",
+      "date": "2026-07-23",
+      "objective": "Donations",
+      "objective_cell": "G6",
+      "topic": "Blanche",
+      "topic_cell": "H6",
+      "audience": "Core(y)",
+      "audience_cell": "I6",
+      "metrics": {
+        "recipients": {
+          "label": "Recipients",
+          "kind": "count",
+          "value": 25000,
+          "cell": "J6",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),25000.0)"
+        },
+        "gross_spend": {
+          "label": "Gross Spend",
+          "kind": "usd",
+          "value": 1000,
+          "cell": "K6",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1000.0)"
+        },
+        "immediate_raised": {
+          "label": "Immediate Raised",
+          "kind": "usd",
+          "value": 764,
+          "cell": "L6",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),764.0)"
+        },
+        "immediate_roas": {
+          "label": "Immediate ROAS",
+          "kind": "roas",
+          "value": 0.764,
+          "cell": "M6",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.764)"
+        },
+        "click_rate": {
+          "label": "Click Rate",
+          "kind": "rate",
+          "value": 0.041,
+          "cell": "N6",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.041)"
+        },
+        "donors": {
+          "label": "Donors",
+          "kind": "count",
+          "value": 58,
+          "cell": "O6",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),58.0)"
+        },
+        "average_gift": {
+          "label": "Average Gift",
+          "kind": "usd2",
+          "value": 13.17,
+          "cell": "P6",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),13.17)"
+        },
+        "donate_rate": {
+          "label": "Donate Rate",
+          "kind": "rate",
+          "value": 0.0023,
+          "cell": "Q6",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0023)"
+        },
+        "ntl": {
+          "label": "NTL",
+          "kind": "count",
+          "value": 1,
+          "cell": "R6",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.0)"
+        },
+        "gross_cpa": {
+          "label": "Gross CPA",
+          "kind": "usd2",
+          "value": 1000,
+          "cell": "S6",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1000.0)"
+        },
+        "ltv_from_ntl": {
+          "label": "LTV from NTL",
+          "kind": "usd",
+          "value": 10,
+          "cell": "T6",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),10.0)"
+        },
+        "ltv_roas_from_ntl": {
+          "label": "LTV ROAS from NTL",
+          "kind": "roas",
+          "value": 0.01,
+          "cell": "U6",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.01)"
+        },
+        "immediate_raised_from_ntl": {
+          "label": "Immediate Raised from NTL",
+          "kind": "usd",
+          "value": 10,
+          "cell": "V6",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),10.0)"
+        },
+        "unsubs": {
+          "label": "Unsubs",
+          "kind": "count",
+          "value": 234,
+          "cell": "W6",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),234.0)"
+        },
+        "unsub_rate": {
+          "label": "Unsub Rate",
+          "kind": "rate",
+          "value": 0.009,
+          "cell": "X6",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.009)"
+        }
+      }
+    },
+    {
+      "row": 7,
+      "client": "CAB",
+      "month": "July 2026",
+      "month_cell": "D7",
+      "day_of_week": "Thu",
+      "date_serial": 46226,
+      "date_cell": "F7",
+      "date": "2026-07-23",
+      "objective": "Donations",
+      "objective_cell": "G7",
+      "topic": "Blanche",
+      "topic_cell": "H7",
+      "audience": "Form Signers",
+      "audience_cell": "I7",
+      "metrics": {
+        "recipients": {
+          "label": "Recipients",
+          "kind": "count",
+          "value": 5000,
+          "cell": "J7",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),5000.0)"
+        },
+        "gross_spend": {
+          "label": "Gross Spend",
+          "kind": "usd",
+          "value": 200,
+          "cell": "K7",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),200.0)"
+        },
+        "immediate_raised": {
+          "label": "Immediate Raised",
+          "kind": "usd",
+          "value": 150.26,
+          "cell": "L7",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),150.26)"
+        },
+        "immediate_roas": {
+          "label": "Immediate ROAS",
+          "kind": "roas",
+          "value": 0.7513,
+          "cell": "M7",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.7513)"
+        },
+        "click_rate": {
+          "label": "Click Rate",
+          "kind": "rate",
+          "value": 0.023,
+          "cell": "N7",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.023)"
+        },
+        "donors": {
+          "label": "Donors",
+          "kind": "count",
+          "value": 6,
+          "cell": "O7",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),6.0)"
+        },
+        "average_gift": {
+          "label": "Average Gift",
+          "kind": "usd2",
+          "value": 25.04,
+          "cell": "P7",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),25.04)"
+        },
+        "donate_rate": {
+          "label": "Donate Rate",
+          "kind": "rate",
+          "value": 0.0012,
+          "cell": "Q7",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0012)"
+        },
+        "ntl": {
+          "label": "NTL",
+          "kind": "count",
+          "value": 0,
+          "cell": "R7",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"
+        },
+        "gross_cpa": {
+          "label": "Gross CPA",
+          "kind": "usd2",
+          "value": null,
+          "cell": "S7",
+          "formula": null
+        },
+        "ltv_from_ntl": {
+          "label": "LTV from NTL",
+          "kind": "usd",
+          "value": 0,
+          "cell": "T7",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"
+        },
+        "ltv_roas_from_ntl": {
+          "label": "LTV ROAS from NTL",
+          "kind": "roas",
+          "value": 0,
+          "cell": "U7",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"
+        },
+        "immediate_raised_from_ntl": {
+          "label": "Immediate Raised from NTL",
+          "kind": "usd",
+          "value": 0,
+          "cell": "V7",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"
+        },
+        "unsubs": {
+          "label": "Unsubs",
+          "kind": "count",
+          "value": 157,
+          "cell": "W7",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),157.0)"
+        },
+        "unsub_rate": {
+          "label": "Unsub Rate",
+          "kind": "rate",
+          "value": 0.031,
+          "cell": "X7",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.031)"
+        }
+      }
+    },
+    {
+      "row": 8,
+      "client": "CAB",
+      "month": "July 2026",
+      "month_cell": "D8",
+      "day_of_week": "Thu",
+      "date_serial": 46226,
+      "date_cell": "F8",
+      "date": "2026-07-23",
+      "objective": "Donations",
+      "objective_cell": "G8",
+      "topic": "Blanche",
+      "topic_cell": "H8",
+      "audience": "GA Text",
+      "audience_cell": "I8",
+      "metrics": {
+        "recipients": {
+          "label": "Recipients",
+          "kind": "count",
+          "value": 3815,
+          "cell": "J8",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),3815.0)"
+        },
+        "gross_spend": {
+          "label": "Gross Spend",
+          "kind": "usd",
+          "value": 153.4129032,
+          "cell": "K8",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),153.41290322580645)"
+        },
+        "immediate_raised": {
+          "label": "Immediate Raised",
+          "kind": "usd",
+          "value": 75,
+          "cell": "L8",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),75.0)"
+        },
+        "immediate_roas": {
+          "label": "Immediate ROAS",
+          "kind": "roas",
+          "value": 0.48887674,
+          "cell": "M8",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.48887673998065523)"
+        },
+        "click_rate": {
+          "label": "Click Rate",
+          "kind": "rate",
+          "value": 0.01,
+          "cell": "N8",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.01)"
+        },
+        "donors": {
+          "label": "Donors",
+          "kind": "count",
+          "value": 9,
+          "cell": "O8",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),9.0)"
+        },
+        "average_gift": {
+          "label": "Average Gift",
+          "kind": "usd2",
+          "value": 8.33,
+          "cell": "P8",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),8.33)"
+        },
+        "donate_rate": {
+          "label": "Donate Rate",
+          "kind": "rate",
+          "value": 0.0024,
+          "cell": "Q8",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0024)"
+        },
+        "ntl": {
+          "label": "NTL",
+          "kind": "count",
+          "value": 0,
+          "cell": "R8",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"
+        },
+        "gross_cpa": {
+          "label": "Gross CPA",
+          "kind": "usd2",
+          "value": null,
+          "cell": "S8",
+          "formula": null
+        },
+        "ltv_from_ntl": {
+          "label": "LTV from NTL",
+          "kind": "usd",
+          "value": 0,
+          "cell": "T8",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"
+        },
+        "ltv_roas_from_ntl": {
+          "label": "LTV ROAS from NTL",
+          "kind": "roas",
+          "value": 0,
+          "cell": "U8",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"
+        },
+        "immediate_raised_from_ntl": {
+          "label": "Immediate Raised from NTL",
+          "kind": "usd",
+          "value": 0,
+          "cell": "V8",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"
+        },
+        "unsubs": {
+          "label": "Unsubs",
+          "kind": "count",
+          "value": 25,
+          "cell": "W8",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),25.0)"
+        },
+        "unsub_rate": {
+          "label": "Unsub Rate",
+          "kind": "rate",
+          "value": 0.007,
+          "cell": "X8",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.007)"
+        }
+      }
+    },
+    {
+      "row": 9,
+      "client": "CAB",
+      "month": "July 2026",
+      "month_cell": "D9",
+      "day_of_week": "Fri",
+      "date_serial": 46234,
+      "date_cell": "F9",
+      "date": "2026-07-31",
+      "objective": "Donations",
+      "objective_cell": "G9",
+      "topic": "EOM",
+      "topic_cell": "H9",
+      "audience": "CTD Donors",
+      "audience_cell": "I9",
+      "metrics": {
+        "recipients": {
+          "label": "Recipients",
+          "kind": "count",
+          "value": 19999,
+          "cell": "J9",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),19999.0)"
+        },
+        "gross_spend": {
+          "label": "Gross Spend",
+          "kind": "usd",
+          "value": 799.96,
+          "cell": "K9",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),799.96)"
+        },
+        "immediate_raised": {
+          "label": "Immediate Raised",
+          "kind": "usd",
+          "value": 955,
+          "cell": "L9",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),955.0)"
+        },
+        "immediate_roas": {
+          "label": "Immediate ROAS",
+          "kind": "roas",
+          "value": 1.19380969,
+          "cell": "M9",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.1938096904845241)"
+        },
+        "click_rate": {
+          "label": "Click Rate",
+          "kind": "rate",
+          "value": 0.038,
+          "cell": "N9",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.038)"
+        },
+        "donors": {
+          "label": "Donors",
+          "kind": "count",
+          "value": 34,
+          "cell": "O9",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),34.0)"
+        },
+        "average_gift": {
+          "label": "Average Gift",
+          "kind": "usd2",
+          "value": 28.09,
+          "cell": "P9",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),28.09)"
+        },
+        "donate_rate": {
+          "label": "Donate Rate",
+          "kind": "rate",
+          "value": 0.0017,
+          "cell": "Q9",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0017)"
+        },
+        "ntl": {
+          "label": "NTL",
+          "kind": "count",
+          "value": 1,
+          "cell": "R9",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.0)"
+        },
+        "gross_cpa": {
+          "label": "Gross CPA",
+          "kind": "usd2",
+          "value": 799.96,
+          "cell": "S9",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),799.96)"
+        },
+        "ltv_from_ntl": {
+          "label": "LTV from NTL",
+          "kind": "usd",
+          "value": 16,
+          "cell": "T9",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),16.0)"
+        },
+        "ltv_roas_from_ntl": {
+          "label": "LTV ROAS from NTL",
+          "kind": "roas",
+          "value": 0.02000100005,
+          "cell": "U9",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0200010000500025)"
+        },
+        "immediate_raised_from_ntl": {
+          "label": "Immediate Raised from NTL",
+          "kind": "usd",
+          "value": 11,
+          "cell": "V9",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),11.0)"
+        },
+        "unsubs": {
+          "label": "Unsubs",
+          "kind": "count",
+          "value": 301,
+          "cell": "W9",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),301.0)"
+        },
+        "unsub_rate": {
+          "label": "Unsub Rate",
+          "kind": "rate",
+          "value": 0.015,
+          "cell": "X9",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.015)"
+        }
+      }
+    },
+    {
+      "row": 10,
+      "client": "CAB",
+      "month": "July 2026",
+      "month_cell": "D10",
+      "day_of_week": "Fri",
+      "date_serial": 46234,
+      "date_cell": "F10",
+      "date": "2026-07-31",
+      "objective": "Donations",
+      "objective_cell": "G10",
+      "topic": "EOM",
+      "topic_cell": "H10",
+      "audience": "YTD Donors",
+      "audience_cell": "I10",
+      "metrics": {
+        "recipients": {
+          "label": "Recipients",
+          "kind": "count",
+          "value": 10004,
+          "cell": "J10",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),10004.0)"
+        },
+        "gross_spend": {
+          "label": "Gross Spend",
+          "kind": "usd",
+          "value": 400.16,
+          "cell": "K10",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),400.16)"
+        },
+        "immediate_raised": {
+          "label": "Immediate Raised",
+          "kind": "usd",
+          "value": 3790,
+          "cell": "L10",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),3790.0)"
+        },
+        "immediate_roas": {
+          "label": "Immediate ROAS",
+          "kind": "roas",
+          "value": 9.471211515,
+          "cell": "M10",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),9.471211515393842)"
+        },
+        "click_rate": {
+          "label": "Click Rate",
+          "kind": "rate",
+          "value": 0.055,
+          "cell": "N10",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.055)"
+        },
+        "donors": {
+          "label": "Donors",
+          "kind": "count",
+          "value": 168,
+          "cell": "O10",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),168.0)"
+        },
+        "average_gift": {
+          "label": "Average Gift",
+          "kind": "usd2",
+          "value": 22.56,
+          "cell": "P10",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),22.56)"
+        },
+        "donate_rate": {
+          "label": "Donate Rate",
+          "kind": "rate",
+          "value": 0.0168,
+          "cell": "Q10",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0168)"
+        },
+        "ntl": {
+          "label": "NTL",
+          "kind": "count",
+          "value": 3,
+          "cell": "R10",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),3.0)"
+        },
+        "gross_cpa": {
+          "label": "Gross CPA",
+          "kind": "usd2",
+          "value": 133.3866667,
+          "cell": "S10",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),133.38666666666668)"
+        },
+        "ltv_from_ntl": {
+          "label": "LTV from NTL",
+          "kind": "usd",
+          "value": 135,
+          "cell": "T10",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),135.0)"
+        },
+        "ltv_roas_from_ntl": {
+          "label": "LTV ROAS from NTL",
+          "kind": "roas",
+          "value": 0.337365054,
+          "cell": "U10",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.3373650539784086)"
+        },
+        "immediate_raised_from_ntl": {
+          "label": "Immediate Raised from NTL",
+          "kind": "usd",
+          "value": 110,
+          "cell": "V10",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),110.0)"
+        },
+        "unsubs": {
+          "label": "Unsubs",
+          "kind": "count",
+          "value": 615,
+          "cell": "W10",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),615.0)"
+        },
+        "unsub_rate": {
+          "label": "Unsub Rate",
+          "kind": "rate",
+          "value": 0.061,
+          "cell": "X10",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.061)"
+        }
+      }
+    },
+    {
+      "row": 11,
+      "client": "CAB",
+      "month": "August 2026",
+      "month_cell": "D11",
+      "day_of_week": "Sat",
+      "date_serial": 46242,
+      "date_cell": "F11",
+      "date": "2026-08-08",
+      "objective": "Donations",
+      "objective_cell": "G11",
+      "topic": "Blanche RR",
+      "topic_cell": "H11",
+      "audience": "CTD Donors",
+      "audience_cell": "I11",
+      "metrics": {
+        "recipients": {
+          "label": "Recipients",
+          "kind": "count",
+          "value": 45899,
+          "cell": "J11",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),45899.0)"
+        },
+        "gross_spend": {
+          "label": "Gross Spend",
+          "kind": "usd",
+          "value": 1835.96,
+          "cell": "K11",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1835.96)"
+        },
+        "immediate_raised": {
+          "label": "Immediate Raised",
+          "kind": "usd",
+          "value": 4346.44,
+          "cell": "L11",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),4346.44)"
+        },
+        "immediate_roas": {
+          "label": "Immediate ROAS",
+          "kind": "roas",
+          "value": 2.367393625,
+          "cell": "M11",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),2.367393625133445)"
+        },
+        "click_rate": {
+          "label": "Click Rate",
+          "kind": "rate",
+          "value": 0.039,
+          "cell": "N11",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.039)"
+        },
+        "donors": {
+          "label": "Donors",
+          "kind": "count",
+          "value": 182,
+          "cell": "O11",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),182.0)"
+        },
+        "average_gift": {
+          "label": "Average Gift",
+          "kind": "usd2",
+          "value": 23.88,
+          "cell": "P11",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),23.88)"
+        },
+        "donate_rate": {
+          "label": "Donate Rate",
+          "kind": "rate",
+          "value": 0.004,
+          "cell": "Q11",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.004)"
+        },
+        "ntl": {
+          "label": "NTL",
+          "kind": "count",
+          "value": 4,
+          "cell": "R11",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),4.0)"
+        },
+        "gross_cpa": {
+          "label": "Gross CPA",
+          "kind": "usd2",
+          "value": 458.99,
+          "cell": "S11",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),458.99)"
+        },
+        "ltv_from_ntl": {
+          "label": "LTV from NTL",
+          "kind": "usd",
+          "value": 50,
+          "cell": "T11",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),50.0)"
+        },
+        "ltv_roas_from_ntl": {
+          "label": "LTV ROAS from NTL",
+          "kind": "roas",
+          "value": 0.0272337088,
+          "cell": "U11",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.027233708795398593)"
+        },
+        "immediate_raised_from_ntl": {
+          "label": "Immediate Raised from NTL",
+          "kind": "usd",
+          "value": 50,
+          "cell": "V11",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),50.0)"
+        },
+        "unsubs": {
+          "label": "Unsubs",
+          "kind": "count",
+          "value": 560,
+          "cell": "W11",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),560.0)"
+        },
+        "unsub_rate": {
+          "label": "Unsub Rate",
+          "kind": "rate",
+          "value": 0.012,
+          "cell": "X11",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.012)"
+        }
+      }
+    },
+    {
+      "row": 12,
+      "client": "CAB",
+      "month": "August 2026",
+      "month_cell": "D12",
+      "day_of_week": "Sat",
+      "date_serial": 46242,
+      "date_cell": "F12",
+      "date": "2026-08-08",
+      "objective": "Donations",
+      "objective_cell": "G12",
+      "topic": "Blanche RR",
+      "topic_cell": "H12",
+      "audience": "YTD Donors",
+      "audience_cell": "I12",
+      "metrics": {
+        "recipients": {
+          "label": "Recipients",
+          "kind": "count",
+          "value": 9389,
+          "cell": "J12",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),9389.0)"
+        },
+        "gross_spend": {
+          "label": "Gross Spend",
+          "kind": "usd",
+          "value": 375.56,
+          "cell": "K12",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),375.56)"
+        },
+        "immediate_raised": {
+          "label": "Immediate Raised",
+          "kind": "usd",
+          "value": 1459,
+          "cell": "L12",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1459.0)"
+        },
+        "immediate_roas": {
+          "label": "Immediate ROAS",
+          "kind": "roas",
+          "value": 3.884865268,
+          "cell": "M12",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),3.8848652678666524)"
+        },
+        "click_rate": {
+          "label": "Click Rate",
+          "kind": "rate",
+          "value": 0.019,
+          "cell": "N12",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.019)"
+        },
+        "donors": {
+          "label": "Donors",
+          "kind": "count",
+          "value": 105,
+          "cell": "O12",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),105.0)"
+        },
+        "average_gift": {
+          "label": "Average Gift",
+          "kind": "usd2",
+          "value": 13.9,
+          "cell": "P12",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),13.9)"
+        },
+        "donate_rate": {
+          "label": "Donate Rate",
+          "kind": "rate",
+          "value": 0.0112,
+          "cell": "Q12",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0112)"
+        },
+        "ntl": {
+          "label": "NTL",
+          "kind": "count",
+          "value": 1,
+          "cell": "R12",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.0)"
+        },
+        "gross_cpa": {
+          "label": "Gross CPA",
+          "kind": "usd2",
+          "value": 375.56,
+          "cell": "S12",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),375.56)"
+        },
+        "ltv_from_ntl": {
+          "label": "LTV from NTL",
+          "kind": "usd",
+          "value": 100,
+          "cell": "T12",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),100.0)"
+        },
+        "ltv_roas_from_ntl": {
+          "label": "LTV ROAS from NTL",
+          "kind": "roas",
+          "value": 0.2662690382,
+          "cell": "U12",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.2662690382362339)"
+        },
+        "immediate_raised_from_ntl": {
+          "label": "Immediate Raised from NTL",
+          "kind": "usd",
+          "value": 100,
+          "cell": "V12",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),100.0)"
+        },
+        "unsubs": {
+          "label": "Unsubs",
+          "kind": "count",
+          "value": 77,
+          "cell": "W12",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),77.0)"
+        },
+        "unsub_rate": {
+          "label": "Unsub Rate",
+          "kind": "rate",
+          "value": 0.008,
+          "cell": "X12",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.008)"
+        }
+      }
+    },
+    {
+      "row": 13,
+      "client": "CAB",
+      "month": "August 2026",
+      "month_cell": "D13",
+      "day_of_week": "Sat",
+      "date_serial": 46249,
+      "date_cell": "F13",
+      "date": "2026-08-15",
+      "objective": "Donations",
+      "objective_cell": "G13",
+      "topic": "August Mid Month",
+      "topic_cell": "H13",
+      "audience": "CTD Donors",
+      "audience_cell": "I13",
+      "metrics": {
+        "recipients": {
+          "label": "Recipients",
+          "kind": "count",
+          "value": 9999,
+          "cell": "J13",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),9999.0)"
+        },
+        "gross_spend": {
+          "label": "Gross Spend",
+          "kind": "usd",
+          "value": 399.96,
+          "cell": "K13",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),399.96000000000004)"
+        },
+        "immediate_raised": {
+          "label": "Immediate Raised",
+          "kind": "usd",
+          "value": 125,
+          "cell": "L13",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),125.0)"
+        },
+        "immediate_roas": {
+          "label": "Immediate ROAS",
+          "kind": "roas",
+          "value": 0.3125312531,
+          "cell": "M13",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.3125312531253125)"
+        },
+        "click_rate": {
+          "label": "Click Rate",
+          "kind": "rate",
+          "value": 0.003,
+          "cell": "N13",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.003)"
+        },
+        "donors": {
+          "label": "Donors",
+          "kind": "count",
+          "value": 3,
+          "cell": "O13",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),3.0)"
+        },
+        "average_gift": {
+          "label": "Average Gift",
+          "kind": "usd2",
+          "value": 41.67,
+          "cell": "P13",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),41.67)"
+        },
+        "donate_rate": {
+          "label": "Donate Rate",
+          "kind": "rate",
+          "value": 0.0003,
+          "cell": "Q13",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),3.0E-4)"
+        },
+        "ntl": {
+          "label": "NTL",
+          "kind": "count",
+          "value": 0,
+          "cell": "R13",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"
+        },
+        "gross_cpa": {
+          "label": "Gross CPA",
+          "kind": "usd2",
+          "value": null,
+          "cell": "S13",
+          "formula": null
+        },
+        "ltv_from_ntl": {
+          "label": "LTV from NTL",
+          "kind": "usd",
+          "value": 0,
+          "cell": "T13",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"
+        },
+        "ltv_roas_from_ntl": {
+          "label": "LTV ROAS from NTL",
+          "kind": "roas",
+          "value": 0,
+          "cell": "U13",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"
+        },
+        "immediate_raised_from_ntl": {
+          "label": "Immediate Raised from NTL",
+          "kind": "usd",
+          "value": 0,
+          "cell": "V13",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"
+        },
+        "unsubs": {
+          "label": "Unsubs",
+          "kind": "count",
+          "value": 80,
+          "cell": "W13",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),80.0)"
+        },
+        "unsub_rate": {
+          "label": "Unsub Rate",
+          "kind": "rate",
+          "value": 0.008,
+          "cell": "X13",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.008)"
+        }
+      }
+    },
+    {
+      "row": 14,
+      "client": "CAB",
+      "month": "August 2026",
+      "month_cell": "D14",
+      "day_of_week": "Sat",
+      "date_serial": 46249,
+      "date_cell": "F14",
+      "date": "2026-08-15",
+      "objective": "Donations",
+      "objective_cell": "G14",
+      "topic": "August Mid Month",
+      "topic_cell": "H14",
+      "audience": "YTD Donors",
+      "audience_cell": "I14",
+      "metrics": {
+        "recipients": {
+          "label": "Recipients",
+          "kind": "count",
+          "value": 9159,
+          "cell": "J14",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),9159.0)"
+        },
+        "gross_spend": {
+          "label": "Gross Spend",
+          "kind": "usd",
+          "value": 366.36,
+          "cell": "K14",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),366.36)"
+        },
+        "immediate_raised": {
+          "label": "Immediate Raised",
+          "kind": "usd",
+          "value": 1439.77,
+          "cell": "L14",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1439.77)"
+        },
+        "immediate_roas": {
+          "label": "Immediate ROAS",
+          "kind": "roas",
+          "value": 3.929932307,
+          "cell": "M14",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),3.929932307020417)"
+        },
+        "click_rate": {
+          "label": "Click Rate",
+          "kind": "rate",
+          "value": 0.013,
+          "cell": "N14",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.013)"
+        },
+        "donors": {
+          "label": "Donors",
+          "kind": "count",
+          "value": 81,
+          "cell": "O14",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),81.0)"
+        },
+        "average_gift": {
+          "label": "Average Gift",
+          "kind": "usd2",
+          "value": 17.77,
+          "cell": "P14",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),17.77)"
+        },
+        "donate_rate": {
+          "label": "Donate Rate",
+          "kind": "rate",
+          "value": 0.0088,
+          "cell": "Q14",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0088)"
+        },
+        "ntl": {
+          "label": "NTL",
+          "kind": "count",
+          "value": 3,
+          "cell": "R14",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),3.0)"
+        },
+        "gross_cpa": {
+          "label": "Gross CPA",
+          "kind": "usd2",
+          "value": 122.12,
+          "cell": "S14",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),122.12)"
+        },
+        "ltv_from_ntl": {
+          "label": "LTV from NTL",
+          "kind": "usd",
+          "value": 160,
+          "cell": "T14",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),160.0)"
+        },
+        "ltv_roas_from_ntl": {
+          "label": "LTV ROAS from NTL",
+          "kind": "roas",
+          "value": 0.4367289005,
+          "cell": "U14",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.4367289005349929)"
+        },
+        "immediate_raised_from_ntl": {
+          "label": "Immediate Raised from NTL",
+          "kind": "usd",
+          "value": 160,
+          "cell": "V14",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),160.0)"
+        },
+        "unsubs": {
+          "label": "Unsubs",
+          "kind": "count",
+          "value": 148,
+          "cell": "W14",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),148.0)"
+        },
+        "unsub_rate": {
+          "label": "Unsub Rate",
+          "kind": "rate",
+          "value": 0.016,
+          "cell": "X14",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.016)"
+        }
+      }
+    },
+    {
+      "row": 15,
+      "client": "CAB",
+      "month": "August 2026",
+      "month_cell": "D15",
+      "day_of_week": "Mon",
+      "date_serial": 46258,
+      "date_cell": "F15",
+      "date": "2026-08-24",
+      "objective": "Donations",
+      "objective_cell": "G15",
+      "topic": "CAB Lobster",
+      "topic_cell": "H15",
+      "audience": "CTD Donors",
+      "audience_cell": "I15",
+      "metrics": {
+        "recipients": {
+          "label": "Recipients",
+          "kind": "count",
+          "value": 20000,
+          "cell": "J15",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),20000.0)"
+        },
+        "gross_spend": {
+          "label": "Gross Spend",
+          "kind": "usd",
+          "value": 800,
+          "cell": "K15",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),800.0)"
+        },
+        "immediate_raised": {
+          "label": "Immediate Raised",
+          "kind": "usd",
+          "value": 359,
+          "cell": "L15",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),359.0)"
+        },
+        "immediate_roas": {
+          "label": "Immediate ROAS",
+          "kind": "roas",
+          "value": 0.44875,
+          "cell": "M15",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.44875)"
+        },
+        "click_rate": {
+          "label": "Click Rate",
+          "kind": "rate",
+          "value": 0.004,
+          "cell": "N15",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.004)"
+        },
+        "donors": {
+          "label": "Donors",
+          "kind": "count",
+          "value": 12,
+          "cell": "O15",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),12.0)"
+        },
+        "average_gift": {
+          "label": "Average Gift",
+          "kind": "usd2",
+          "value": 29.92,
+          "cell": "P15",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),29.92)"
+        },
+        "donate_rate": {
+          "label": "Donate Rate",
+          "kind": "rate",
+          "value": 0.0006,
+          "cell": "Q15",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),6.0E-4)"
+        },
+        "ntl": {
+          "label": "NTL",
+          "kind": "count",
+          "value": 0,
+          "cell": "R15",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"
+        },
+        "gross_cpa": {
+          "label": "Gross CPA",
+          "kind": "usd2",
+          "value": null,
+          "cell": "S15",
+          "formula": null
+        },
+        "ltv_from_ntl": {
+          "label": "LTV from NTL",
+          "kind": "usd",
+          "value": 0,
+          "cell": "T15",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"
+        },
+        "ltv_roas_from_ntl": {
+          "label": "LTV ROAS from NTL",
+          "kind": "roas",
+          "value": 0,
+          "cell": "U15",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"
+        },
+        "immediate_raised_from_ntl": {
+          "label": "Immediate Raised from NTL",
+          "kind": "usd",
+          "value": 0,
+          "cell": "V15",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"
+        },
+        "unsubs": {
+          "label": "Unsubs",
+          "kind": "count",
+          "value": 57,
+          "cell": "W15",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),57.0)"
+        },
+        "unsub_rate": {
+          "label": "Unsub Rate",
+          "kind": "rate",
+          "value": 0.003,
+          "cell": "X15",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.003)"
+        }
+      }
+    },
+    {
+      "row": 16,
+      "client": "CAB",
+      "month": "August 2026",
+      "month_cell": "D16",
+      "day_of_week": "Mon",
+      "date_serial": 46258,
+      "date_cell": "F16",
+      "date": "2026-08-24",
+      "objective": "Donations",
+      "objective_cell": "G16",
+      "topic": "CAB Lobster",
+      "topic_cell": "H16",
+      "audience": "YTD Donors",
+      "audience_cell": "I16",
+      "metrics": {
+        "recipients": {
+          "label": "Recipients",
+          "kind": "count",
+          "value": 9010,
+          "cell": "J16",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),9010.0)"
+        },
+        "gross_spend": {
+          "label": "Gross Spend",
+          "kind": "usd",
+          "value": 360.4,
+          "cell": "K16",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),360.40000000000003)"
+        },
+        "immediate_raised": {
+          "label": "Immediate Raised",
+          "kind": "usd",
+          "value": 1366.77,
+          "cell": "L16",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1366.77)"
+        },
+        "immediate_roas": {
+          "label": "Immediate ROAS",
+          "kind": "roas",
+          "value": 3.792369589,
+          "cell": "M16",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),3.7923695893451717)"
+        },
+        "click_rate": {
+          "label": "Click Rate",
+          "kind": "rate",
+          "value": 0.007,
+          "cell": "N16",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.007)"
+        },
+        "donors": {
+          "label": "Donors",
+          "kind": "count",
+          "value": 61,
+          "cell": "O16",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),61.0)"
+        },
+        "average_gift": {
+          "label": "Average Gift",
+          "kind": "usd2",
+          "value": 22.41,
+          "cell": "P16",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),22.41)"
+        },
+        "donate_rate": {
+          "label": "Donate Rate",
+          "kind": "rate",
+          "value": 0.0068,
+          "cell": "Q16",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0068)"
+        },
+        "ntl": {
+          "label": "NTL",
+          "kind": "count",
+          "value": 0,
+          "cell": "R16",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"
+        },
+        "gross_cpa": {
+          "label": "Gross CPA",
+          "kind": "usd2",
+          "value": null,
+          "cell": "S16",
+          "formula": null
+        },
+        "ltv_from_ntl": {
+          "label": "LTV from NTL",
+          "kind": "usd",
+          "value": 0,
+          "cell": "T16",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"
+        },
+        "ltv_roas_from_ntl": {
+          "label": "LTV ROAS from NTL",
+          "kind": "roas",
+          "value": 0,
+          "cell": "U16",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"
+        },
+        "immediate_raised_from_ntl": {
+          "label": "Immediate Raised from NTL",
+          "kind": "usd",
+          "value": 0,
+          "cell": "V16",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"
+        },
+        "unsubs": {
+          "label": "Unsubs",
+          "kind": "count",
+          "value": 23,
+          "cell": "W16",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),23.0)"
+        },
+        "unsub_rate": {
+          "label": "Unsub Rate",
+          "kind": "rate",
+          "value": 0.003,
+          "cell": "X16",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.003)"
+        }
+      }
+    }
+  ],
+  "audiences": [
+    "Core(y)",
+    "CTD Donors",
+    "Form Signers",
+    "GA Text",
+    "YTD Donors"
+  ],
+  "topics": [
+    "August Mid Month",
+    "Blanche",
+    "Blanche RR",
+    "CAB Lobster",
+    "EOM"
+  ],
+  "objectives": [
+    "Donations"
+  ],
+  "accum_keys": [
+    "gross_spend",
+    "immediate_raised",
+    "donors"
+  ],
+  "cumulative": {
+    "overall": {
+      "gross_spend": [
+        {
+          "month": "july_2026",
+          "label": "July 2026",
+          "value": 2553.5329032,
+          "step": 2553.5329032,
+          "step_cells": [
+            "K6",
+            "K7",
+            "K8",
+            "K9",
+            "K10"
+          ],
+          "computed_running_total": true
+        },
+        {
+          "month": "august_2026",
+          "label": "August 2026",
+          "value": 6691.7729032,
+          "step": 4138.24,
+          "step_cells": [
+            "K11",
+            "K12",
+            "K13",
+            "K14",
+            "K15",
+            "K16"
+          ],
+          "computed_running_total": true
+        }
+      ],
+      "immediate_raised": [
+        {
+          "month": "july_2026",
+          "label": "July 2026",
+          "value": 5734.26,
+          "step": 5734.26,
+          "step_cells": [
+            "L6",
+            "L7",
+            "L8",
+            "L9",
+            "L10"
+          ],
+          "computed_running_total": true
+        },
+        {
+          "month": "august_2026",
+          "label": "August 2026",
+          "value": 14830.24,
+          "step": 9095.98,
+          "step_cells": [
+            "L11",
+            "L12",
+            "L13",
+            "L14",
+            "L15",
+            "L16"
+          ],
+          "computed_running_total": true
+        }
+      ],
+      "donors": [
+        {
+          "month": "july_2026",
+          "label": "July 2026",
+          "value": 275,
+          "step": 275,
+          "step_cells": [
+            "O6",
+            "O7",
+            "O8",
+            "O9",
+            "O10"
+          ],
+          "computed_running_total": true
+        },
+        {
+          "month": "august_2026",
+          "label": "August 2026",
+          "value": 719,
+          "step": 444,
+          "step_cells": [
+            "O11",
+            "O12",
+            "O13",
+            "O14",
+            "O15",
+            "O16"
+          ],
+          "computed_running_total": true
+        }
+      ]
+    },
+    "by_audience": {
+      "Core(y)": {
+        "gross_spend": [
+          {
+            "month": "july_2026",
+            "label": "July 2026",
+            "value": 1000,
+            "step": 1000,
+            "step_cells": [
+              "K6"
+            ],
+            "computed_running_total": true
+          },
+          {
+            "month": "august_2026",
+            "label": "August 2026",
+            "value": 1000,
+            "step": 0,
+            "step_cells": [],
+            "computed_running_total": true
+          }
+        ],
+        "immediate_raised": [
+          {
+            "month": "july_2026",
+            "label": "July 2026",
+            "value": 764,
+            "step": 764,
+            "step_cells": [
+              "L6"
+            ],
+            "computed_running_total": true
+          },
+          {
+            "month": "august_2026",
+            "label": "August 2026",
+            "value": 764,
+            "step": 0,
+            "step_cells": [],
+            "computed_running_total": true
+          }
+        ],
+        "donors": [
+          {
+            "month": "july_2026",
+            "label": "July 2026",
+            "value": 58,
+            "step": 58,
+            "step_cells": [
+              "O6"
+            ],
+            "computed_running_total": true
+          },
+          {
+            "month": "august_2026",
+            "label": "August 2026",
+            "value": 58,
+            "step": 0,
+            "step_cells": [],
+            "computed_running_total": true
+          }
+        ]
+      },
+      "CTD Donors": {
+        "gross_spend": [
+          {
+            "month": "july_2026",
+            "label": "July 2026",
+            "value": 799.96,
+            "step": 799.96,
+            "step_cells": [
+              "K9"
+            ],
+            "computed_running_total": true
+          },
+          {
+            "month": "august_2026",
+            "label": "August 2026",
+            "value": 3835.88,
+            "step": 3035.92,
+            "step_cells": [
+              "K11",
+              "K13",
+              "K15"
+            ],
+            "computed_running_total": true
+          }
+        ],
+        "immediate_raised": [
+          {
+            "month": "july_2026",
+            "label": "July 2026",
+            "value": 955,
+            "step": 955,
+            "step_cells": [
+              "L9"
+            ],
+            "computed_running_total": true
+          },
+          {
+            "month": "august_2026",
+            "label": "August 2026",
+            "value": 5785.44,
+            "step": 4830.44,
+            "step_cells": [
+              "L11",
+              "L13",
+              "L15"
+            ],
+            "computed_running_total": true
+          }
+        ],
+        "donors": [
+          {
+            "month": "july_2026",
+            "label": "July 2026",
+            "value": 34,
+            "step": 34,
+            "step_cells": [
+              "O9"
+            ],
+            "computed_running_total": true
+          },
+          {
+            "month": "august_2026",
+            "label": "August 2026",
+            "value": 231,
+            "step": 197,
+            "step_cells": [
+              "O11",
+              "O13",
+              "O15"
+            ],
+            "computed_running_total": true
+          }
+        ]
+      },
+      "Form Signers": {
+        "gross_spend": [
+          {
+            "month": "july_2026",
+            "label": "July 2026",
+            "value": 200,
+            "step": 200,
+            "step_cells": [
+              "K7"
+            ],
+            "computed_running_total": true
+          },
+          {
+            "month": "august_2026",
+            "label": "August 2026",
+            "value": 200,
+            "step": 0,
+            "step_cells": [],
+            "computed_running_total": true
+          }
+        ],
+        "immediate_raised": [
+          {
+            "month": "july_2026",
+            "label": "July 2026",
+            "value": 150.26,
+            "step": 150.26,
+            "step_cells": [
+              "L7"
+            ],
+            "computed_running_total": true
+          },
+          {
+            "month": "august_2026",
+            "label": "August 2026",
+            "value": 150.26,
+            "step": 0,
+            "step_cells": [],
+            "computed_running_total": true
+          }
+        ],
+        "donors": [
+          {
+            "month": "july_2026",
+            "label": "July 2026",
+            "value": 6,
+            "step": 6,
+            "step_cells": [
+              "O7"
+            ],
+            "computed_running_total": true
+          },
+          {
+            "month": "august_2026",
+            "label": "August 2026",
+            "value": 6,
+            "step": 0,
+            "step_cells": [],
+            "computed_running_total": true
+          }
+        ]
+      },
+      "GA Text": {
+        "gross_spend": [
+          {
+            "month": "july_2026",
+            "label": "July 2026",
+            "value": 153.4129032,
+            "step": 153.4129032,
+            "step_cells": [
+              "K8"
+            ],
+            "computed_running_total": true
+          },
+          {
+            "month": "august_2026",
+            "label": "August 2026",
+            "value": 153.4129032,
+            "step": 0,
+            "step_cells": [],
+            "computed_running_total": true
+          }
+        ],
+        "immediate_raised": [
+          {
+            "month": "july_2026",
+            "label": "July 2026",
+            "value": 75,
+            "step": 75,
+            "step_cells": [
+              "L8"
+            ],
+            "computed_running_total": true
+          },
+          {
+            "month": "august_2026",
+            "label": "August 2026",
+            "value": 75,
+            "step": 0,
+            "step_cells": [],
+            "computed_running_total": true
+          }
+        ],
+        "donors": [
+          {
+            "month": "july_2026",
+            "label": "July 2026",
+            "value": 9,
+            "step": 9,
+            "step_cells": [
+              "O8"
+            ],
+            "computed_running_total": true
+          },
+          {
+            "month": "august_2026",
+            "label": "August 2026",
+            "value": 9,
+            "step": 0,
+            "step_cells": [],
+            "computed_running_total": true
+          }
+        ]
+      },
+      "YTD Donors": {
+        "gross_spend": [
+          {
+            "month": "july_2026",
+            "label": "July 2026",
+            "value": 400.16,
+            "step": 400.16,
+            "step_cells": [
+              "K10"
+            ],
+            "computed_running_total": true
+          },
+          {
+            "month": "august_2026",
+            "label": "August 2026",
+            "value": 1502.4800000000002,
+            "step": 1102.3200000000002,
+            "step_cells": [
+              "K12",
+              "K14",
+              "K16"
+            ],
+            "computed_running_total": true
+          }
+        ],
+        "immediate_raised": [
+          {
+            "month": "july_2026",
+            "label": "July 2026",
+            "value": 3790,
+            "step": 3790,
+            "step_cells": [
+              "L10"
+            ],
+            "computed_running_total": true
+          },
+          {
+            "month": "august_2026",
+            "label": "August 2026",
+            "value": 8055.54,
+            "step": 4265.54,
+            "step_cells": [
+              "L12",
+              "L14",
+              "L16"
+            ],
+            "computed_running_total": true
+          }
+        ],
+        "donors": [
+          {
+            "month": "july_2026",
+            "label": "July 2026",
+            "value": 168,
+            "step": 168,
+            "step_cells": [
+              "O10"
+            ],
+            "computed_running_total": true
+          },
+          {
+            "month": "august_2026",
+            "label": "August 2026",
+            "value": 415,
+            "step": 247,
+            "step_cells": [
+              "O12",
+              "O14",
+              "O16"
+            ],
+            "computed_running_total": true
+          }
+        ]
+      }
+    },
+    "by_topic": {
+      "August Mid Month": {
+        "gross_spend": [
+          {
+            "month": "july_2026",
+            "label": "July 2026",
+            "value": 0,
+            "step": 0,
+            "step_cells": [],
+            "computed_running_total": true
+          },
+          {
+            "month": "august_2026",
+            "label": "August 2026",
+            "value": 766.3199999999999,
+            "step": 766.3199999999999,
+            "step_cells": [
+              "K13",
+              "K14"
+            ],
+            "computed_running_total": true
+          }
+        ],
+        "immediate_raised": [
+          {
+            "month": "july_2026",
+            "label": "July 2026",
+            "value": 0,
+            "step": 0,
+            "step_cells": [],
+            "computed_running_total": true
+          },
+          {
+            "month": "august_2026",
+            "label": "August 2026",
+            "value": 1564.77,
+            "step": 1564.77,
+            "step_cells": [
+              "L13",
+              "L14"
+            ],
+            "computed_running_total": true
+          }
+        ],
+        "donors": [
+          {
+            "month": "july_2026",
+            "label": "July 2026",
+            "value": 0,
+            "step": 0,
+            "step_cells": [],
+            "computed_running_total": true
+          },
+          {
+            "month": "august_2026",
+            "label": "August 2026",
+            "value": 84,
+            "step": 84,
+            "step_cells": [
+              "O13",
+              "O14"
+            ],
+            "computed_running_total": true
+          }
+        ]
+      },
+      "Blanche": {
+        "gross_spend": [
+          {
+            "month": "july_2026",
+            "label": "July 2026",
+            "value": 1353.4129032,
+            "step": 1353.4129032,
+            "step_cells": [
+              "K6",
+              "K7",
+              "K8"
+            ],
+            "computed_running_total": true
+          },
+          {
+            "month": "august_2026",
+            "label": "August 2026",
+            "value": 1353.4129032,
+            "step": 0,
+            "step_cells": [],
+            "computed_running_total": true
+          }
+        ],
+        "immediate_raised": [
+          {
+            "month": "july_2026",
+            "label": "July 2026",
+            "value": 989.26,
+            "step": 989.26,
+            "step_cells": [
+              "L6",
+              "L7",
+              "L8"
+            ],
+            "computed_running_total": true
+          },
+          {
+            "month": "august_2026",
+            "label": "August 2026",
+            "value": 989.26,
+            "step": 0,
+            "step_cells": [],
+            "computed_running_total": true
+          }
+        ],
+        "donors": [
+          {
+            "month": "july_2026",
+            "label": "July 2026",
+            "value": 73,
+            "step": 73,
+            "step_cells": [
+              "O6",
+              "O7",
+              "O8"
+            ],
+            "computed_running_total": true
+          },
+          {
+            "month": "august_2026",
+            "label": "August 2026",
+            "value": 73,
+            "step": 0,
+            "step_cells": [],
+            "computed_running_total": true
+          }
+        ]
+      },
+      "Blanche RR": {
+        "gross_spend": [
+          {
+            "month": "july_2026",
+            "label": "July 2026",
+            "value": 0,
+            "step": 0,
+            "step_cells": [],
+            "computed_running_total": true
+          },
+          {
+            "month": "august_2026",
+            "label": "August 2026",
+            "value": 2211.52,
+            "step": 2211.52,
+            "step_cells": [
+              "K11",
+              "K12"
+            ],
+            "computed_running_total": true
+          }
+        ],
+        "immediate_raised": [
+          {
+            "month": "july_2026",
+            "label": "July 2026",
+            "value": 0,
+            "step": 0,
+            "step_cells": [],
+            "computed_running_total": true
+          },
+          {
+            "month": "august_2026",
+            "label": "August 2026",
+            "value": 5805.44,
+            "step": 5805.44,
+            "step_cells": [
+              "L11",
+              "L12"
+            ],
+            "computed_running_total": true
+          }
+        ],
+        "donors": [
+          {
+            "month": "july_2026",
+            "label": "July 2026",
+            "value": 0,
+            "step": 0,
+            "step_cells": [],
+            "computed_running_total": true
+          },
+          {
+            "month": "august_2026",
+            "label": "August 2026",
+            "value": 287,
+            "step": 287,
+            "step_cells": [
+              "O11",
+              "O12"
+            ],
+            "computed_running_total": true
+          }
+        ]
+      },
+      "CAB Lobster": {
+        "gross_spend": [
+          {
+            "month": "july_2026",
+            "label": "July 2026",
+            "value": 0,
+            "step": 0,
+            "step_cells": [],
+            "computed_running_total": true
+          },
+          {
+            "month": "august_2026",
+            "label": "August 2026",
+            "value": 1160.4,
+            "step": 1160.4,
+            "step_cells": [
+              "K15",
+              "K16"
+            ],
+            "computed_running_total": true
+          }
+        ],
+        "immediate_raised": [
+          {
+            "month": "july_2026",
+            "label": "July 2026",
+            "value": 0,
+            "step": 0,
+            "step_cells": [],
+            "computed_running_total": true
+          },
+          {
+            "month": "august_2026",
+            "label": "August 2026",
+            "value": 1725.77,
+            "step": 1725.77,
+            "step_cells": [
+              "L15",
+              "L16"
+            ],
+            "computed_running_total": true
+          }
+        ],
+        "donors": [
+          {
+            "month": "july_2026",
+            "label": "July 2026",
+            "value": 0,
+            "step": 0,
+            "step_cells": [],
+            "computed_running_total": true
+          },
+          {
+            "month": "august_2026",
+            "label": "August 2026",
+            "value": 73,
+            "step": 73,
+            "step_cells": [
+              "O15",
+              "O16"
+            ],
+            "computed_running_total": true
+          }
+        ]
+      },
+      "EOM": {
+        "gross_spend": [
+          {
+            "month": "july_2026",
+            "label": "July 2026",
+            "value": 1200.1200000000001,
+            "step": 1200.1200000000001,
+            "step_cells": [
+              "K9",
+              "K10"
+            ],
+            "computed_running_total": true
+          },
+          {
+            "month": "august_2026",
+            "label": "August 2026",
+            "value": 1200.1200000000001,
+            "step": 0,
+            "step_cells": [],
+            "computed_running_total": true
+          }
+        ],
+        "immediate_raised": [
+          {
+            "month": "july_2026",
+            "label": "July 2026",
+            "value": 4745,
+            "step": 4745,
+            "step_cells": [
+              "L9",
+              "L10"
+            ],
+            "computed_running_total": true
+          },
+          {
+            "month": "august_2026",
+            "label": "August 2026",
+            "value": 4745,
+            "step": 0,
+            "step_cells": [],
+            "computed_running_total": true
+          }
+        ],
+        "donors": [
+          {
+            "month": "july_2026",
+            "label": "July 2026",
+            "value": 202,
+            "step": 202,
+            "step_cells": [
+              "O9",
+              "O10"
+            ],
+            "computed_running_total": true
+          },
+          {
+            "month": "august_2026",
+            "label": "August 2026",
+            "value": 202,
+            "step": 0,
+            "step_cells": [],
+            "computed_running_total": true
+          }
+        ]
+      }
+    }
+  }
+}
