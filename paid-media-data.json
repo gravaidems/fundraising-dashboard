@@ -3,13 +3,13 @@
     "title": "Paid Media Report",
     "sheet": "Paid Media Report",
     "source_workbook": "EXTERNAL_ CAB Digital Report.xlsx",
-    "extracted_at": "2026-08-25T14:25:46",
+    "extracted_at": "2026-08-25T22:08:56",
     "year": {
-      "value": 2026.0,
+      "value": 2026,
       "cell": "C4"
     },
     "quarter": {
-      "value": 1.0,
+      "value": 1,
       "cell": "C5"
     },
     "client": {
@@ -77,6 +77,7 @@
     "ntl",
     "total_raised"
   ],
+  "objective_header": "Goal",
   "definitions": [
     {
       "term": "NTL",
@@ -118,8 +119,9 @@
   "quarters": [
     {
       "quarter": 1,
+      "quarter_cell": "E12",
       "label": "Q1",
-      "label_cell": "E12",
+      "label_derived": true,
       "row": 12,
       "metrics": {
         "gross_spend": {
@@ -132,7 +134,7 @@
         "ntl": {
           "label": "NTL",
           "kind": "count",
-          "value": 154883.0,
+          "value": 154883,
           "cell": "G12",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),154883.0)"
         },
@@ -189,8 +191,9 @@
     },
     {
       "quarter": 2,
+      "quarter_cell": "E13",
       "label": "Q2",
-      "label_cell": "E13",
+      "label_derived": true,
       "row": 13,
       "metrics": {
         "gross_spend": {
@@ -203,7 +206,7 @@
         "ntl": {
           "label": "NTL",
           "kind": "count",
-          "value": 1800.0,
+          "value": 1800,
           "cell": "G13",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1800.0)"
         },
@@ -260,8 +263,9 @@
     },
     {
       "quarter": 3,
+      "quarter_cell": "E14",
       "label": "Q3",
-      "label_cell": "E14",
+      "label_derived": true,
       "row": 14,
       "metrics": {
         "gross_spend": {
@@ -274,7 +278,7 @@
         "ntl": {
           "label": "NTL",
           "kind": "count",
-          "value": 36616.0,
+          "value": 36616,
           "cell": "G14",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),36616.0)"
         },
@@ -346,7 +350,7 @@
         "ntl": {
           "label": "NTL",
           "kind": "count",
-          "value": 24.0,
+          "value": 24,
           "cell": "G18",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),24.0)"
         },
@@ -416,7 +420,7 @@
         "ntl": {
           "label": "NTL",
           "kind": "count",
-          "value": 154291.0,
+          "value": 154291,
           "cell": "G19",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),154291.0)"
         },
@@ -486,7 +490,7 @@
         "ntl": {
           "label": "NTL",
           "kind": "count",
-          "value": 568.0,
+          "value": 568,
           "cell": "G20",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),568.0)"
         },
@@ -564,7 +568,7 @@
         "ntl": {
           "label": "NTL",
           "kind": "count",
-          "value": 16.0,
+          "value": 16,
           "cell": "G23",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),16.0)"
         },
@@ -633,42 +637,42 @@
         "gross_spend": {
           "label": "Gross Spend",
           "kind": "usd",
-          "value": 246.0,
+          "value": 246,
           "cell": "F24",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),246.0)"
         },
         "ntl": {
           "label": "NTL",
           "kind": "count",
-          "value": 3.0,
+          "value": 3,
           "cell": "G24",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),3.0)"
         },
         "gross_cpa": {
           "label": "Gross CPA",
           "kind": "usd2",
-          "value": 82.0,
+          "value": 82,
           "cell": "H24",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),82.0)"
         },
         "immediate_raised": {
           "label": "Immediate Raised",
           "kind": "usd",
-          "value": 246.0,
+          "value": 246,
           "cell": "I24",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),246.0)"
         },
         "immediate_roas": {
           "label": "Immediate ROAS",
           "kind": "roas",
-          "value": 1.0,
+          "value": 1,
           "cell": "J24",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.0)"
         },
         "lifetime_raised": {
           "label": "Lifetime Raised",
           "kind": "usd",
-          "value": 32.0,
+          "value": 32,
           "cell": "K24",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),32.0)"
         },
@@ -682,14 +686,14 @@
         "total_raised": {
           "label": "Total Raised",
           "kind": "usd",
-          "value": 246.0,
+          "value": 246,
           "cell": "M24",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),246.0)"
         },
         "total_roas": {
           "label": "Total ROAS",
           "kind": "roas",
-          "value": 1.0,
+          "value": 1,
           "cell": "N24",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.0)"
         }
@@ -716,7 +720,7 @@
         "ntl": {
           "label": "NTL",
           "kind": "count",
-          "value": 1.0,
+          "value": 1,
           "cell": "G25",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.0)"
         },
@@ -730,7 +734,7 @@
         "immediate_raised": {
           "label": "Immediate Raised",
           "kind": "usd",
-          "value": 1865.0,
+          "value": 1865,
           "cell": "I25",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1865.0)"
         },
@@ -744,7 +748,7 @@
         "lifetime_raised": {
           "label": "Lifetime Raised",
           "kind": "usd",
-          "value": 35.0,
+          "value": 35,
           "cell": "K25",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),35.0)"
         },
@@ -758,7 +762,7 @@
         "total_raised": {
           "label": "Total Raised",
           "kind": "usd",
-          "value": 1890.0,
+          "value": 1890,
           "cell": "M25",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1890.0)"
         },
@@ -792,7 +796,7 @@
         "ntl": {
           "label": "NTL",
           "kind": "count",
-          "value": 4.0,
+          "value": 4,
           "cell": "G26",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),4.0)"
         },
@@ -806,7 +810,7 @@
         "immediate_raised": {
           "label": "Immediate Raised",
           "kind": "usd",
-          "value": 230.0,
+          "value": 230,
           "cell": "I26",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),230.0)"
         },
@@ -820,7 +824,7 @@
         "lifetime_raised": {
           "label": "Lifetime Raised",
           "kind": "usd",
-          "value": 120.0,
+          "value": 120,
           "cell": "K26",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),120.0)"
         },
@@ -834,7 +838,7 @@
         "total_raised": {
           "label": "Total Raised",
           "kind": "usd",
-          "value": 240.0,
+          "value": 240,
           "cell": "M26",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),240.0)"
         },
@@ -868,7 +872,7 @@
         "ntl": {
           "label": "NTL",
           "kind": "count",
-          "value": 5.0,
+          "value": 5,
           "cell": "G27",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),5.0)"
         },
@@ -882,7 +886,7 @@
         "immediate_raised": {
           "label": "Immediate Raised",
           "kind": "usd",
-          "value": 345.0,
+          "value": 345,
           "cell": "I27",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),345.0)"
         },
@@ -896,7 +900,7 @@
         "lifetime_raised": {
           "label": "Lifetime Raised",
           "kind": "usd",
-          "value": 185.0,
+          "value": 185,
           "cell": "K27",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),185.0)"
         },
@@ -910,7 +914,7 @@
         "total_raised": {
           "label": "Total Raised",
           "kind": "usd",
-          "value": 385.0,
+          "value": 385,
           "cell": "M27",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),385.0)"
         },
@@ -944,7 +948,7 @@
         "ntl": {
           "label": "NTL",
           "kind": "count",
-          "value": 40518.0,
+          "value": 40518,
           "cell": "G28",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),40518.0)"
         },
@@ -958,14 +962,14 @@
         "immediate_raised": {
           "label": "Immediate Raised",
           "kind": "usd",
-          "value": 0.0,
+          "value": 0,
           "cell": "I28",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"
         },
         "immediate_roas": {
           "label": "Immediate ROAS",
           "kind": "roas",
-          "value": 0.0,
+          "value": 0,
           "cell": "J28",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"
         },
@@ -1020,7 +1024,7 @@
         "ntl": {
           "label": "NTL",
           "kind": "count",
-          "value": 112931.0,
+          "value": 112931,
           "cell": "G29",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),112931.0)"
         },
@@ -1034,14 +1038,14 @@
         "immediate_raised": {
           "label": "Immediate Raised",
           "kind": "usd",
-          "value": 0.0,
+          "value": 0,
           "cell": "I29",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"
         },
         "immediate_roas": {
           "label": "Immediate ROAS",
           "kind": "roas",
-          "value": 0.0,
+          "value": 0,
           "cell": "J29",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"
         },
@@ -1096,7 +1100,7 @@
         "ntl": {
           "label": "NTL",
           "kind": "count",
-          "value": 198.0,
+          "value": 198,
           "cell": "G30",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),198.0)"
         },
@@ -1124,7 +1128,7 @@
         "lifetime_raised": {
           "label": "Lifetime Raised",
           "kind": "usd",
-          "value": 4758.0,
+          "value": 4758,
           "cell": "K30",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),4758.0)"
         },
@@ -1165,14 +1169,14 @@
         "gross_spend": {
           "label": "Gross Spend",
           "kind": "usd",
-          "value": 5650.0,
+          "value": 5650,
           "cell": "F31",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),5650.0)"
         },
         "ntl": {
           "label": "NTL",
           "kind": "count",
-          "value": 93.0,
+          "value": 93,
           "cell": "G31",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),93.0)"
         },
@@ -1186,7 +1190,7 @@
         "immediate_raised": {
           "label": "Immediate Raised",
           "kind": "usd",
-          "value": 7261.0,
+          "value": 7261,
           "cell": "I31",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),7261.0)"
         },
@@ -1200,7 +1204,7 @@
         "lifetime_raised": {
           "label": "Lifetime Raised",
           "kind": "usd",
-          "value": 2462.0,
+          "value": 2462,
           "cell": "K31",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),2462.0)"
         },
@@ -1214,7 +1218,7 @@
         "total_raised": {
           "label": "Total Raised",
           "kind": "usd",
-          "value": 7967.0,
+          "value": 7967,
           "cell": "M31",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),7967.0)"
         },
@@ -1248,7 +1252,7 @@
         "ntl": {
           "label": "NTL",
           "kind": "count",
-          "value": 0.0,
+          "value": 0,
           "cell": "G32",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"
         },
@@ -1276,14 +1280,14 @@
         "lifetime_raised": {
           "label": "Lifetime Raised",
           "kind": "usd",
-          "value": 0.0,
+          "value": 0,
           "cell": "K32",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"
         },
         "lifetime_roas": {
           "label": "Lifetime ROAS",
           "kind": "roas",
-          "value": 0.0,
+          "value": 0,
           "cell": "L32",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"
         },
@@ -1324,7 +1328,7 @@
         "ntl": {
           "label": "NTL",
           "kind": "count",
-          "value": 107.0,
+          "value": 107,
           "cell": "G33",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),107.0)"
         },
@@ -1352,7 +1356,7 @@
         "lifetime_raised": {
           "label": "Lifetime Raised",
           "kind": "usd",
-          "value": 2699.0,
+          "value": 2699,
           "cell": "K33",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),2699.0)"
         },
@@ -1400,7 +1404,7 @@
         "ntl": {
           "label": "NTL",
           "kind": "count",
-          "value": 439.0,
+          "value": 439,
           "cell": "G34",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),439.0)"
         },
@@ -1476,7 +1480,7 @@
         "ntl": {
           "label": "NTL",
           "kind": "count",
-          "value": 39.0,
+          "value": 39,
           "cell": "G35",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),39.0)"
         },
@@ -1490,7 +1494,7 @@
         "immediate_raised": {
           "label": "Immediate Raised",
           "kind": "usd",
-          "value": 5643.0,
+          "value": 5643,
           "cell": "I35",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),5643.0)"
         },
@@ -1504,7 +1508,7 @@
         "lifetime_raised": {
           "label": "Lifetime Raised",
           "kind": "usd",
-          "value": 3213.0,
+          "value": 3213,
           "cell": "K35",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),3213.0)"
         },
@@ -1518,7 +1522,7 @@
         "total_raised": {
           "label": "Total Raised",
           "kind": "usd",
-          "value": 7418.0,
+          "value": 7418,
           "cell": "M35",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),7418.0)"
         },
@@ -1552,7 +1556,7 @@
         "ntl": {
           "label": "NTL",
           "kind": "count",
-          "value": 127.0,
+          "value": 127,
           "cell": "G36",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),127.0)"
         },
@@ -1580,7 +1584,7 @@
         "lifetime_raised": {
           "label": "Lifetime Raised",
           "kind": "usd",
-          "value": 5281.0,
+          "value": 5281,
           "cell": "K36",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),5281.0)"
         },
@@ -1621,14 +1625,14 @@
         "gross_spend": {
           "label": "Gross Spend",
           "kind": "usd",
-          "value": 639.0,
+          "value": 639,
           "cell": "F37",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),639.0)"
         },
         "ntl": {
           "label": "NTL",
           "kind": "count",
-          "value": 11.0,
+          "value": 11,
           "cell": "G37",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),11.0)"
         },
@@ -1642,7 +1646,7 @@
         "immediate_raised": {
           "label": "Immediate Raised",
           "kind": "usd",
-          "value": 694.0,
+          "value": 694,
           "cell": "I37",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),694.0)"
         },
@@ -1704,7 +1708,7 @@
         "ntl": {
           "label": "NTL",
           "kind": "count",
-          "value": 26.0,
+          "value": 26,
           "cell": "G38",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),26.0)"
         },
@@ -1732,7 +1736,7 @@
         "lifetime_raised": {
           "label": "Lifetime Raised",
           "kind": "usd",
-          "value": 418.0,
+          "value": 418,
           "cell": "K38",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),418.0)"
         },
@@ -1780,7 +1784,7 @@
         "ntl": {
           "label": "NTL",
           "kind": "count",
-          "value": 115.0,
+          "value": 115,
           "cell": "G39",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),115.0)"
         },
@@ -1808,7 +1812,7 @@
         "lifetime_raised": {
           "label": "Lifetime Raised",
           "kind": "usd",
-          "value": 2869.0,
+          "value": 2869,
           "cell": "K39",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),2869.0)"
         },
@@ -1856,7 +1860,7 @@
         "ntl": {
           "label": "NTL",
           "kind": "count",
-          "value": 250.0,
+          "value": 250,
           "cell": "G40",
           "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),250.0)"
         },
@@ -1933,7 +1937,7 @@
       "ntl": {
         "label": "NTL",
         "kind": "count",
-        "value": 193299.0,
+        "value": 193299,
         "cells": [
           "G12",
           "G13",
@@ -2046,60 +2050,69 @@
         {
           "label": "Q1",
           "value": 195366.372,
+          "computed_running_total": true,
           "step": 195366.372,
-          "cell": "F12"
+          "step_cell": "F12"
         },
         {
           "label": "Q2",
           "value": 371871.2702,
+          "computed_running_total": true,
           "step": 176504.8982,
-          "cell": "F13"
+          "step_cell": "F13"
         },
         {
           "label": "Q3",
           "value": 454114.06368,
+          "computed_running_total": true,
           "step": 82242.79348,
-          "cell": "F14"
+          "step_cell": "F14"
         }
       ],
       "ntl": [
         {
           "label": "Q1",
-          "value": 154883.0,
-          "step": 154883.0,
-          "cell": "G12"
+          "value": 154883,
+          "computed_running_total": true,
+          "step": 154883,
+          "step_cell": "G12"
         },
         {
           "label": "Q2",
-          "value": 156683.0,
-          "step": 1800.0,
-          "cell": "G13"
+          "value": 156683,
+          "computed_running_total": true,
+          "step": 1800,
+          "step_cell": "G13"
         },
         {
           "label": "Q3",
-          "value": 193299.0,
-          "step": 36616.0,
-          "cell": "G14"
+          "value": 193299,
+          "computed_running_total": true,
+          "step": 36616,
+          "step_cell": "G14"
         }
       ],
       "total_raised": [
         {
           "label": "Q1",
           "value": 209182.32,
+          "computed_running_total": true,
           "step": 209182.32,
-          "cell": "M12"
+          "step_cell": "M12"
         },
         {
           "label": "Q2",
           "value": 454659.91000000003,
+          "computed_running_total": true,
           "step": 245477.59,
-          "cell": "M13"
+          "step_cell": "M13"
         },
         {
           "label": "Q3",
           "value": 574385.18,
+          "computed_running_total": true,
           "step": 119725.27,
-          "cell": "M14"
+          "step_cell": "M14"
         }
       ]
     },
@@ -2108,60 +2121,69 @@
         {
           "label": "January",
           "value": 3067.614839,
+          "computed_running_total": true,
           "step": 3067.614839,
-          "cell": "F18"
+          "step_cell": "F18"
         },
         {
           "label": "February",
           "value": 121460.924339,
+          "computed_running_total": true,
           "step": 118393.3095,
-          "cell": "F19"
+          "step_cell": "F19"
         },
         {
           "label": "March",
           "value": 195366.37202900002,
+          "computed_running_total": true,
           "step": 73905.44769,
-          "cell": "F20"
+          "step_cell": "F20"
         }
       ],
       "ntl": [
         {
           "label": "January",
-          "value": 24.0,
-          "step": 24.0,
-          "cell": "G18"
+          "value": 24,
+          "computed_running_total": true,
+          "step": 24,
+          "step_cell": "G18"
         },
         {
           "label": "February",
-          "value": 154315.0,
-          "step": 154291.0,
-          "cell": "G19"
+          "value": 154315,
+          "computed_running_total": true,
+          "step": 154291,
+          "step_cell": "G19"
         },
         {
           "label": "March",
-          "value": 154883.0,
-          "step": 568.0,
-          "cell": "G20"
+          "value": 154883,
+          "computed_running_total": true,
+          "step": 568,
+          "step_cell": "G20"
         }
       ],
       "total_raised": [
         {
           "label": "January",
           "value": 4123.38,
+          "computed_running_total": true,
           "step": 4123.38,
-          "cell": "M18"
+          "step_cell": "M18"
         },
         {
           "label": "February",
           "value": 101065.48000000001,
+          "computed_running_total": true,
           "step": 96942.1,
-          "cell": "M19"
+          "step_cell": "M19"
         },
         {
           "label": "March",
           "value": 209182.32,
+          "computed_running_total": true,
           "step": 108116.84,
-          "cell": "M20"
+          "step_cell": "M20"
         }
       ]
     }

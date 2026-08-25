@@ -42,6 +42,69 @@ header.page{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-end;justify-co
 .metagrid dt{color:var(--faint);font-size:11px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px}
 .metagrid dd{margin:0;font-weight:600}
 
+/* ---------- empty state (shown until a workbook is loaded) ---------- */
+.estate{display:flex;justify-content:center;padding:34px 0 10px}
+.estate[hidden]{display:none}
+.esbox{max-width:560px;text-align:center;background:var(--surface);border:1px solid var(--border);
+  border-radius:14px;box-shadow:var(--shadow);padding:38px 34px 30px}
+.esicon{width:52px;height:52px;color:var(--actual);margin:0 auto 14px;display:block}
+.esbox h2{font-size:20px;margin:0 0 8px;letter-spacing:-.015em}
+.esbox p{color:var(--muted);font-size:13.5px;line-height:1.6;margin:0 0 18px}
+.esbox code{font-family:var(--mono);font-size:12px;background:var(--surface-2);
+  border:1px solid var(--border);border-radius:4px;padding:1px 5px}
+.esnote{font-size:12px !important;color:var(--faint) !important;margin:18px 0 0 !important;
+  padding-top:15px;border-top:1px solid var(--border);text-align:left}
+.btn.big{font-size:14px;padding:9px 20px;border-radius:9px}
+#esWarn:not(:empty){margin-top:14px;color:var(--warn);font-size:12.5px;line-height:1.5}
+
+/* ---------- source bar, drop veil, validation report ---------- */
+.srcbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:9px 13px;margin:0 0 14px;box-shadow:var(--shadow)}
+.srcnow{font-size:12.5px;color:var(--muted);min-width:0}
+.srcnow b{color:var(--text)}
+.srcnow code{font-family:var(--mono);font-size:11.5px;background:var(--surface-2);
+  border:1px solid var(--border);border-radius:4px;padding:.5px 4px}
+.srcnow .live{display:inline-block;background:var(--actual);color:#fff;border-radius:99px;
+  padding:1px 8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-right:7px}
+.srcact{display:flex;gap:7px;flex-shrink:0}
+.btn{appearance:none;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;
+  background:var(--actual);color:#fff;border:1px solid var(--actual);border-radius:7px;padding:5.5px 13px}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:var(--surface-2);color:var(--muted);border-color:var(--border)}
+.btn.ghost:hover{color:var(--text);border-color:var(--muted);filter:none}
+.btn[disabled]{opacity:.55;cursor:progress}
+
+.veil{position:fixed;inset:0;z-index:90;display:none;align-items:center;justify-content:center;
+  background:rgba(12,16,24,.55);backdrop-filter:blur(2px)}
+.veil.on{display:flex}
+.veilbox{background:var(--surface);border:2px dashed var(--actual);border-radius:14px;
+  padding:26px 38px;font-size:15px;font-weight:650;color:var(--text);box-shadow:0 10px 40px rgba(0,0,0,.3)}
+
+.report{border:1px solid var(--border);border-left:3px solid var(--muted);border-radius:9px;
+  background:var(--surface);padding:12px 15px;margin:0 0 18px;font-size:12.5px;box-shadow:var(--shadow)}
+.report.ok{border-left-color:var(--good)}
+.report.warn{border-left-color:var(--warn)}
+.report.bad{border-left-color:var(--bad)}
+.report h3{font-size:13px;margin:0 0 7px;display:flex;align-items:center;gap:8px}
+.report h3 .tag{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;
+  border-radius:99px;padding:1.5px 8px;background:var(--surface-2);color:var(--muted)}
+.report.ok h3 .tag{background:var(--good);color:#fff}
+.report.warn h3 .tag{background:var(--warn);color:#fff}
+.report.bad h3 .tag{background:var(--bad);color:#fff}
+.report ul{margin:6px 0 0;padding-left:18px;color:var(--muted);line-height:1.55}
+.report li{margin:2px 0}
+.report li.err{color:var(--bad)}
+.report li.wrn{color:var(--warn)}
+.report code{font-family:var(--mono);font-size:11.5px}
+.report .foot{margin-top:9px;padding-top:8px;border-top:1px solid var(--border);color:var(--faint);font-size:11.5px}
+.report details{margin-top:7px}
+.report summary{cursor:pointer;color:var(--muted);font-weight:600}
+.report summary:hover{color:var(--text)}
+.report .close{margin-left:auto;appearance:none;background:none;border:0;color:var(--faint);
+  font:inherit;font-size:16px;line-height:1;cursor:pointer;padding:0 2px}
+.report .close:hover{color:var(--text)}
+
 /* ---------- tabs ---------- */
 .tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-bottom:26px}
 .tab{
@@ -226,13 +289,42 @@ footer.page code{font-family:var(--mono)}
 </head>
 <body>
 <div class="wrap">
-  <header class="page">
+  <section class="estate" id="emptyState" hidden>
+    <div class="esbox">
+      <svg class="esicon" viewBox="0 0 48 48" aria-hidden="true">
+        <path d="M24 32V10m0 0l-8 8m8-8l8 8" fill="none" stroke="currentColor"
+              stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M8 30v6a2 2 0 002 2h28a2 2 0 002-2v-6" fill="none" stroke="currentColor"
+              stroke-width="3" stroke-linecap="round"/>
+      </svg>
+      <h2>Load a digital report workbook</h2>
+      <p>Drop an <code>.xlsx</code> anywhere on this page, or choose a file below.
+         It is read in your browser — nothing is uploaded anywhere.</p>
+      <button class="btn big" type="button" id="btnPickEmpty">Choose a workbook…</button>
+      <p class="esnote">Expects a <code>Digital Report</code> tab and a
+         <code>Paid Media Report</code> tab. Rows, channels and placements are found by their
+         headings, so a workbook that has grown since last quarter still reads correctly.</p>
+      <div id="esWarn"></div>
+    </div>
+  </section>
+
+  <header class="page" id="pgHeader">
     <div>
       <h1 id="pgTitle">Digital Fundraising Toplines</h1>
       <div class="sub" id="pgSub"></div>
     </div>
     <dl class="metagrid" id="pgMeta"></dl>
   </header>
+
+  <div class="srcbar">
+    <div class="srcnow" id="srcNow"></div>
+    <div class="srcact">
+      <button class="btn" type="button" id="btnPick">Load a workbook…</button>
+      <button class="btn ghost" type="button" id="btnClear" hidden>Clear</button>
+      <input type="file" id="filePick" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden>
+    </div>
+  </div>
+  <div class="report" id="report" hidden></div>
 
   <div class="tabs" role="tablist">
     <button class="tab" role="tab" aria-selected="true" aria-controls="p-overview" id="t-overview">Overview</button>
@@ -368,15 +460,24 @@ footer.page code{font-family:var(--mono)}
 
   <footer class="page" id="pgFoot"></footer>
 </div>
+<div class="veil" id="dropVeil" aria-hidden="true"><div class="veilbox">Drop the .xlsx workbook to load it</div></div>
 
 <script>
-const DATA = /*__DATA__*/;
+/*__LIB_XLSX_READER__*/
+</script>
+<script>
+/*__LIB_EXTRACT_REPORT__*/
+</script>
+<script>
+/* No data ships with this page — it is a viewer. Both payloads start null and
+   are filled in when the reader loads a workbook, which is why every render
+   path below is a callable function rather than a load-time IIFE. */
+let DATA = /*__DATA__*/;
 </script>
 <script>
 /* ==================== formatting helpers ==================== */
-const MONTHS = DATA.month_keys;
-const PENDING = new Set(DATA.pending_months || []);
-const SRC = DATA.sources || {};
+/* Derived from DATA, so all of it is recomputed on every render. */
+let MONTHS, PENDING, SRC, byName, active, dormant, SHEET_NOTE, PENDING_CAVEAT;
 
 const usd = (n, cents) => n == null ? "—" : (n < 0 ? "-" : "") + "$" +
   Math.abs(n).toLocaleString("en-US", {minimumFractionDigits: cents ? 2 : 0, maximumFractionDigits: cents ? 2 : 0});
@@ -390,10 +491,35 @@ const cells = a => a.map(cell).join(" + ");
 const pctClass = p => p == null ? "" : p >= 1 ? "good" : p >= 0.7 ? "warn" : "bad";
 const pctColor = p => p == null ? "var(--muted)" : p >= 1 ? "var(--good)" : p >= 0.7 ? "var(--warn)" : "var(--bad)";
 
-const byName = {};
-DATA.channels.forEach(c => byName[c.name] = c);
-const active = DATA.channels.filter(c => !c.dormant);
-const dormant = DATA.channels.filter(c => c.dormant);
+/* Recompute everything derived from DATA. Called before each render. */
+function deriveOverview() {
+  MONTHS = DATA.month_keys;
+  PENDING = new Set(DATA.pending_months || []);
+  SRC = DATA.sources || {};
+  byName = {};
+  DATA.channels.forEach(c => byName[c.name] = c);
+  active = DATA.channels.filter(c => !c.dormant);
+  dormant = DATA.channels.filter(c => c.dormant);
+  SHEET_NOTE = 'Tab <code>' + esc(DATA.meta.sheet) + '</code> of <code>' +
+               esc(DATA.meta.source_workbook) + '</code>.';
+
+  // Which months have no actuals, and which cell ranges are empty — stated
+  // from the data rather than hardcoded, so it stays true for any workbook.
+  const pend = MONTHS.filter(m => PENDING.has(m));
+  if (!pend.length) {
+    PENDING_CAVEAT = "Every month in this quarter has reported actuals.";
+  } else {
+    const ranges = pend.map(m => {
+      const first = DATA.channels[0], last = DATA.channels[DATA.channels.length - 1];
+      return cell(first.periods[m].actual_cell + ":" + last.periods[m].actual_cell);
+    });
+    const names = pend.map(m => DATA.channels[0].periods[m].label);
+    PENDING_CAVEAT = names.join(" and ") + (names.length > 1 ? " actuals are" : " actuals are") +
+      " not yet reported (" + ranges.join(", ") + (ranges.length > 1 ? " are" : " is") +
+      " empty), so " + (names.length > 1 ? "those months are" : "the month is") +
+      " shown as pending rather than as $0.";
+  }
+}
 
 /* Sum a field across all channels for one period — used where the workbook's
    Overall row is blank or shows a computed zero for an unreported month. */
@@ -529,16 +655,46 @@ function gapRow(actual, goal) {
           d >= 0 ? "var(--good)" : "var(--bad)"];
 }
 
-const SHEET_NOTE = 'Tab <code>' + esc(DATA.meta.sheet) + '</code> of <code>' + esc(DATA.meta.source_workbook) + '</code>.';
 function srcNote(key) {
   const t = SRC[key];
   return SHEET_NOTE + (t ? ' Imported from the CAB Google Sheet, <code>' + esc(t) + '</code>, via IMPORTRANGE.' : "");
 }
-const PENDING_CAVEAT = 'September actuals are not yet reported (<code>N14:N21</code> are empty), so the month is shown as pending rather than as $0.';
+
+/* Column range across every channel row, e.g. C14:C21 — derived, so it stays
+   correct when channels are added or the grid moves. */
+function chRange(field) {
+  const a = DATA.channels[0].periods.quarter[field];
+  const b = DATA.channels[DATA.channels.length - 1].periods.quarter[field];
+  return a === b ? a : a + ":" + b;
+}
+/* The Overall "Total Raised" quarter figures, whatever row they sit on. */
+function TRQ() { return DATA.overall.total_raised.periods.quarter; }
+
+/* Hidden helper columns only exist when the quarterly goal is a SUM of them.
+   A workbook that states the goal directly is fine; the bubbles just say so. */
+function hasHelpers(c) {
+  return !!c.helpers && MONTHS.every(m => c.helpers[m] && c.helpers[m].cell);
+}
+function helperRange(c) {
+  if (!hasHelpers(c)) return null;
+  return c.helpers[MONTHS[0]].cell + ":" + c.helpers[MONTHS[MONTHS.length - 1]].cell;
+}
+/* State the dynamic-goal toggles as they actually are, naming their cells. */
+function toggleNote() {
+  const dg = DATA.meta.dynamic_goals || {};
+  const named = MONTHS.filter(m => dg[m] && dg[m].cell);
+  if (!named.length) return "No dynamic-goal toggles were found in this workbook.";
+  const on = named.filter(m => dg[m].value);
+  const list = named.map(m => cell(dg[m].cell)).join(", ");
+  return on.length
+    ? "Toggle(s) " + on.map(m => cell(dg[m].cell)).join(", ") + " are TRUE, so those months " +
+      "contribute actuals instead of goals to the quarterly goal."
+    : "All dynamic-goal toggles (" + list + ") are FALSE, so the helpers equal the monthly goals.";
+}
 </script>
 <script>
 /* ==================== header ==================== */
-(function header() {
+function renderHeader() {
   const m = DATA.meta;
   document.getElementById("pgTitle").textContent = m.title || "Digital Fundraising Toplines";
   document.getElementById("pgSub").textContent =
@@ -563,10 +719,10 @@ const PENDING_CAVEAT = 'September actuals are not yet reported (<code>N14:N21</c
     "</code>, extracted " + esc((m.extracted_at || "").replace("T", " ")) +
     ". Every figure on this page traces to a cell in that tab — click any <b>i</b> to see which. " +
     "Values in the workbook are cached IMPORTRANGE results from the upstream CAB Google Sheet.";
-})();
+}
 
 /* ==================== hero stats ==================== */
-(function heroes() {
+function renderHeroes() {
   const o = DATA.overall;
   const q = k => o[k].periods.quarter;
   const defs = [
@@ -582,8 +738,10 @@ const PENDING_CAVEAT = 'September actuals are not yet reported (<code>N14:N21</c
             ["% to goal", cell(p.pct_cell) + " = " + pct(p.pct, 2)]
           ],
           calc: pct(p.pct, 2) + " = " + usdc(p.actual) + " ÷ " + usdc(p.goal),
-          formula: '=IFERROR(D23/C23,"-")',
-          caveat: "Sums all eight channel rows <code>B14:B21</code>. " + PENDING_CAVEAT,
+          formula: '=IFERROR(' + p.actual_cell + "/" + p.goal_cell + ',"-")',
+          caveat: "Sums all " + DATA.channels.length + " channel rows " +
+                  cell(DATA.channels[0].name_cell + ":" + DATA.channels[DATA.channels.length - 1].name_cell) +
+                  ". " + PENDING_CAVEAT,
           source: srcNote("quarter_actual")
         };
       }
@@ -595,10 +753,11 @@ const PENDING_CAVEAT = 'September actuals are not yet reported (<code>N14:N21</c
         return {
           title: "Total donations, quarter to date",
           rows: [["Value", cell(p.actual_cell) + " = " + int(p.actual) + " donations"]],
-          calc: "July " + cell(o.total_donations.periods.july.actual_cell) + " " +
-                int(o.total_donations.periods.july.actual) + " + August " +
-                cell(o.total_donations.periods.august.actual_cell) + " " +
-                int(o.total_donations.periods.august.actual) + " = " + int(p.actual),
+          calc: MONTHS.filter(m => o.total_donations.periods[m].actual != null)
+                  .map(m => o.total_donations.periods[m].label + " " +
+                       cell(o.total_donations.periods[m].actual_cell) + " " +
+                       int(o.total_donations.periods[m].actual)).join(" + ") +
+                " = " + int(p.actual),
           caveat: "The workbook sets no goal for donation count, so no percent to goal is shown.",
           source: srcNote("quarter_actual")
         };
@@ -626,12 +785,13 @@ const PENDING_CAVEAT = 'September actuals are not yet reported (<code>N14:N21</c
         const p = q("total_finance");
         return {
           title: "Total finance, quarter to date",
-          rows: [
-            ["Value", cell(p.actual_cell) + " = " + usdc(p.actual)],
-            ["July", cell(o.total_finance.periods.july.actual_cell) + " = " + usdc(o.total_finance.periods.july.actual)],
-            ["August", cell(o.total_finance.periods.august.actual_cell) + " = " + usdc(o.total_finance.periods.august.actual)]
-          ],
-          calc: usdc(o.total_finance.periods.july.actual) + " + " + usdc(o.total_finance.periods.august.actual) +
+          rows: [["Value", cell(p.actual_cell) + " = " + usdc(p.actual)]].concat(
+            MONTHS.map(m => [o.total_finance.periods[m].label,
+              cell(o.total_finance.periods[m].actual_cell) + " = " +
+              (o.total_finance.periods[m].actual == null
+                ? "not reported" : usdc(o.total_finance.periods[m].actual))])),
+          calc: MONTHS.filter(m => o.total_finance.periods[m].actual != null)
+                  .map(m => usdc(o.total_finance.periods[m].actual)).join(" + ") +
                 " = " + usdc(p.actual),
           caveat: "Reported separately from the channel grid; it is not part of Total raised.",
           source: SHEET_NOTE
@@ -641,7 +801,31 @@ const PENDING_CAVEAT = 'September actuals are not yet reported (<code>N14:N21</c
   ];
 
   const host = document.getElementById("heroes");
-  defs.forEach(d => {
+  host.innerHTML = "";
+
+  // Any Overall row the workbook gains beyond the four we style specially still
+  // gets a card, rather than being silently dropped.
+  const known = defs.map(d => d.key);
+  (DATA.overall_keys || Object.keys(o)).forEach(k => {
+    if (known.indexOf(k) >= 0 || !o[k]) return;
+    defs.push({
+      key: k, label: o[k].label, fmt: usdc, showGoal: false,
+      info: () => {
+        const p = q(k);
+        return {
+          title: o[k].label + ", quarter to date",
+          rows: [["Value", cell(p.actual_cell) + " = " + usdc(p.actual)]].concat(
+            MONTHS.map(m => [o[k].periods[m].label, cell(o[k].periods[m].actual_cell) + " = " +
+              (o[k].periods[m].actual == null ? "not reported" : usdc(o[k].periods[m].actual))])),
+          caveat: "This row was found in the workbook's Overall block (" + cell(o[k].label_cell) +
+                  ") and is shown with default formatting.",
+          source: SHEET_NOTE
+        };
+      }
+    });
+  });
+
+  defs.filter(d => o[d.key]).forEach(d => {
     const p = q(d.key);
     const el = document.createElement("div");
     el.className = "hero";
@@ -674,11 +858,11 @@ const PENDING_CAVEAT = 'September actuals are not yet reported (<code>N14:N21</c
     }
     host.appendChild(el);
   });
-})();
+}
 </script>
 <script>
 /* ==================== chart 1: goal vs actual by month ==================== */
-(function monthChart() {
+function renderMonthChart() {
   const rows = MONTHS.map(k => {
     const ref = DATA.channels[0].periods[k];
     const pending = PENDING.has(k);
@@ -784,13 +968,13 @@ const PENDING_CAVEAT = 'September actuals are not yet reported (<code>N14:N21</c
   });
   const qg = DATA.overall.total_raised.periods.quarter;
   t += "</tbody><tfoot><tr><td>Quarter</td><td>" + usdc(qg.goal) + "</td><td>" + usdc(qg.actual) +
-    "</td><td>" + pct(qg.pct, 2) + '</td><td class="ref">C23 / D23</td></tr></tfoot></table>';
+    "</td><td>" + pct(qg.pct, 2) + '</td><td class="ref">' + qg.goal_cell + " / " + qg.actual_cell + "</td></tr></tfoot></table>";
   document.getElementById("tbMonth").innerHTML = t;
-})();
+}
 </script>
 <script>
 /* ==================== chart 2: goal vs actual by channel ==================== */
-(function channelChart() {
+function renderChannelChart() {
   const list = DATA.channels.slice().sort((a, b) => {
     if (a.dormant !== b.dormant) return a.dormant ? 1 : -1;
     const pa = a.periods.quarter.pct, pb = b.periods.quarter.pct;
@@ -824,17 +1008,24 @@ const PENDING_CAVEAT = 'September actuals are not yet reported (<code>N14:N21</c
         ["Monthly actuals", MONTHS.map(m => cell(c.periods[m].actual_cell)).join(", ")]
       ],
       calc: q.goal
-        ? pct(q.pct, 2) + " = " + usdc(q.actual) + " ÷ " + usdc(q.goal) + "<br>" +
-          "Goal " + usdc(q.goal) + " = SUM(" + MONTHS.map(m => cell(c.helpers[m].cell)).join(", ") + ") = " +
-          MONTHS.map(m => usdc(c.helpers[m].value)).join(" + ")
+        ? pct(q.pct, 2) + " = " + usdc(q.actual) + " ÷ " + usdc(q.goal) +
+          (hasHelpers(c)
+            ? "<br>Goal " + usdc(q.goal) + " = SUM(" +
+              MONTHS.map(m => cell(c.helpers[m].cell)).join(", ") + ") = " +
+              MONTHS.map(m => usdc(c.helpers[m].value)).join(" + ")
+            : "<br>Goal " + usdc(q.goal) + " is read from " + cell(q.goal_cell) + " directly.")
         : "No goal set, so the workbook stores “-” for percent to goal.",
-      formula: q.goal ? "=SUM(" + c.helpers.july.cell + ":" + c.helpers.september.cell + ")   ·   " +
-        "=IFERROR(" + q.actual_cell + "/" + q.goal_cell + ',"-")' : null,
+      formula: q.goal
+        ? (hasHelpers(c) ? "=SUM(" + helperRange(c) + ")   ·   " : "") +
+          "=IFERROR(" + q.actual_cell + "/" + q.goal_cell + ',"-")'
+        : null,
       caveat: c.dormant
         ? "This channel has no goal and no activity this quarter, so it is greyed out rather than shown at 0%."
-        : "Helper cells <code>" + c.helpers.july.cell + ":" + c.helpers.september.cell + "</code> are hidden in the " +
-          "workbook; each is <code>=IF($O$9,actual,goal)</code>-style, and both dynamic-goal toggles " +
-          "(<code>O9</code>, <code>O10</code>) are FALSE, so they equal the monthly goals.",
+        : hasHelpers(c)
+          ? "Helper cells " + cell(helperRange(c)) + " are hidden in the workbook; each is " +
+            "<code>=IF(toggle,actual,goal)</code>-style. " + toggleNote()
+          : "This workbook's quarterly goal is not a SUM of hidden helper cells, so the goal is " +
+            "reported straight from " + cell(q.goal_cell) + ".",
       source: srcNote("quarter_actual")
     }));
     row.appendChild(nm);
@@ -885,17 +1076,19 @@ const PENDING_CAVEAT = 'September actuals are not yet reported (<code>N14:N21</c
   document.querySelector("#s-channel .sechead").appendChild(infoBubble({
     title: "Goal vs. actual by channel",
     rows: [
-      ["Goals", cell("C14") + ":" + cell("C21") + " (each = SUM of " + cell("Q") + ":" + cell("S") + " on its row)"],
-      ["Actuals", cell("D14") + ":" + cell("D21")],
-      ["% to goal", cell("E14") + ":" + cell("E21") + " = D ÷ C"],
+      ["Goals", cell(chRange("goal_cell")) +
+        (hasHelpers(DATA.channels[0]) ? " (each = SUM of its hidden helper cells)" : "")],
+      ["Actuals", cell(chRange("actual_cell"))],
+      ["% to goal", cell(chRange("pct_cell")) + " = actual ÷ goal"],
       ["Bar length", "identical for every channel — it represents that channel's own goal, not its size"],
       ["Fill", "actual ÷ goal, capped at 100% of the bar"],
       ["Largest goal", "for reference, " + usdc(maxV) + " (" +
         cell(DATA.channels.reduce((a, b) =>
           (b.periods.quarter.goal || 0) > (a.periods.quarter.goal || 0) ? b : a).periods.quarter.goal_cell) + ")"]
     ],
-    calc: "Channel rows sum to the workbook's Overall row: " + cell("C23") + " = " + usdc(DATA.overall.total_raised.periods.quarter.goal) +
-          " and " + cell("D23") + " = " + usdc(DATA.overall.total_raised.periods.quarter.actual) + " — both verified.",
+    calc: "Channel rows sum to the workbook's Overall row: " + cell(TRQ().goal_cell) + " = " +
+          usdc(TRQ().goal) + " and " + cell(TRQ().actual_cell) + " = " + usdc(TRQ().actual) +
+          " — both verified.",
     caveat: dormant.length
       ? dormant.map(c => c.name).join(" and ") + " have zero goal and zero actual, so the workbook stores “-” " +
         "for percent to goal. They are greyed rather than shown at 0%."
@@ -912,13 +1105,14 @@ const PENDING_CAVEAT = 'September actuals are not yet reported (<code>N14:N21</c
   });
   const qq = DATA.overall.total_raised.periods.quarter;
   t += "</tbody><tfoot><tr><td>Total raised</td><td>" + usdc(qq.goal) + "</td><td>" + usdc(qq.actual) + "</td><td>" +
-    pct(qq.pct, 2) + '</td><td class="ref">C23 / D23 / E23</td></tr></tfoot></table>';
+    pct(qq.pct, 2) + '</td><td class="ref">' + qq.goal_cell + " / " + qq.actual_cell + " / " +
+    qq.pct_cell + "</td></tr></tfoot></table>";
   document.getElementById("tbChannel").innerHTML = t;
-})();
+}
 </script>
 <script>
 /* ==================== chart 3: accumulation small multiples ==================== */
-(function accumCharts() {
+function renderAccumCharts() {
   const host = document.getElementById("chAccum");
   const series = active.map(c => ({channel: c, cum: DATA.cumulative[c.name]}));
   const gmax = Math.max(...series.map(s =>
@@ -1091,7 +1285,7 @@ const PENDING_CAVEAT = 'September actuals are not yet reported (<code>N14:N21</c
       return "<td>" + usdc(v) + "</td>";
     }).join("") + "</tr></tfoot></table>";
   document.getElementById("tbAccum").innerHTML = t;
-})();
+}
 
 /* ============================================================
    PAID MEDIA TAB
@@ -1099,14 +1293,20 @@ const PENDING_CAVEAT = 'September actuals are not yet reported (<code>N14:N21</c
    chart naming its source cells, hover tooltips with exact figures, and a
    collapsible table of underlying numbers beneath each chart group.
    ============================================================ */
-const PM = /*__PM_DATA__*/;
+let PM = /*__PM_DATA__*/;
 
-if (!PM) {
-  const tb = document.getElementById("t-paid");
-  if (tb) tb.remove();
-  const pn = document.getElementById("p-paid");
-  if (pn) pn.remove();
-} else (function paidMedia() {
+function renderPaidMedia() {
+  const tabBtn = document.getElementById("t-paid");
+  const panel = document.getElementById("p-paid");
+  // Hidden rather than removed, so a later workbook that does have the tab can
+  // bring it back without rebuilding the page.
+  const usable = PM && PM.quarters && PM.quarters.length && PM.months && PM.months.length;
+  if (tabBtn) tabBtn.hidden = !usable;
+  if (!usable) {
+    if (panel) panel.hidden = true;
+    if (tabBtn && tabBtn.getAttribute("aria-selected") === "true") selectTab("t-overview");
+    return;
+  }
 
   /* ---------- formatting by metric kind ---------- */
   const KIND = PM.metric_kinds, LABEL = PM.metric_labels, COL = PM.metric_columns;
@@ -1133,7 +1333,12 @@ if (!PM) {
 
   /* ---------- definitions key, reused across info bubbles ---------- */
   const DEF = {};
-  PM.definitions.forEach(d => DEF[d.term.toLowerCase()] = d);
+  (PM.definitions || []).forEach(d => DEF[d.term.toLowerCase()] = d);
+  /* Cite the definition's own cell, or say plainly that there is no key. */
+  function defCell(term) {
+    const d = DEF[String(term).toLowerCase()];
+    return d ? cell(d.text_cell) : "the metric definitions key";
+  }
   function defNote(terms) {
     const hits = terms.map(t => DEF[t.toLowerCase()]).filter(Boolean);
     if (!hits.length) return null;
@@ -1152,14 +1357,27 @@ if (!PM) {
   const CH_COLOR = {};
   PM.channels.forEach((c, i) => CH_COLOR[c] = "var(--ch" + ((i % 6) + 1) + ")");
 
-  /* ---------- scope banner ---------- */
-  document.getElementById("pmScope").innerHTML =
-    "<div>&#9432;</div><div><b>Two different periods on this tab.</b> The year-to-date " +
-    "toplines below cover <b>" + PM.ytd.quarters.join(", ") + " " + PM_YEAR + "</b>, summed from the " +
-    "workbook's quarterly table. The monthly toplines and placement breakdown cover only " +
-    "<b>Q" + QSEL + "</b> (" + PM.months.map(m => m.label).join(", ") + "), which is the quarter this " +
-    "tab is set to in " + cell(PM.meta.quarter.cell) + ". The Overview tab reports Q" +
-    DATA.meta.quarter.value + ", a different quarter again.</div>";
+  /* ---------- scope banner ----------
+     Only claims a mismatch with the Overview tab when that tab is actually
+     present and actually reports a different quarter. */
+  const ovQ = (DATA && DATA.meta && DATA.meta.quarter) ? DATA.meta.quarter.value : null;
+  const spans = PM.ytd.quarters.length > 1;
+  let scope = "<div>&#9432;</div><div>";
+  if (spans) {
+    scope += "<b>Two different periods on this tab.</b> The year-to-date toplines below cover <b>" +
+      PM.ytd.quarters.join(", ") + " " + PM_YEAR + "</b>, summed from the workbook's quarterly " +
+      "table. The monthly toplines and placement breakdown cover only ";
+  } else {
+    scope += "<b>Scope.</b> This tab covers ";
+  }
+  scope += "<b>Q" + QSEL + "</b> (" + PM.months.map(m => m.label.trim()).join(", ") +
+    "), which is the quarter this tab is set to in " + cell(PM.meta.quarter.cell) + ".";
+  if (ovQ != null && ovQ !== QSEL) {
+    scope += " The Overview tab reports Q" + ovQ + ", a different quarter again.";
+  } else if (ovQ == null) {
+    scope += " The Overview tab is not available for this workbook.";
+  }
+  document.getElementById("pmScope").innerHTML = scope + "</div>";
 
   /* ---------- shared chart primitives ---------- */
 
@@ -1440,7 +1658,7 @@ if (!PM) {
                 cell(PM.quarters[PM.quarters.length - 1].metrics[cd.key].cell) + ". " +
                 "The monthly and placement sections below cover Q" + QSEL + " only." +
                 (cd.key === "total_raised"
-                  ? " Total Raised is not Immediate + Lifetime: per " + cell("G9") +
+                  ? " Total Raised is not Immediate + Lifetime: per " + defCell("Total Raised") +
                     ", immediate is removed from NTL so it is not counted twice."
                   : ""),
         source: PM_SHEET + (dn ? "<br>" + dn : "")
@@ -1600,7 +1818,7 @@ if (!PM) {
       h3.appendChild(infoBubble({
         title: LABEL[key] + " — cumulative by " + grainWord,
         rows: series.map((p, i) => [p.label.trim(),
-          fmtM(key, p.value) + " (" + cells(series.slice(0, i + 1).map(q => q.cell)) + ")"]),
+          fmtM(key, p.value) + " (" + cells(series.slice(0, i + 1).map(q => q.step_cell)) + ")"]),
         calc: "Each point is the running sum of the " + grainWord + "ly cells listed above — computed " +
               "on this page, not read from a workbook cell. Final value " +
               fmtM(key, series[series.length - 1].value) + ".",
@@ -1637,7 +1855,7 @@ if (!PM) {
               ["", ""],
               ["Share of final", pct(p.value / series[series.length - 1].value, 1)]
             ],
-            foot: "sum of " + series.slice(0, i + 1).map(q => q.cell).join(" + ")
+            foot: "sum of " + series.slice(0, i + 1).map(q => q.step_cell).join(" + ")
           }
         }))
       });
@@ -1957,7 +2175,7 @@ if (!PM) {
       rows: [["Source", cell(DR("M")) + ", grouped by month " + cell(DR("B")) +
         " and channel " + cell(DR("C"))]],
       calc: "Sum of Total Raised per channel per month.",
-      caveat: "Total Raised is not Immediate + Lifetime — per " + cell("G9") + ", immediate is removed " +
+      caveat: "Total Raised is not Immediate + Lifetime — per " + defCell("Total Raised") + ", immediate is removed " +
               "from NTL so it is not double counted. Summing the stacks will therefore not equal " +
               "Immediate plus Lifetime.",
       source: PM_SHEET + "<br>" + defNote(["Total Raised", "Immediate Raised", "Lifetime Raised"])
@@ -2000,20 +2218,259 @@ if (!PM) {
     const head = card && card.querySelector(".sechead.sub h3");
     if (head) head.appendChild(infoBubble(spec));
   });
-
-})();
+}
 
 /* ==================== tabs ==================== */
-document.querySelectorAll(".tab").forEach(tab => {
-  tab.addEventListener("click", () => {
-    document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", String(t === tab)));
-    document.querySelectorAll(".panel").forEach(p => {
-      p.hidden = p.id !== tab.getAttribute("aria-controls");
-    });
-    closePop();
+function selectTab(tabId) {
+  const tab = document.getElementById(tabId);
+  if (!tab || tab.hidden) return;
+  document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", String(t === tab)));
+  document.querySelectorAll(".panel").forEach(p => {
+    p.hidden = p.id !== tab.getAttribute("aria-controls");
   });
+  closePop();
+  hideTip();
+}
+document.querySelectorAll(".tab").forEach(tab => {
+  tab.addEventListener("click", () => selectTab(tab.id));
 });
-window.addEventListener("resize", closePop);
+window.addEventListener("resize", () => { closePop(); hideTip(); });
+
+/* ==================== render orchestration ====================
+   Everything above is a pure function of DATA and PM, so swapping in a new
+   workbook is just: replace the two payloads, then call renderAll(). */
+function resetChrome() {
+  closePop();
+  hideTip();
+  TIPS.length = 0;                       // tooltip registry is rebuilt each render
+  document.querySelectorAll("button.info").forEach(b => b.remove());
+  ["heroes", "chMonth", "chChannel", "chAccum", "tbMonth", "tbChannel", "tbAccum",
+   "pmHeroes", "pmChQSpend", "pmChQNtl", "pmChMSpend", "pmChMNtl",
+   "pmAccumQ", "pmAccumM", "pmTbQ", "pmTbM", "pmTbAcc",
+   "pmFilters", "pmFilterStat", "pmChStackSpend", "pmChStackRaised", "pmChScatter", "pmLeader",
+   "pmScope", "lgMonth", "lgChannel", "pmLgQSpend", "pmLgQNtl", "pmLgMSpend", "pmLgMNtl"
+  ].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = ""; });
+}
+
+function renderAll() {
+  resetChrome();
+
+  // Nothing is shown until a workbook has been loaded.
+  const anything = !!(DATA || PM);
+  document.getElementById("emptyState").hidden = anything;
+  ["pgHeader", "pgFoot"].forEach(id => { document.getElementById(id).hidden = !anything; });
+  document.querySelector(".srcbar").hidden = !anything;
+  document.querySelector(".tabs").hidden = !anything;
+  if (!anything) {
+    document.querySelectorAll(".panel").forEach(p => p.hidden = true);
+    document.title = "Digital Report Viewer";
+    return;
+  }
+
+  const haveOverview = !!(DATA && DATA.channels && DATA.channels.length &&
+                          DATA.overall && DATA.overall.total_raised);
+  const ovTab = document.getElementById("t-overview");
+  const ovPanel = document.getElementById("p-overview");
+  if (ovTab) ovTab.hidden = !haveOverview;
+  if (haveOverview) {
+    deriveOverview();
+    renderHeader();
+    renderHeroes();
+    renderMonthChart();
+    renderChannelChart();
+    renderAccumCharts();
+  } else {
+    if (ovPanel) ovPanel.hidden = true;
+    document.getElementById("pgTitle").textContent = "Digital Fundraising Report";
+    document.getElementById("pgSub").textContent = "The Digital Report tab could not be read — see the report above.";
+    document.getElementById("pgMeta").innerHTML = "";
+    document.getElementById("pgFoot").innerHTML = "";
+  }
+  renderPaidMedia();
+
+  // make sure a visible tab is selected
+  const tabs = [...document.querySelectorAll(".tab")].filter(t => !t.hidden);
+  const current = tabs.filter(t => t.getAttribute("aria-selected") === "true")[0];
+  if (tabs.length && !current) selectTab(tabs[0].id);
+  else if (current) selectTab(current.id);
+  document.querySelector(".tabs").hidden = tabs.length < 2;
+}
+
+/* ==================== loading a workbook ====================
+   Session only: the page holds the parsed workbook in memory and nothing is
+   written to browser storage, so reloading returns to the empty state. */
+let LOADED = null;   // {name, report} once a workbook has been loaded
+
+function fmtBytes(n) {
+  return n >= 1048576 ? (n / 1048576).toFixed(1) + " MB" : Math.max(1, Math.round(n / 1024)) + " KB";
+}
+
+function renderSourceBar() {
+  const el = document.getElementById("srcNow");
+  if (LOADED) {
+    const when = String(LOADED.report.extractedAt || "").replace("T", " ");
+    el.innerHTML = '<span class="live">' + esc(LOADED.name) + "</span>Read in your browser at " +
+      esc(when) + " — nothing was uploaded. Drop another <code>.xlsx</code> to replace it.";
+  } else {
+    el.innerHTML = "No workbook loaded.";
+  }
+  document.getElementById("btnClear").hidden = !LOADED;
+  document.getElementById("btnPick").textContent = LOADED ? "Load another…" : "Load a workbook…";
+}
+
+function showReport(rep, opts) {
+  opts = opts || {};
+  const host = document.getElementById("report");
+  const errs = rep.problems.filter(p => p.level === "error");
+  const warns = rep.problems.filter(p => p.level === "warn");
+  const cls = opts.fatal || errs.length ? "bad" : warns.length ? "warn" : "ok";
+  const tag = opts.fatal ? "Not loaded" : errs.length ? "Loaded with errors" :
+              warns.length ? "Loaded with warnings" : "Loaded and reconciled";
+  let h = '<h3><span class="tag">' + esc(tag) + "</span><span>" + esc(rep.workbookName || "workbook") +
+    "</span><button class='close' type='button' aria-label='Dismiss'>&times;</button></h3>";
+
+  if (errs.length || warns.length) {
+    h += "<ul>";
+    errs.forEach(p => h += '<li class="err">' + p.text + "</li>");
+    warns.forEach(p => h += '<li class="wrn">' + p.text + "</li>");
+    h += "</ul>";
+  }
+  if (opts.fatal) {
+    h += "<p style='margin:8px 0 0;color:var(--bad)'>Nothing was changed — " +
+         (LOADED ? "still showing <b>" + esc(LOADED.name) + "</b>."
+                 : "no workbook is loaded.") + "</p>";
+  } else if (errs.length) {
+    h += "<p style='margin:8px 0 0'>Sections with errors above are hidden rather than shown with " +
+         "numbers that do not reconcile.</p>";
+  }
+  if (rep.findings && rep.findings.length) {
+    h += "<details><summary>What was found (" + rep.findings.length + ")</summary><ul>" +
+      rep.findings.map(f => "<li>" + f + "</li>").join("") + "</ul></details>";
+  }
+  h += '<div class="foot">Tabs in the file: ' + esc((rep.sheetNames || []).join(", ")) + "</div>";
+  host.className = "report " + cls;
+  host.innerHTML = h;
+  host.hidden = false;
+  host.querySelector(".close").addEventListener("click", () => { host.hidden = true; });
+}
+
+async function loadWorkbookFile(file) {
+  const btn = document.getElementById("btnPick");
+  const label = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = "Reading…";
+  try {
+    if (!/\.xlsx$/i.test(file.name)) {
+      throw new Error("“" + file.name + "” is not an .xlsx file. Re-save it as .xlsx and try again.");
+    }
+    if (file.size > 80 * 1024 * 1024) {
+      throw new Error("That file is " + fmtBytes(file.size) + ", which is too large to parse in the browser.");
+    }
+    const buf = await file.arrayBuffer();
+    const book = await XlsxReader.read(new Uint8Array(buf));
+    const out = ExtractReport.extractAll(book, {
+      workbookName: file.name,
+      extractedAt: new Date().toISOString().replace(/\.\d+Z$/, "")
+    });
+    const rep = out.report;
+
+    const digOk = out.digital && !rep.digitalErrors;
+    const paidOk = out.paid && !rep.paidErrors;
+    if (!digOk && !paidOk) {
+      showReport(rep, {fatal: true});
+      return;
+    }
+    // A loaded workbook replaces both tabs. A tab that could not be read is
+    // hidden, never left showing the previous file's numbers.
+    DATA = digOk ? out.digital : null;
+    PM = paidOk ? out.paid : null;
+    LOADED = {name: file.name, report: rep};
+    renderAll();
+    renderSourceBar();
+    showReport(rep, {});
+    if (typeof window.scrollTo === "function") {
+      try { window.scrollTo({top: 0, behavior: "smooth"}); } catch (e) { /* not critical */ }
+    }
+  } catch (e) {
+    showReport({
+      workbookName: file.name,
+      sheetNames: [],
+      findings: [],
+      problems: [{level: "error", text: esc(e && e.message ? e.message : String(e))}]
+    }, {fatal: true});
+  } finally {
+    btn.disabled = false;
+    btn.textContent = label;
+  }
+}
+
+function clearWorkbook() {
+  DATA = null;
+  PM = null;
+  LOADED = null;
+  renderAll();
+  renderSourceBar();
+  document.getElementById("report").hidden = true;
+}
+
+/* wire the controls */
+(function wireLoader() {
+  const pick = document.getElementById("filePick");
+  document.getElementById("btnPick").addEventListener("click", () => pick.click());
+  document.getElementById("btnPickEmpty").addEventListener("click", () => pick.click());
+  document.getElementById("btnClear").addEventListener("click", clearWorkbook);
+  pick.addEventListener("change", () => {
+    if (pick.files && pick.files[0]) loadWorkbookFile(pick.files[0]);
+    pick.value = "";      // allow re-picking the same file after an edit
+  });
+
+  const veil = document.getElementById("dropVeil");
+  let depth = 0;
+  const isFile = e => e.dataTransfer && [...(e.dataTransfer.types || [])].indexOf("Files") >= 0;
+  window.addEventListener("dragenter", e => {
+    if (!isFile(e)) return;
+    e.preventDefault();
+    depth++;
+    veil.classList.add("on");
+  });
+  window.addEventListener("dragover", e => { if (isFile(e)) e.preventDefault(); });
+  window.addEventListener("dragleave", e => {
+    if (!isFile(e)) return;
+    depth = Math.max(0, depth - 1);
+    if (!depth) veil.classList.remove("on");
+  });
+  window.addEventListener("drop", e => {
+    if (!isFile(e)) return;
+    e.preventDefault();
+    depth = 0;
+    veil.classList.remove("on");
+    const f = e.dataTransfer.files && e.dataTransfer.files[0];
+    if (f) loadWorkbookFile(f);
+  });
+
+  // This page is useless without the parser, so say so up front rather than
+  // letting someone discover it when the drop silently fails.
+  if (!XlsxReader.hasInflate()) {
+    document.getElementById("btnPick").disabled = true;
+    document.getElementById("btnPickEmpty").disabled = true;
+    document.getElementById("esWarn").innerHTML =
+      "This browser cannot open <code>.xlsx</code> files. Chrome 103+, Safari 16.4+ " +
+      "or Firefox 113+ is needed.";
+  }
+})();
+
+/* A small, deliberate surface for the verification harness: it lets the tests
+   inspect and drive exactly what a user can, without reaching into
+   script-scoped bindings. Harmless in normal use. */
+window.__dashboard = {
+  state: () => ({DATA: DATA, PM: PM, LOADED: LOADED}),
+  load: f => loadWorkbookFile(f),
+  clear: clearWorkbook,
+  render: renderAll
+};
+
+renderAll();
+renderSourceBar();
 </script>
 </body>
 </html>

@@ -32,9 +32,56 @@ const parseNum = s => {
 };
 const close = (a, b, tol) => a != null && b != null && Math.abs(a - b) <= (tol == null ? 0.02 : tol);
 
-const dom = new JSDOM(fs.readFileSync(htmlPath, "utf8"), {runScripts: "dangerously", pretendToBeVisual: true});
+/* The page ships with no data, so the workbook is loaded through the same path a
+   reader uses: the page's own parser, driven by its own load function. Every
+   check below therefore tests the live parse, not a baked-in snapshot. */
+const wbPath = process.argv[5] || "EXTERNAL_ CAB Digital Report.xlsx";
+
+(async function main() {
+// jsdom logs "Not implemented" for a few window APIs the page guards anyway;
+// keep those out of the check output, but surface real script errors.
+const vc = new (require(path.join(process.env.JSDOM_PATH || "/tmp/vfy/node_modules", "jsdom")).VirtualConsole)();
+vc.on("jsdomError", e => { if (!/Not implemented/.test(e.message)) console.error(e.message); });
+const dom = new JSDOM(fs.readFileSync(htmlPath, "utf8"),
+  {runScripts: "dangerously", pretendToBeVisual: true, virtualConsole: vc});
 const doc = dom.window.document;
 const txt = el => (el ? el.textContent.replace(/\s+/g, " ").trim() : "");
+
+if (!fs.existsSync(wbPath)) {
+  console.error("workbook not found: " + wbPath);
+  process.exit(2);
+}
+// jsdom has no DecompressionStream; hand the reader node's zlib instead
+dom.window.XlsxReader.setInflate(b => new Uint8Array(require("zlib").inflateRawSync(Buffer.from(b))));
+
+check("page shows nothing until a workbook is loaded",
+  !doc.getElementById("emptyState").hidden &&
+  doc.getElementById("pgHeader").hidden &&
+  [...doc.querySelectorAll(".panel")].every(p => p.hidden),
+  "empty state hidden=" + doc.getElementById("emptyState").hidden +
+  ", header hidden=" + doc.getElementById("pgHeader").hidden +
+  ", visible panels=" + [...doc.querySelectorAll(".panel")].filter(p => !p.hidden).length);
+const shipped = fs.readFileSync(htmlPath, "utf8");
+check("no workbook data is baked into the page file",
+  /let DATA = null;/.test(shipped) && /let PM = null;/.test(shipped) &&
+  !/"source_workbook"|"month_keys"|"metric_order"/.test(shipped),
+  "the shipped page carries a serialised payload");
+check("the shipped page names no client",
+  !new RegExp(String(D.meta.client.value || "\\u0000").replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+    .test(shipped),
+  "the client name appears in the shipped file");
+check("the empty state explains what to do",
+  /drop|choose/i.test(txt(doc.getElementById("emptyState"))),
+  "empty state text: " + txt(doc.getElementById("emptyState")).slice(0, 120));
+
+const wbBuf = fs.readFileSync(wbPath);
+await dom.window.__dashboard.load({
+  name: path.basename(wbPath), size: wbBuf.length,
+  arrayBuffer: async () => wbBuf.buffer.slice(wbBuf.byteOffset, wbBuf.byteOffset + wbBuf.byteLength)
+});
+check("loading a workbook reveals the report",
+  doc.getElementById("emptyState").hidden && !doc.getElementById("pgHeader").hidden,
+  "empty state hidden=" + doc.getElementById("emptyState").hidden);
 
 // ---------- 0. the page rendered at all -------------------------------------
 check("page has no script errors and rendered heroes",
@@ -797,3 +844,4 @@ console.log(results.length + " render checks run, " + (results.length - fails.le
 fails.forEach(f => console.log("  FAIL  " + f.name + "\n        " + f.detail));
 if (!fails.length) console.log("rendered page matches the workbook on every displayed figure");
 process.exit(fails.length ? 1 : 0);
+})().catch(e => { console.error(e.stack || String(e)); process.exit(1); });

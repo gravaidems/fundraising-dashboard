@@ -10,26 +10,30 @@
       "cell": "C7"
     },
     "year": {
-      "value": 2026.0,
+      "value": 2026,
       "cell": "C9"
     },
     "quarter": {
-      "value": 3.0,
+      "value": 3,
       "cell": "C10"
     },
     "dynamic_goals": {
+      "label": "Display Dynamic Goals:",
       "july": {
-        "value": false,
-        "cell": "O9"
+        "cell": "O9",
+        "value": false
       },
       "august": {
-        "value": false,
-        "cell": "O10"
+        "cell": "O10",
+        "value": false
       },
-      "label": "Display Dynamic Goals:"
+      "september": {
+        "cell": null,
+        "value": false
+      }
     },
     "source_workbook": "EXTERNAL_ CAB Digital Report.xlsx",
-    "extracted_at": "2026-08-25T14:25:45",
+    "extracted_at": "2026-08-25T22:08:56",
     "sheet": "Digital Report"
   },
   "channels": [
@@ -40,7 +44,7 @@
       "periods": {
         "quarter": {
           "label": "Quarter",
-          "goal": 400000.0,
+          "goal": 400000,
           "goal_cell": "C14",
           "actual": 83568.6,
           "actual_cell": "D14",
@@ -53,7 +57,7 @@
         },
         "july": {
           "label": "July",
-          "goal": 50000.0,
+          "goal": 50000,
           "goal_cell": "G14",
           "actual": 36077.5,
           "actual_cell": "H14",
@@ -66,7 +70,7 @@
         },
         "august": {
           "label": "August",
-          "goal": 100000.0,
+          "goal": 100000,
           "goal_cell": "J14",
           "actual": 47491.1,
           "actual_cell": "K14",
@@ -79,11 +83,11 @@
         },
         "september": {
           "label": "September",
-          "goal": 250000.0,
+          "goal": 250000,
           "goal_cell": "M14",
           "actual": null,
           "actual_cell": "N14",
-          "pct": 0.0,
+          "pct": 0,
           "pct_cell": "O14",
           "pct_raw": 0,
           "goal_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"QUERY(TRANSPOSE(QUERY(IMPORTRANGE(\"\"https://docs.google.com/spreadsheets/d/1BtcJvMe8of-zuMB48bULVYsLVLrzOcJtgbdPjPbL36s/\"\",\"\"Import - Monthly Goals!A:L\"\"),\"\"Select Col5,Col6,Col7,Col8,Col9,Col10,Col11,Col12 WHERE Col2 contains '\"\"&C10&\"\"' and Col1 contain\"&\"s '\"\"&C9&\"\"'\"\",0)),\"\"Select Col3\"\",0)\"),250000.0)",
@@ -93,17 +97,17 @@
       },
       "helpers": {
         "july": {
-          "value": 50000.0,
+          "value": 50000,
           "cell": "Q14",
           "formula": "=IF($O$9,H14,G14)"
         },
         "august": {
-          "value": 100000.0,
+          "value": 100000,
           "cell": "R14",
           "formula": "=IF($O$10,K14,J14)"
         },
         "september": {
-          "value": 250000.0,
+          "value": 250000,
           "cell": "S14",
           "formula": "=M14"
         }
@@ -160,7 +164,7 @@
           "goal_cell": "M15",
           "actual": null,
           "actual_cell": "N15",
-          "pct": 0.0,
+          "pct": 0,
           "pct_cell": "O15",
           "pct_raw": 0,
           "goal_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),150722.23)",
@@ -194,7 +198,7 @@
       "periods": {
         "quarter": {
           "label": "Quarter",
-          "goal": 312000.0,
+          "goal": 312000,
           "goal_cell": "C16",
           "actual": 100902.75,
           "actual_cell": "D16",
@@ -207,7 +211,7 @@
         },
         "july": {
           "label": "July",
-          "goal": 72000.0,
+          "goal": 72000,
           "goal_cell": "G16",
           "actual": 57835.76,
           "actual_cell": "H16",
@@ -220,7 +224,7 @@
         },
         "august": {
           "label": "August",
-          "goal": 90000.0,
+          "goal": 90000,
           "goal_cell": "J16",
           "actual": 43066.99,
           "actual_cell": "K16",
@@ -233,11 +237,11 @@
         },
         "september": {
           "label": "September",
-          "goal": 150000.0,
+          "goal": 150000,
           "goal_cell": "M16",
           "actual": null,
           "actual_cell": "N16",
-          "pct": 0.0,
+          "pct": 0,
           "pct_cell": "O16",
           "pct_raw": 0,
           "goal_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),150000.0)",
@@ -247,17 +251,17 @@
       },
       "helpers": {
         "july": {
-          "value": 72000.0,
+          "value": 72000,
           "cell": "Q16",
           "formula": "=IF($O$9,H16,G16)"
         },
         "august": {
-          "value": 90000.0,
+          "value": 90000,
           "cell": "R16",
           "formula": "=IF($O$10,K16,J16)"
         },
         "september": {
-          "value": 150000.0,
+          "value": 150000,
           "cell": "S16",
           "formula": "=M16"
         }
@@ -314,7 +318,7 @@
           "goal_cell": "M17",
           "actual": null,
           "actual_cell": "N17",
-          "pct": 0.0,
+          "pct": 0,
           "pct_cell": "O17",
           "pct_raw": 0,
           "goal_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),104611.55)",
@@ -391,7 +395,7 @@
           "goal_cell": "M18",
           "actual": null,
           "actual_cell": "N18",
-          "pct": 0.0,
+          "pct": 0,
           "pct_cell": "O18",
           "pct_raw": 0,
           "goal_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),606.18)",
@@ -425,9 +429,9 @@
       "periods": {
         "quarter": {
           "label": "Quarter",
-          "goal": 0.0,
+          "goal": 0,
           "goal_cell": "C19",
-          "actual": 0.0,
+          "actual": 0,
           "actual_cell": "D19",
           "pct": null,
           "pct_cell": "E19",
@@ -440,7 +444,7 @@
           "label": "July",
           "goal": null,
           "goal_cell": "G19",
-          "actual": 0.0,
+          "actual": 0,
           "actual_cell": "H19",
           "pct": null,
           "pct_cell": "I19",
@@ -453,7 +457,7 @@
           "label": "August",
           "goal": null,
           "goal_cell": "J19",
-          "actual": 0.0,
+          "actual": 0,
           "actual_cell": "K19",
           "pct": null,
           "pct_cell": "L19",
@@ -502,7 +506,7 @@
       "periods": {
         "quarter": {
           "label": "Quarter",
-          "goal": 27000.0,
+          "goal": 27000,
           "goal_cell": "C20",
           "actual": 13540.47,
           "actual_cell": "D20",
@@ -515,7 +519,7 @@
         },
         "july": {
           "label": "July",
-          "goal": 6000.0,
+          "goal": 6000,
           "goal_cell": "G20",
           "actual": 5118.26,
           "actual_cell": "H20",
@@ -528,7 +532,7 @@
         },
         "august": {
           "label": "August",
-          "goal": 9000.0,
+          "goal": 9000,
           "goal_cell": "J20",
           "actual": 8422.21,
           "actual_cell": "K20",
@@ -541,11 +545,11 @@
         },
         "september": {
           "label": "September",
-          "goal": 12000.0,
+          "goal": 12000,
           "goal_cell": "M20",
           "actual": null,
           "actual_cell": "N20",
-          "pct": 0.0,
+          "pct": 0,
           "pct_cell": "O20",
           "pct_raw": 0,
           "goal_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),12000.0)",
@@ -555,17 +559,17 @@
       },
       "helpers": {
         "july": {
-          "value": 6000.0,
+          "value": 6000,
           "cell": "Q20",
           "formula": "=IF($O$9,H20,G20)"
         },
         "august": {
-          "value": 9000.0,
+          "value": 9000,
           "cell": "R20",
           "formula": "=IF($O$10,K20,J20)"
         },
         "september": {
-          "value": 12000.0,
+          "value": 12000,
           "cell": "S20",
           "formula": "=M20"
         }
@@ -579,9 +583,9 @@
       "periods": {
         "quarter": {
           "label": "Quarter",
-          "goal": 0.0,
+          "goal": 0,
           "goal_cell": "C21",
-          "actual": 0.0,
+          "actual": 0,
           "actual_cell": "D21",
           "pct": null,
           "pct_cell": "E21",
@@ -594,7 +598,7 @@
           "label": "July",
           "goal": null,
           "goal_cell": "G21",
-          "actual": 0.0,
+          "actual": 0,
           "actual_cell": "H21",
           "pct": null,
           "pct_cell": "I21",
@@ -607,7 +611,7 @@
           "label": "August",
           "goal": null,
           "goal_cell": "J21",
-          "actual": 0.0,
+          "actual": 0,
           "actual_cell": "K21",
           "pct": null,
           "pct_cell": "L21",
@@ -663,7 +667,11 @@
           "actual": 392329.3,
           "actual_cell": "D23",
           "pct": 0.2902629899,
-          "pct_cell": "E23"
+          "pct_cell": "E23",
+          "pct_raw": 0.2902629899,
+          "goal_formula": "=SUM(C14:C21)",
+          "actual_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"TRANSPOSE(QUERY(IMPORTRANGE(\"\"https://docs.google.com/spreadsheets/d/1BtcJvMe8of-zuMB48bULVYsLVLrzOcJtgbdPjPbL36s/\"\", \"\"Quarterly Fundraising Toplines!A:U\"\"),\"\"Select Col19,Col20,Col21,Col12 WHERE Col2 contains '\"\"&C10&\"\"' and Col1 contains '\"\"&C9&\"\"'\"\",0\"&\"))\"),392329.3)",
+          "pct_formula": "=IFERROR(D23/C23,\"-\")"
         },
         "july": {
           "label": "July",
@@ -672,7 +680,11 @@
           "actual": 202206.67,
           "actual_cell": "H23",
           "pct": 0.6998055422,
-          "pct_cell": "I23"
+          "pct_cell": "I23",
+          "pct_raw": 0.6998055422,
+          "goal_formula": "=SUM(G14:G21)",
+          "actual_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"QUERY(TRANSPOSE(QUERY(IMPORTRANGE(\"\"https://docs.google.com/spreadsheets/d/1BtcJvMe8of-zuMB48bULVYsLVLrzOcJtgbdPjPbL36s/\"\",\"\"Monthly Fundraising Toplines!A:Y\"\"),\"\"Select Col22,Col23,Col25,Col15 WHERE Col3 contains '\"\"&C10&\"\"' and Col2 contains '\"\"&C9&\"\"'\"&\"\"\",0)),\"\"Select Col1\"\")\"),202206.66999999993)",
+          "pct_formula": "=IFERROR(H23/G23,\"-\")"
         },
         "august": {
           "label": "August",
@@ -681,16 +693,24 @@
           "actual": 190122.63,
           "actual_cell": "K23",
           "pct": 0.4816315898,
-          "pct_cell": "L23"
+          "pct_cell": "L23",
+          "pct_raw": 0.4816315898,
+          "goal_formula": "=SUM(J14:J21)",
+          "actual_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"QUERY(TRANSPOSE(QUERY(IMPORTRANGE(\"\"https://docs.google.com/spreadsheets/d/1BtcJvMe8of-zuMB48bULVYsLVLrzOcJtgbdPjPbL36s/\"\",\"\"Monthly Fundraising Toplines!A:Y\"\"),\"\"Select Col22,Col23,Col25,Col15 WHERE Col3 contains '\"\"&C10&\"\"' and Col2 contains '\"\"&C9&\"\"'\"&\"\"\",0)),\"\"Select Col2\"\")\"),190122.63000000006)",
+          "pct_formula": "=IFERROR(K23/J23,\"-\")"
         },
         "september": {
           "label": "September",
           "goal": 667939.96,
           "goal_cell": "M23",
-          "actual": 0.0,
+          "actual": 0,
           "actual_cell": "N23",
-          "pct": 0.0,
-          "pct_cell": "O23"
+          "pct": 0,
+          "pct_cell": "O23",
+          "pct_raw": 0,
+          "goal_formula": "=SUM(M14:M21)",
+          "actual_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"QUERY(TRANSPOSE(QUERY(IMPORTRANGE(\"\"https://docs.google.com/spreadsheets/d/1BtcJvMe8of-zuMB48bULVYsLVLrzOcJtgbdPjPbL36s/\"\",\"\"Monthly Fundraising Toplines!A:Y\"\"),\"\"Select Col22,Col23,Col25,Col15 WHERE Col3 contains '\"\"&C10&\"\"' and Col2 contains '\"\"&C9&\"\"'\"&\"\"\",0)),\"\"Select Col3\"\")\"),0.0)",
+          "pct_formula": "=IFERROR(N23/M23,\"-\")"
         }
       }
     },
@@ -703,28 +723,40 @@
           "label": "Quarter",
           "goal": null,
           "goal_cell": "C24",
-          "actual": 22618.0,
+          "actual": 22618,
           "actual_cell": "D24",
           "pct": null,
-          "pct_cell": "E24"
+          "pct_cell": "E24",
+          "pct_raw": null,
+          "goal_formula": null,
+          "actual_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),22618.0)",
+          "pct_formula": null
         },
         "july": {
           "label": "July",
           "goal": null,
           "goal_cell": "G24",
-          "actual": 12330.0,
+          "actual": 12330,
           "actual_cell": "H24",
           "pct": null,
-          "pct_cell": "I24"
+          "pct_cell": "I24",
+          "pct_raw": null,
+          "goal_formula": null,
+          "actual_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),12330.0)",
+          "pct_formula": null
         },
         "august": {
           "label": "August",
           "goal": null,
           "goal_cell": "J24",
-          "actual": 10288.0,
+          "actual": 10288,
           "actual_cell": "K24",
           "pct": null,
-          "pct_cell": "L24"
+          "pct_cell": "L24",
+          "pct_raw": null,
+          "goal_formula": null,
+          "actual_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),10288.0)",
+          "pct_formula": null
         },
         "september": {
           "label": "September",
@@ -733,7 +765,11 @@
           "actual": null,
           "actual_cell": "N24",
           "pct": null,
-          "pct_cell": "O24"
+          "pct_cell": "O24",
+          "pct_raw": null,
+          "goal_formula": null,
+          "actual_formula": null,
+          "pct_formula": null
         }
       }
     },
@@ -749,7 +785,11 @@
           "actual": 17.34588823,
           "actual_cell": "D25",
           "pct": null,
-          "pct_cell": "E25"
+          "pct_cell": "E25",
+          "pct_raw": null,
+          "goal_formula": null,
+          "actual_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),17.345888230612786)",
+          "pct_formula": null
         },
         "july": {
           "label": "July",
@@ -758,7 +798,11 @@
           "actual": 16.39956772,
           "actual_cell": "H25",
           "pct": null,
-          "pct_cell": "I25"
+          "pct_cell": "I25",
+          "pct_raw": null,
+          "goal_formula": null,
+          "actual_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),16.39956772100567)",
+          "pct_formula": null
         },
         "august": {
           "label": "August",
@@ -767,7 +811,11 @@
           "actual": 18.48003791,
           "actual_cell": "K25",
           "pct": null,
-          "pct_cell": "L25"
+          "pct_cell": "L25",
+          "pct_raw": null,
+          "goal_formula": null,
+          "actual_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),18.48003790824262)",
+          "pct_formula": null
         },
         "september": {
           "label": "September",
@@ -776,7 +824,11 @@
           "actual": null,
           "actual_cell": "N25",
           "pct": null,
-          "pct_cell": "O25"
+          "pct_cell": "O25",
+          "pct_raw": null,
+          "goal_formula": null,
+          "actual_formula": null,
+          "pct_formula": null
         }
       }
     },
@@ -792,7 +844,11 @@
           "actual": 4850.43,
           "actual_cell": "D26",
           "pct": null,
-          "pct_cell": "E26"
+          "pct_cell": "E26",
+          "pct_raw": null,
+          "goal_formula": null,
+          "actual_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),4850.43)",
+          "pct_formula": null
         },
         "july": {
           "label": "July",
@@ -801,7 +857,11 @@
           "actual": 606.05,
           "actual_cell": "H26",
           "pct": null,
-          "pct_cell": "I26"
+          "pct_cell": "I26",
+          "pct_raw": null,
+          "goal_formula": null,
+          "actual_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),606.05)",
+          "pct_formula": null
         },
         "august": {
           "label": "August",
@@ -810,7 +870,11 @@
           "actual": 4244.38,
           "actual_cell": "K26",
           "pct": null,
-          "pct_cell": "L26"
+          "pct_cell": "L26",
+          "pct_raw": null,
+          "goal_formula": null,
+          "actual_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),4244.38)",
+          "pct_formula": null
         },
         "september": {
           "label": "September",
@@ -819,11 +883,21 @@
           "actual": null,
           "actual_cell": "N26",
           "pct": null,
-          "pct_cell": "O26"
+          "pct_cell": "O26",
+          "pct_raw": null,
+          "goal_formula": null,
+          "actual_formula": null,
+          "pct_formula": null
         }
       }
     }
   },
+  "overall_keys": [
+    "total_raised",
+    "total_donations",
+    "average_donation",
+    "total_finance"
+  ],
   "cumulative": {
     "Email": {
       "actual": [
@@ -853,14 +927,14 @@
       "goal": [
         {
           "month": "July",
-          "value": 50000.0,
+          "value": 50000,
           "cells": [
             "G14"
           ]
         },
         {
           "month": "August",
-          "value": 150000.0,
+          "value": 150000,
           "cells": [
             "G14",
             "J14"
@@ -868,7 +942,7 @@
         },
         {
           "month": "September",
-          "value": 400000.0,
+          "value": 400000,
           "cells": [
             "G14",
             "J14",
@@ -957,14 +1031,14 @@
       "goal": [
         {
           "month": "July",
-          "value": 72000.0,
+          "value": 72000,
           "cells": [
             "G16"
           ]
         },
         {
           "month": "August",
-          "value": 162000.0,
+          "value": 162000,
           "cells": [
             "G16",
             "J16"
@@ -972,7 +1046,7 @@
         },
         {
           "month": "September",
-          "value": 312000.0,
+          "value": 312000,
           "cells": [
             "G16",
             "J16",
@@ -1089,7 +1163,7 @@
       "actual": [
         {
           "month": "July",
-          "value": 0.0,
+          "value": 0,
           "pending": false,
           "cells": [
             "H19"
@@ -1097,7 +1171,7 @@
         },
         {
           "month": "August",
-          "value": 0.0,
+          "value": 0,
           "pending": false,
           "cells": [
             "H19",
@@ -1113,14 +1187,14 @@
       "goal": [
         {
           "month": "July",
-          "value": 0.0,
+          "value": 0,
           "cells": [
             "G19"
           ]
         },
         {
           "month": "August",
-          "value": 0.0,
+          "value": 0,
           "cells": [
             "G19",
             "J19"
@@ -1128,7 +1202,7 @@
         },
         {
           "month": "September",
-          "value": 0.0,
+          "value": 0,
           "cells": [
             "G19",
             "J19",
@@ -1165,14 +1239,14 @@
       "goal": [
         {
           "month": "July",
-          "value": 6000.0,
+          "value": 6000,
           "cells": [
             "G20"
           ]
         },
         {
           "month": "August",
-          "value": 15000.0,
+          "value": 15000,
           "cells": [
             "G20",
             "J20"
@@ -1180,7 +1254,7 @@
         },
         {
           "month": "September",
-          "value": 27000.0,
+          "value": 27000,
           "cells": [
             "G20",
             "J20",
@@ -1193,7 +1267,7 @@
       "actual": [
         {
           "month": "July",
-          "value": 0.0,
+          "value": 0,
           "pending": false,
           "cells": [
             "H21"
@@ -1201,7 +1275,7 @@
         },
         {
           "month": "August",
-          "value": 0.0,
+          "value": 0,
           "pending": false,
           "cells": [
             "H21",
@@ -1217,14 +1291,14 @@
       "goal": [
         {
           "month": "July",
-          "value": 0.0,
+          "value": 0,
           "cells": [
             "G21"
           ]
         },
         {
           "month": "August",
-          "value": 0.0,
+          "value": 0,
           "cells": [
             "G21",
             "J21"
@@ -1232,7 +1306,7 @@
         },
         {
           "month": "September",
-          "value": 0.0,
+          "value": 0,
           "cells": [
             "G21",
             "J21",
@@ -1247,6 +1321,9 @@
     "august",
     "september"
   ],
+  "pending_months": [
+    "september"
+  ],
   "sources": {
     "quarter_actual": "Quarterly Fundraising Toplines",
     "july_goal": "Import - Monthly Goals",
@@ -1255,8 +1332,5 @@
     "august_actual": "Monthly Fundraising Toplines",
     "september_goal": "Import - Monthly Goals",
     "september_actual": "Monthly Fundraising Toplines"
-  },
-  "pending_months": [
-    "september"
-  ]
+  }
 }

@@ -42,6 +42,69 @@ header.page{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-end;justify-co
 .metagrid dt{color:var(--faint);font-size:11px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px}
 .metagrid dd{margin:0;font-weight:600}
 
+/* ---------- empty state (shown until a workbook is loaded) ---------- */
+.estate{display:flex;justify-content:center;padding:34px 0 10px}
+.estate[hidden]{display:none}
+.esbox{max-width:560px;text-align:center;background:var(--surface);border:1px solid var(--border);
+  border-radius:14px;box-shadow:var(--shadow);padding:38px 34px 30px}
+.esicon{width:52px;height:52px;color:var(--actual);margin:0 auto 14px;display:block}
+.esbox h2{font-size:20px;margin:0 0 8px;letter-spacing:-.015em}
+.esbox p{color:var(--muted);font-size:13.5px;line-height:1.6;margin:0 0 18px}
+.esbox code{font-family:var(--mono);font-size:12px;background:var(--surface-2);
+  border:1px solid var(--border);border-radius:4px;padding:1px 5px}
+.esnote{font-size:12px !important;color:var(--faint) !important;margin:18px 0 0 !important;
+  padding-top:15px;border-top:1px solid var(--border);text-align:left}
+.btn.big{font-size:14px;padding:9px 20px;border-radius:9px}
+#esWarn:not(:empty){margin-top:14px;color:var(--warn);font-size:12.5px;line-height:1.5}
+
+/* ---------- source bar, drop veil, validation report ---------- */
+.srcbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:9px 13px;margin:0 0 14px;box-shadow:var(--shadow)}
+.srcnow{font-size:12.5px;color:var(--muted);min-width:0}
+.srcnow b{color:var(--text)}
+.srcnow code{font-family:var(--mono);font-size:11.5px;background:var(--surface-2);
+  border:1px solid var(--border);border-radius:4px;padding:.5px 4px}
+.srcnow .live{display:inline-block;background:var(--actual);color:#fff;border-radius:99px;
+  padding:1px 8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-right:7px}
+.srcact{display:flex;gap:7px;flex-shrink:0}
+.btn{appearance:none;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;
+  background:var(--actual);color:#fff;border:1px solid var(--actual);border-radius:7px;padding:5.5px 13px}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:var(--surface-2);color:var(--muted);border-color:var(--border)}
+.btn.ghost:hover{color:var(--text);border-color:var(--muted);filter:none}
+.btn[disabled]{opacity:.55;cursor:progress}
+
+.veil{position:fixed;inset:0;z-index:90;display:none;align-items:center;justify-content:center;
+  background:rgba(12,16,24,.55);backdrop-filter:blur(2px)}
+.veil.on{display:flex}
+.veilbox{background:var(--surface);border:2px dashed var(--actual);border-radius:14px;
+  padding:26px 38px;font-size:15px;font-weight:650;color:var(--text);box-shadow:0 10px 40px rgba(0,0,0,.3)}
+
+.report{border:1px solid var(--border);border-left:3px solid var(--muted);border-radius:9px;
+  background:var(--surface);padding:12px 15px;margin:0 0 18px;font-size:12.5px;box-shadow:var(--shadow)}
+.report.ok{border-left-color:var(--good)}
+.report.warn{border-left-color:var(--warn)}
+.report.bad{border-left-color:var(--bad)}
+.report h3{font-size:13px;margin:0 0 7px;display:flex;align-items:center;gap:8px}
+.report h3 .tag{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;
+  border-radius:99px;padding:1.5px 8px;background:var(--surface-2);color:var(--muted)}
+.report.ok h3 .tag{background:var(--good);color:#fff}
+.report.warn h3 .tag{background:var(--warn);color:#fff}
+.report.bad h3 .tag{background:var(--bad);color:#fff}
+.report ul{margin:6px 0 0;padding-left:18px;color:var(--muted);line-height:1.55}
+.report li{margin:2px 0}
+.report li.err{color:var(--bad)}
+.report li.wrn{color:var(--warn)}
+.report code{font-family:var(--mono);font-size:11.5px}
+.report .foot{margin-top:9px;padding-top:8px;border-top:1px solid var(--border);color:var(--faint);font-size:11.5px}
+.report details{margin-top:7px}
+.report summary{cursor:pointer;color:var(--muted);font-weight:600}
+.report summary:hover{color:var(--text)}
+.report .close{margin-left:auto;appearance:none;background:none;border:0;color:var(--faint);
+  font:inherit;font-size:16px;line-height:1;cursor:pointer;padding:0 2px}
+.report .close:hover{color:var(--text)}
+
 /* ---------- tabs ---------- */
 .tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-bottom:26px}
 .tab{
@@ -226,13 +289,42 @@ footer.page code{font-family:var(--mono)}
 </head>
 <body>
 <div class="wrap">
-  <header class="page">
+  <section class="estate" id="emptyState" hidden>
+    <div class="esbox">
+      <svg class="esicon" viewBox="0 0 48 48" aria-hidden="true">
+        <path d="M24 32V10m0 0l-8 8m8-8l8 8" fill="none" stroke="currentColor"
+              stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M8 30v6a2 2 0 002 2h28a2 2 0 002-2v-6" fill="none" stroke="currentColor"
+              stroke-width="3" stroke-linecap="round"/>
+      </svg>
+      <h2>Load a digital report workbook</h2>
+      <p>Drop an <code>.xlsx</code> anywhere on this page, or choose a file below.
+         It is read in your browser — nothing is uploaded anywhere.</p>
+      <button class="btn big" type="button" id="btnPickEmpty">Choose a workbook…</button>
+      <p class="esnote">Expects a <code>Digital Report</code> tab and a
+         <code>Paid Media Report</code> tab. Rows, channels and placements are found by their
+         headings, so a workbook that has grown since last quarter still reads correctly.</p>
+      <div id="esWarn"></div>
+    </div>
+  </section>
+
+  <header class="page" id="pgHeader">
     <div>
       <h1 id="pgTitle">Digital Fundraising Toplines</h1>
       <div class="sub" id="pgSub"></div>
     </div>
     <dl class="metagrid" id="pgMeta"></dl>
   </header>
+
+  <div class="srcbar">
+    <div class="srcnow" id="srcNow"></div>
+    <div class="srcact">
+      <button class="btn" type="button" id="btnPick">Load a workbook…</button>
+      <button class="btn ghost" type="button" id="btnClear" hidden>Clear</button>
+      <input type="file" id="filePick" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden>
+    </div>
+  </div>
+  <div class="report" id="report" hidden></div>
 
   <div class="tabs" role="tablist">
     <button class="tab" role="tab" aria-selected="true" aria-controls="p-overview" id="t-overview">Overview</button>
@@ -368,15 +460,1124 @@ footer.page code{font-family:var(--mono)}
 
   <footer class="page" id="pgFoot"></footer>
 </div>
+<div class="veil" id="dropVeil" aria-hidden="true"><div class="veilbox">Drop the .xlsx workbook to load it</div></div>
 
 <script>
-const DATA = {"meta":{"title":"Digital Fundraising Toplines","client":{"value":"Cory Booker","cell":"C6"},"email_lead":{"value":"Amanda Powell","cell":"C7"},"year":{"value":2026.0,"cell":"C9"},"quarter":{"value":3.0,"cell":"C10"},"dynamic_goals":{"july":{"value":false,"cell":"O9"},"august":{"value":false,"cell":"O10"},"label":"Display Dynamic Goals:"},"source_workbook":"EXTERNAL_ CAB Digital Report.xlsx","extracted_at":"2026-08-25T14:25:45","sheet":"Digital Report"},"channels":[{"name":"Email","name_cell":"B14","row":14,"periods":{"quarter":{"label":"Quarter","goal":400000.0,"goal_cell":"C14","actual":83568.6,"actual_cell":"D14","pct":0.2089215,"pct_cell":"E14","pct_raw":0.2089215,"goal_formula":"=SUM(Q14:S14)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"TRANSPOSE(QUERY(IMPORTRANGE(\"\"https://docs.google.com/spreadsheets/d/1BtcJvMe8of-zuMB48bULVYsLVLrzOcJtgbdPjPbL36s/\"\", \"\"Quarterly Fundraising Toplines!A:Q\"\"),\"\"Select Col3,Col4,Col5,Col6,Col7,Col8,Col9,Col10 WHERE Col2 contains '\"\"&C10&\"\"' and Col1 contai\"&\"ns '\"\"&C9&\"\"'\"\",0))\"),83568.59999999999)","pct_formula":"=IFERROR(D14/C14,\"-\")"},"july":{"label":"July","goal":50000.0,"goal_cell":"G14","actual":36077.5,"actual_cell":"H14","pct":0.72155,"pct_cell":"I14","pct_raw":0.72155,"goal_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"QUERY(TRANSPOSE(QUERY(IMPORTRANGE(\"\"https://docs.google.com/spreadsheets/d/1BtcJvMe8of-zuMB48bULVYsLVLrzOcJtgbdPjPbL36s/\"\",\"\"Import - Monthly Goals!A:L\"\"),\"\"Select Col5,Col6,Col7,Col8,Col9,Col10,Col11,Col12 WHERE Col2 contains '\"\"&C10&\"\"' and Col1 contain\"&\"s '\"\"&C9&\"\"'\"\",0)),\"\"Select Col1\"\",0)\"),50000.0)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"QUERY(TRANSPOSE(QUERY(IMPORTRANGE(\"\"https://docs.google.com/spreadsheets/d/1BtcJvMe8of-zuMB48bULVYsLVLrzOcJtgbdPjPbL36s/\"\",\"\"Monthly Fundraising Toplines!A:T\"\"),\"\"Select Col6,Col7,Col8,Col9,Col10,Col11,Col12,Col13 WHERE Col3 contains '\"\"&C10&\"\"' and Col2 \"&\"contains '\"\"&C9&\"\"'\"\",0)),\"\"Select Col1\"\")\"),36077.49999999993)","pct_formula":"=IFERROR(H14/G14,\"-\")"},"august":{"label":"August","goal":100000.0,"goal_cell":"J14","actual":47491.1,"actual_cell":"K14","pct":0.474911,"pct_cell":"L14","pct_raw":0.474911,"goal_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"QUERY(TRANSPOSE(QUERY(IMPORTRANGE(\"\"https://docs.google.com/spreadsheets/d/1BtcJvMe8of-zuMB48bULVYsLVLrzOcJtgbdPjPbL36s/\"\",\"\"Import - Monthly Goals!A:L\"\"),\"\"Select Col5,Col6,Col7,Col8,Col9,Col10,Col11,Col12 WHERE Col2 contains '\"\"&C10&\"\"' and Col1 contain\"&\"s '\"\"&C9&\"\"'\"\",0)),\"\"Select Col2\"\",0)\"),100000.0)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"QUERY(TRANSPOSE(QUERY(IMPORTRANGE(\"\"https://docs.google.com/spreadsheets/d/1BtcJvMe8of-zuMB48bULVYsLVLrzOcJtgbdPjPbL36s/\"\",\"\"Monthly Fundraising Toplines!A:T\"\"),\"\"Select Col6,Col7,Col8,Col9,Col10,Col11,Col12,Col13 WHERE Col3 contains '\"\"&C10&\"\"' and Col2 \"&\"contains '\"\"&C9&\"\"'\"\",0)),\"\"Select Col2\"\")\"),47491.100000000064)","pct_formula":"=IFERROR(K14/J14,\"-\")"},"september":{"label":"September","goal":250000.0,"goal_cell":"M14","actual":null,"actual_cell":"N14","pct":0.0,"pct_cell":"O14","pct_raw":0,"goal_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"QUERY(TRANSPOSE(QUERY(IMPORTRANGE(\"\"https://docs.google.com/spreadsheets/d/1BtcJvMe8of-zuMB48bULVYsLVLrzOcJtgbdPjPbL36s/\"\",\"\"Import - Monthly Goals!A:L\"\"),\"\"Select Col5,Col6,Col7,Col8,Col9,Col10,Col11,Col12 WHERE Col2 contains '\"\"&C10&\"\"' and Col1 contain\"&\"s '\"\"&C9&\"\"'\"\",0)),\"\"Select Col3\"\",0)\"),250000.0)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"QUERY(TRANSPOSE(QUERY(IMPORTRANGE(\"\"https://docs.google.com/spreadsheets/d/1BtcJvMe8of-zuMB48bULVYsLVLrzOcJtgbdPjPbL36s/\"\",\"\"Monthly Fundraising Toplines!A:T\"\"),\"\"Select Col6,Col7,Col8,Col9,Col10,Col11,Col12,Col13 WHERE Col3 contains '\"\"&C10&\"\"' and Col2 \"&\"contains '\"\"&C9&\"\"'\"\",0)),\"\"Select Col3\"\")\"),\"\")","pct_formula":"=IFERROR(N14/M14,\"-\")"}},"helpers":{"july":{"value":50000.0,"cell":"Q14","formula":"=IF($O$9,H14,G14)"},"august":{"value":100000.0,"cell":"R14","formula":"=IF($O$10,K14,J14)"},"september":{"value":250000.0,"cell":"S14","formula":"=M14"}},"dormant":false},{"name":"Recurring","name_cell":"B15","row":15,"periods":{"quarter":{"label":"Quarter","goal":390507.6,"goal_cell":"C15","actual":138105.76,"actual_cell":"D15","pct":0.3536570351,"pct_cell":"E15","pct_raw":0.3536570351,"goal_formula":"=SUM(Q15:S15)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),138105.76)","pct_formula":"=IFERROR(D15/C15,\"-\")"},"july":{"label":"July","goal":114183.51,"goal_cell":"G15","actual":76532.24,"actual_cell":"H15","pct":0.670256502,"pct_cell":"I15","pct_raw":0.670256502,"goal_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),114183.51)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),76532.24)","pct_formula":"=IFERROR(H15/G15,\"-\")"},"august":{"label":"August","goal":125601.86,"goal_cell":"J15","actual":61573.52,"actual_cell":"K15","pct":0.4902277721,"pct_cell":"L15","pct_raw":0.4902277721,"goal_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),125601.86)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),61573.520000000004)","pct_formula":"=IFERROR(K15/J15,\"-\")"},"september":{"label":"September","goal":150722.23,"goal_cell":"M15","actual":null,"actual_cell":"N15","pct":0.0,"pct_cell":"O15","pct_raw":0,"goal_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),150722.23)","actual_formula":null,"pct_formula":"=IFERROR(N15/M15,\"-\")"}},"helpers":{"july":{"value":114183.51,"cell":"Q15","formula":"=IF($O$9,H15,G15)"},"august":{"value":125601.86,"cell":"R15","formula":"=IF($O$10,K15,J15)"},"september":{"value":150722.23,"cell":"S15","formula":"=M15"}},"dormant":false},{"name":"Ads","name_cell":"B16","row":16,"periods":{"quarter":{"label":"Quarter","goal":312000.0,"goal_cell":"C16","actual":100902.75,"actual_cell":"D16","pct":0.32340625,"pct_cell":"E16","pct_raw":0.32340625,"goal_formula":"=SUM(Q16:S16)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),100902.75)","pct_formula":"=IFERROR(D16/C16,\"-\")"},"july":{"label":"July","goal":72000.0,"goal_cell":"G16","actual":57835.76,"actual_cell":"H16","pct":0.8032744444,"pct_cell":"I16","pct_raw":0.8032744444,"goal_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),72000.0)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),57835.76)","pct_formula":"=IFERROR(H16/G16,\"-\")"},"august":{"label":"August","goal":90000.0,"goal_cell":"J16","actual":43066.99,"actual_cell":"K16","pct":0.4785221111,"pct_cell":"L16","pct_raw":0.4785221111,"goal_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),90000.0)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),43066.990000000005)","pct_formula":"=IFERROR(K16/J16,\"-\")"},"september":{"label":"September","goal":150000.0,"goal_cell":"M16","actual":null,"actual_cell":"N16","pct":0.0,"pct_cell":"O16","pct_raw":0,"goal_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),150000.0)","actual_formula":null,"pct_formula":"=IFERROR(N16/M16,\"-\")"}},"helpers":{"july":{"value":72000.0,"cell":"Q16","formula":"=IF($O$9,H16,G16)"},"august":{"value":90000.0,"cell":"R16","formula":"=IF($O$10,K16,J16)"},"september":{"value":150000.0,"cell":"S16","formula":"=M16"}},"dormant":false},{"name":"Website","name_cell":"B17","row":17,"periods":{"quarter":{"label":"Quarter","goal":220846.6,"goal_cell":"C17","actual":54696.36,"actual_cell":"D17","pct":0.2476667515,"pct_cell":"E17","pct_raw":0.2476667515,"goal_formula":"=SUM(Q17:S17)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),54696.36)","pct_formula":"=IFERROR(D17/C17,\"-\")"},"july":{"label":"July","goal":46494.02,"goal_cell":"G17","actual":25754.3,"actual_cell":"H17","pct":0.5539271502,"pct_cell":"I17","pct_raw":0.5539271502,"goal_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),46494.02)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),25754.300000000003)","pct_formula":"=IFERROR(H17/G17,\"-\")"},"august":{"label":"August","goal":69741.03,"goal_cell":"J17","actual":28942.06,"actual_cell":"K17","pct":0.4149932973,"pct_cell":"L17","pct_raw":0.4149932973,"goal_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),69741.03)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),28942.059999999998)","pct_formula":"=IFERROR(K17/J17,\"-\")"},"september":{"label":"September","goal":104611.55,"goal_cell":"M17","actual":null,"actual_cell":"N17","pct":0.0,"pct_cell":"O17","pct_raw":0,"goal_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),104611.55)","actual_formula":null,"pct_formula":"=IFERROR(N17/M17,\"-\")"}},"helpers":{"july":{"value":46494.02,"cell":"Q17","formula":"=IF($O$9,H17,G17)"},"august":{"value":69741.03,"cell":"R17","formula":"=IF($O$10,K17,J17)"},"september":{"value":104611.55,"cell":"S17","formula":"=M17"}},"dormant":false},{"name":"Tandem","name_cell":"B18","row":18,"periods":{"quarter":{"label":"Quarter","goal":1279.71,"goal_cell":"C18","actual":1515.36,"actual_cell":"D18","pct":1.184143282,"pct_cell":"E18","pct_raw":1.184143282,"goal_formula":"=SUM(Q18:S18)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1515.3600000000001)","pct_formula":"=IFERROR(D18/C18,\"-\")"},"july":{"label":"July","goal":269.41,"goal_cell":"G18","actual":888.61,"actual_cell":"H18","pct":3.298355666,"pct_cell":"I18","pct_raw":3.298355666,"goal_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),269.41)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),888.61)","pct_formula":"=IFERROR(H18/G18,\"-\")"},"august":{"label":"August","goal":404.12,"goal_cell":"J18","actual":626.75,"actual_cell":"K18","pct":1.550900723,"pct_cell":"L18","pct_raw":1.550900723,"goal_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),404.12)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),626.75)","pct_formula":"=IFERROR(K18/J18,\"-\")"},"september":{"label":"September","goal":606.18,"goal_cell":"M18","actual":null,"actual_cell":"N18","pct":0.0,"pct_cell":"O18","pct_raw":0,"goal_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),606.18)","actual_formula":null,"pct_formula":"=IFERROR(N18/M18,\"-\")"}},"helpers":{"july":{"value":269.41,"cell":"Q18","formula":"=IF($O$9,H18,G18)"},"august":{"value":404.12,"cell":"R18","formula":"=IF($O$10,K18,J18)"},"september":{"value":606.18,"cell":"S18","formula":"=M18"}},"dormant":false},{"name":"SMS Broadcast","name_cell":"B19","row":19,"periods":{"quarter":{"label":"Quarter","goal":0.0,"goal_cell":"C19","actual":0.0,"actual_cell":"D19","pct":null,"pct_cell":"E19","pct_raw":"-","goal_formula":"=SUM(Q19:S19)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)","pct_formula":"=IFERROR(D19/C19,\"-\")"},"july":{"label":"July","goal":null,"goal_cell":"G19","actual":0.0,"actual_cell":"H19","pct":null,"pct_cell":"I19","pct_raw":"-","goal_formula":null,"actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)","pct_formula":"=IFERROR(H19/G19,\"-\")"},"august":{"label":"August","goal":null,"goal_cell":"J19","actual":0.0,"actual_cell":"K19","pct":null,"pct_cell":"L19","pct_raw":"-","goal_formula":null,"actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)","pct_formula":"=IFERROR(K19/J19,\"-\")"},"september":{"label":"September","goal":null,"goal_cell":"M19","actual":null,"actual_cell":"N19","pct":null,"pct_cell":"O19","pct_raw":"-","goal_formula":null,"actual_formula":null,"pct_formula":"=IFERROR(N19/M19,\"-\")"}},"helpers":{"july":{"value":null,"cell":"Q19","formula":"=IF($O$9,H19,G19)"},"august":{"value":null,"cell":"R19","formula":"=IF($O$10,K19,J19)"},"september":{"value":null,"cell":"S19","formula":"=M19"}},"dormant":true},{"name":"SMS P2P","name_cell":"B20","row":20,"periods":{"quarter":{"label":"Quarter","goal":27000.0,"goal_cell":"C20","actual":13540.47,"actual_cell":"D20","pct":0.5014988889,"pct_cell":"E20","pct_raw":0.5014988889,"goal_formula":"=SUM(Q20:S20)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),13540.47)","pct_formula":"=IFERROR(D20/C20,\"-\")"},"july":{"label":"July","goal":6000.0,"goal_cell":"G20","actual":5118.26,"actual_cell":"H20","pct":0.8530433333,"pct_cell":"I20","pct_raw":0.8530433333,"goal_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),6000.0)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),5118.26)","pct_formula":"=IFERROR(H20/G20,\"-\")"},"august":{"label":"August","goal":9000.0,"goal_cell":"J20","actual":8422.21,"actual_cell":"K20","pct":0.9358011111,"pct_cell":"L20","pct_raw":0.9358011111,"goal_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),9000.0)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),8422.21)","pct_formula":"=IFERROR(K20/J20,\"-\")"},"september":{"label":"September","goal":12000.0,"goal_cell":"M20","actual":null,"actual_cell":"N20","pct":0.0,"pct_cell":"O20","pct_raw":0,"goal_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),12000.0)","actual_formula":null,"pct_formula":"=IFERROR(N20/M20,\"-\")"}},"helpers":{"july":{"value":6000.0,"cell":"Q20","formula":"=IF($O$9,H20,G20)"},"august":{"value":9000.0,"cell":"R20","formula":"=IF($O$10,K20,J20)"},"september":{"value":12000.0,"cell":"S20","formula":"=M20"}},"dormant":false},{"name":"Social","name_cell":"B21","row":21,"periods":{"quarter":{"label":"Quarter","goal":0.0,"goal_cell":"C21","actual":0.0,"actual_cell":"D21","pct":null,"pct_cell":"E21","pct_raw":"-","goal_formula":"=SUM(Q21:S21)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)","pct_formula":"=IFERROR(D21/C21,\"-\")"},"july":{"label":"July","goal":null,"goal_cell":"G21","actual":0.0,"actual_cell":"H21","pct":null,"pct_cell":"I21","pct_raw":"-","goal_formula":null,"actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)","pct_formula":"=IFERROR(H21/G21,\"-\")"},"august":{"label":"August","goal":null,"goal_cell":"J21","actual":0.0,"actual_cell":"K21","pct":null,"pct_cell":"L21","pct_raw":"-","goal_formula":null,"actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)","pct_formula":"=IFERROR(K21/J21,\"-\")"},"september":{"label":"September","goal":null,"goal_cell":"M21","actual":null,"actual_cell":"N21","pct":null,"pct_cell":"O21","pct_raw":"-","goal_formula":null,"actual_formula":null,"pct_formula":"=IFERROR(N21/M21,\"-\")"}},"helpers":{"july":{"value":null,"cell":"Q21","formula":"=IF($O$9,H21,G21)"},"august":{"value":null,"cell":"R21","formula":"=IF($O$10,K21,J21)"},"september":{"value":null,"cell":"S21","formula":"=M21"}},"dormant":true}],"overall":{"total_raised":{"label":"Total Raised","label_cell":"B23","row":23,"periods":{"quarter":{"label":"Quarter","goal":1351633.91,"goal_cell":"C23","actual":392329.3,"actual_cell":"D23","pct":0.2902629899,"pct_cell":"E23"},"july":{"label":"July","goal":288946.94,"goal_cell":"G23","actual":202206.67,"actual_cell":"H23","pct":0.6998055422,"pct_cell":"I23"},"august":{"label":"August","goal":394747.01,"goal_cell":"J23","actual":190122.63,"actual_cell":"K23","pct":0.4816315898,"pct_cell":"L23"},"september":{"label":"September","goal":667939.96,"goal_cell":"M23","actual":0.0,"actual_cell":"N23","pct":0.0,"pct_cell":"O23"}}},"total_donations":{"label":"Total Donations","label_cell":"B24","row":24,"periods":{"quarter":{"label":"Quarter","goal":null,"goal_cell":"C24","actual":22618.0,"actual_cell":"D24","pct":null,"pct_cell":"E24"},"july":{"label":"July","goal":null,"goal_cell":"G24","actual":12330.0,"actual_cell":"H24","pct":null,"pct_cell":"I24"},"august":{"label":"August","goal":null,"goal_cell":"J24","actual":10288.0,"actual_cell":"K24","pct":null,"pct_cell":"L24"},"september":{"label":"September","goal":null,"goal_cell":"M24","actual":null,"actual_cell":"N24","pct":null,"pct_cell":"O24"}}},"average_donation":{"label":"Average Donation","label_cell":"B25","row":25,"periods":{"quarter":{"label":"Quarter","goal":null,"goal_cell":"C25","actual":17.34588823,"actual_cell":"D25","pct":null,"pct_cell":"E25"},"july":{"label":"July","goal":null,"goal_cell":"G25","actual":16.39956772,"actual_cell":"H25","pct":null,"pct_cell":"I25"},"august":{"label":"August","goal":null,"goal_cell":"J25","actual":18.48003791,"actual_cell":"K25","pct":null,"pct_cell":"L25"},"september":{"label":"September","goal":null,"goal_cell":"M25","actual":null,"actual_cell":"N25","pct":null,"pct_cell":"O25"}}},"total_finance":{"label":"Total Finance","label_cell":"B26","row":26,"periods":{"quarter":{"label":"Quarter","goal":null,"goal_cell":"C26","actual":4850.43,"actual_cell":"D26","pct":null,"pct_cell":"E26"},"july":{"label":"July","goal":null,"goal_cell":"G26","actual":606.05,"actual_cell":"H26","pct":null,"pct_cell":"I26"},"august":{"label":"August","goal":null,"goal_cell":"J26","actual":4244.38,"actual_cell":"K26","pct":null,"pct_cell":"L26"},"september":{"label":"September","goal":null,"goal_cell":"M26","actual":null,"actual_cell":"N26","pct":null,"pct_cell":"O26"}}}},"cumulative":{"Email":{"actual":[{"month":"July","value":36077.5,"pending":false,"cells":["H14"]},{"month":"August","value":83568.6,"pending":false,"cells":["H14","K14"]},{"month":"September","value":null,"pending":true}],"goal":[{"month":"July","value":50000.0,"cells":["G14"]},{"month":"August","value":150000.0,"cells":["G14","J14"]},{"month":"September","value":400000.0,"cells":["G14","J14","M14"]}]},"Recurring":{"actual":[{"month":"July","value":76532.24,"pending":false,"cells":["H15"]},{"month":"August","value":138105.76,"pending":false,"cells":["H15","K15"]},{"month":"September","value":null,"pending":true}],"goal":[{"month":"July","value":114183.51,"cells":["G15"]},{"month":"August","value":239785.37,"cells":["G15","J15"]},{"month":"September","value":390507.6,"cells":["G15","J15","M15"]}]},"Ads":{"actual":[{"month":"July","value":57835.76,"pending":false,"cells":["H16"]},{"month":"August","value":100902.75,"pending":false,"cells":["H16","K16"]},{"month":"September","value":null,"pending":true}],"goal":[{"month":"July","value":72000.0,"cells":["G16"]},{"month":"August","value":162000.0,"cells":["G16","J16"]},{"month":"September","value":312000.0,"cells":["G16","J16","M16"]}]},"Website":{"actual":[{"month":"July","value":25754.3,"pending":false,"cells":["H17"]},{"month":"August","value":54696.36,"pending":false,"cells":["H17","K17"]},{"month":"September","value":null,"pending":true}],"goal":[{"month":"July","value":46494.02,"cells":["G17"]},{"month":"August","value":116235.04999999999,"cells":["G17","J17"]},{"month":"September","value":220846.59999999998,"cells":["G17","J17","M17"]}]},"Tandem":{"actual":[{"month":"July","value":888.61,"pending":false,"cells":["H18"]},{"month":"August","value":1515.3600000000001,"pending":false,"cells":["H18","K18"]},{"month":"September","value":null,"pending":true}],"goal":[{"month":"July","value":269.41,"cells":["G18"]},{"month":"August","value":673.53,"cells":["G18","J18"]},{"month":"September","value":1279.71,"cells":["G18","J18","M18"]}]},"SMS Broadcast":{"actual":[{"month":"July","value":0.0,"pending":false,"cells":["H19"]},{"month":"August","value":0.0,"pending":false,"cells":["H19","K19"]},{"month":"September","value":null,"pending":true}],"goal":[{"month":"July","value":0.0,"cells":["G19"]},{"month":"August","value":0.0,"cells":["G19","J19"]},{"month":"September","value":0.0,"cells":["G19","J19","M19"]}]},"SMS P2P":{"actual":[{"month":"July","value":5118.26,"pending":false,"cells":["H20"]},{"month":"August","value":13540.47,"pending":false,"cells":["H20","K20"]},{"month":"September","value":null,"pending":true}],"goal":[{"month":"July","value":6000.0,"cells":["G20"]},{"month":"August","value":15000.0,"cells":["G20","J20"]},{"month":"September","value":27000.0,"cells":["G20","J20","M20"]}]},"Social":{"actual":[{"month":"July","value":0.0,"pending":false,"cells":["H21"]},{"month":"August","value":0.0,"pending":false,"cells":["H21","K21"]},{"month":"September","value":null,"pending":true}],"goal":[{"month":"July","value":0.0,"cells":["G21"]},{"month":"August","value":0.0,"cells":["G21","J21"]},{"month":"September","value":0.0,"cells":["G21","J21","M21"]}]}},"month_keys":["july","august","september"],"sources":{"quarter_actual":"Quarterly Fundraising Toplines","july_goal":"Import - Monthly Goals","july_actual":"Monthly Fundraising Toplines","august_goal":"Import - Monthly Goals","august_actual":"Monthly Fundraising Toplines","september_goal":"Import - Monthly Goals","september_actual":"Monthly Fundraising Toplines"},"pending_months":["september"]};
+/* =====================================================================
+   xlsx-reader.js — minimal .xlsx reader, shared by the dashboard page and
+   the node build/verification scripts.
+
+   An .xlsx file is a ZIP of XML parts. We need only the cached cell values
+   (and formulas, for provenance), so this reads:
+     xl/workbook.xml            sheet names, in order, with rIds
+     xl/_rels/workbook.xml.rels rId -> worksheet part path
+     xl/sharedStrings.xml       the string table
+     xl/worksheets/sheetN.xml   the cells
+
+   Deliberately not supported (and reported as errors rather than guessed):
+   encrypted workbooks, ZIP64 archives, and compression methods other than
+   stored (0) and deflate (8). Dates are returned as their raw serial numbers,
+   which is fine here because no figure on the dashboard is a date.
+
+   Works in the browser (DecompressionStream) and in node (zlib).
+   ===================================================================== */
+(function (root, factory) {
+  const api = factory();
+  if (typeof module !== "undefined" && module.exports) module.exports = api;
+  root.XlsxReader = api;
+})(typeof globalThis !== "undefined" ? globalThis : this, function () {
+  "use strict";
+
+  /* ---------- raw inflate, whichever runtime we are in ----------
+     An override can be supplied via setInflate(fn) for environments that have
+     neither DecompressionStream nor node's zlib (notably the jsdom-based
+     tests, which exercise the same code path the browser takes). */
+  let inflateOverride = null;
+  function setInflate(fn) { inflateOverride = fn || null; }
+
+  async function inflateRaw(bytes) {
+    if (inflateOverride) return await inflateOverride(bytes);
+    if (typeof DecompressionStream === "function") {
+      const ds = new DecompressionStream("deflate-raw");
+      const stream = new Blob([bytes]).stream().pipeThrough(ds);
+      const buf = await new Response(stream).arrayBuffer();
+      return new Uint8Array(buf);
+    }
+    // node
+    const zlib = require("zlib");
+    return new Uint8Array(zlib.inflateRawSync(Buffer.from(bytes)));
+  }
+
+  function hasInflate() {
+    if (inflateOverride) return true;
+    if (typeof DecompressionStream === "function") return true;
+    try { require("zlib"); return true; } catch (e) { return false; }
+  }
+
+  /* ---------- ZIP parsing ---------- */
+  const SIG_EOCD = 0x06054b50, SIG_CD = 0x02014b50, SIG_LFH = 0x04034b50;
+
+  function findEOCD(dv, len) {
+    // EOCD is at most 22 bytes plus a comment up to 65535
+    const start = Math.max(0, len - 22 - 65535);
+    for (let i = len - 22; i >= start; i--) {
+      if (dv.getUint32(i, true) === SIG_EOCD) return i;
+    }
+    return -1;
+  }
+
+  const utf8 = new TextDecoder("utf-8");
+
+  function readEntries(u8) {
+    const dv = new DataView(u8.buffer, u8.byteOffset, u8.byteLength);
+    const eocd = findEOCD(dv, u8.byteLength);
+    if (eocd < 0) throw new Error("Not a .xlsx file: no ZIP end-of-directory record found.");
+    let count = dv.getUint16(eocd + 10, true);
+    let cdOffset = dv.getUint32(eocd + 16, true);
+    const cdSize = dv.getUint32(eocd + 12, true);
+    if (count === 0xffff || cdOffset === 0xffffffff || cdSize === 0xffffffff) {
+      throw new Error("This workbook uses the ZIP64 format, which this reader does not support.");
+    }
+    const entries = {};
+    let p = cdOffset;
+    for (let i = 0; i < count; i++) {
+      if (dv.getUint32(p, true) !== SIG_CD) break;
+      const method = dv.getUint16(p + 10, true);
+      const compSize = dv.getUint32(p + 20, true);
+      const uncompSize = dv.getUint32(p + 24, true);
+      const nameLen = dv.getUint16(p + 28, true);
+      const extraLen = dv.getUint16(p + 30, true);
+      const commentLen = dv.getUint16(p + 32, true);
+      const localOff = dv.getUint32(p + 42, true);
+      const name = utf8.decode(u8.subarray(p + 46, p + 46 + nameLen));
+      entries[name] = {method: method, compSize: compSize, uncompSize: uncompSize, localOff: localOff};
+      p += 46 + nameLen + extraLen + commentLen;
+    }
+    return {u8: u8, dv: dv, entries: entries};
+  }
+
+  async function readPart(zip, name) {
+    const e = zip.entries[name];
+    if (!e) return null;
+    const dv = zip.dv;
+    if (dv.getUint32(e.localOff, true) !== SIG_LFH) {
+      throw new Error("Corrupt archive: bad local header for " + name);
+    }
+    const nameLen = dv.getUint16(e.localOff + 26, true);
+    const extraLen = dv.getUint16(e.localOff + 28, true);
+    const dataStart = e.localOff + 30 + nameLen + extraLen;
+    const raw = zip.u8.subarray(dataStart, dataStart + e.compSize);
+    let out;
+    if (e.method === 0) out = raw;
+    else if (e.method === 8) out = await inflateRaw(raw);
+    else throw new Error("Unsupported compression (method " + e.method + ") for " + name);
+    return utf8.decode(out);
+  }
+
+  /* ---------- XML helpers (regex based: these parts are machine generated) ---------- */
+  const ENT = {amp: "&", lt: "<", gt: ">", quot: '"', apos: "'"};
+  function unesc(s) {
+    if (s.indexOf("&") < 0) return s;
+    return s.replace(/&(#x?[0-9a-fA-F]+|amp|lt|gt|quot|apos);/g, function (m, g) {
+      if (g.charAt(0) === "#") {
+        const cp = g.charAt(1) === "x" ? parseInt(g.slice(2), 16) : parseInt(g.slice(1), 10);
+        return isNaN(cp) ? m : String.fromCodePoint(cp);
+      }
+      return ENT[g] != null ? ENT[g] : m;
+    });
+  }
+  const attr = (tag, name) => {
+    const m = tag.match(new RegExp("\\b" + name + '\\s*=\\s*"([^"]*)"'));
+    return m ? unesc(m[1]) : null;
+  };
+
+  function parseSharedStrings(xml) {
+    if (!xml) return [];
+    const out = [];
+    const siRe = /<si\b[^>]*>([\s\S]*?)<\/si>|<si\b[^>]*\/>/g;
+    let m;
+    while ((m = siRe.exec(xml))) {
+      const inner = m[1] || "";
+      // concatenate every <t> so rich-text runs join into one string
+      let s = "", tRe = /<t\b[^>]*>([\s\S]*?)<\/t>|<t\b[^>]*\/>/g, t;
+      while ((t = tRe.exec(inner))) s += unesc(t[1] || "");
+      out.push(s);
+    }
+    return out;
+  }
+
+  /* ---------- shared formulas ----------
+     XLSX stores a "shared" formula once, on a master cell, and dependent cells
+     reference it by index with no text of their own. To report a dependent's
+     formula honestly we must translate the master's relative references by the
+     row/column offset — reusing the master text verbatim would attribute the
+     wrong cells to the wrong row. */
+  function parseRefAddr(ref) {
+    const m = ref.match(/^([A-Z]+)(\d+)$/);
+    return m ? {col: colToNum(m[1]), row: parseInt(m[2], 10)} : null;
+  }
+  // A1-style reference, not preceded/followed by characters that would make it
+  // part of a function name (LOG10) or a longer token.
+  const REF_RE = /(?<![A-Z0-9_$.])(\$?)([A-Z]{1,3})(\$?)([1-9]\d{0,6})(?![\d(A-Z_])/g;
+
+  function translateFormula(text, fromRef, toRef) {
+    const f = parseRefAddr(fromRef), t = parseRefAddr(toRef);
+    if (!f || !t) return text;
+    const dR = t.row - f.row, dC = t.col - f.col;
+    if (!dR && !dC) return text;
+    // never rewrite inside double-quoted string literals
+    return text.split(/("(?:[^"]|"")*")/).map(function (seg, i) {
+      if (i % 2) return seg;
+      return seg.replace(REF_RE, function (m0, aC, col, aR, row) {
+        const c = aC ? col : numToCol(Math.max(1, colToNum(col) + dC));
+        const r = aR ? row : String(Math.max(1, parseInt(row, 10) + dR));
+        return aC + c + aR + r;
+      });
+    }).join("");
+  }
+
+  // Cell values are returned as: number, string, boolean, or null.
+  function parseSheet(xml, shared) {
+    const cells = {};
+    if (!xml) return cells;
+    const sharedF = {};          // si -> {text, master}
+    const pendingShared = [];    // cells awaiting their master
+    const cRe = /<c\b([^>]*?)\/>|<c\b([^>]*?)>([\s\S]*?)<\/c>/g;
+    let m;
+    while ((m = cRe.exec(xml))) {
+      const tag = m[1] != null ? m[1] : m[2];
+      const inner = m[3] || "";
+      const ref = attr(tag, "r");
+      if (!ref) continue;
+      const t = attr(tag, "t");
+      let fm = null;
+      const fOpen = inner.match(/<f\b([^>]*?)(?:\/>|>([\s\S]*?)<\/f>)/);
+      if (fOpen) {
+        const fAttrs = fOpen[1] || "";
+        const fText = fOpen[2] != null ? unesc(fOpen[2]) : "";
+        const fType = attr(fAttrs, "t");
+        const si = attr(fAttrs, "si");
+        if (fType === "shared" && si != null) {
+          if (fText) { sharedF[si] = {text: fText, master: ref}; fm = "=" + fText; }
+          else { pendingShared.push({ref: ref, si: si}); fm = null; }
+        } else if (fText) {
+          fm = "=" + fText;
+        } else {
+          fm = null;   // an empty <f/> tells us nothing; do not claim "="
+        }
+      }
+      let v = null;
+      if (t === "inlineStr") {
+        let s = "", tRe = /<t\b[^>]*>([\s\S]*?)<\/t>/g, x;
+        while ((x = tRe.exec(inner))) s += unesc(x[1]);
+        v = s;
+      } else {
+        const vMatch = inner.match(/<v\b[^>]*>([\s\S]*?)<\/v>/);
+        const raw = vMatch ? unesc(vMatch[1]) : null;
+        if (raw == null) v = null;
+        else if (t === "s") { const i = parseInt(raw, 10); v = shared[i] != null ? shared[i] : null; }
+        else if (t === "str" || t === "e") v = raw;
+        else if (t === "b") v = raw === "1";
+        else { const n = parseFloat(raw); v = isNaN(n) ? raw : n; }
+      }
+      if (v !== null || fm !== null) cells[ref] = {v: v, f: fm};
+    }
+    // resolve shared-formula dependents now that every master has been seen
+    pendingShared.forEach(function (p) {
+      const src = sharedF[p.si];
+      if (!src) return;
+      const translated = "=" + translateFormula(src.text, src.master, p.ref);
+      if (cells[p.ref]) cells[p.ref].f = translated;
+      else cells[p.ref] = {v: null, f: translated};
+    });
+    return cells;
+  }
+
+  /* ---------- public API ---------- */
+
+  /* Returns {sheetNames:[...], sheets:{name: Sheet}} where Sheet wraps a cell map. */
+  async function read(arrayBuffer) {
+    if (!hasInflate()) {
+      throw new Error("This browser cannot decompress .xlsx files. " +
+        "Chrome 103+, Safari 16.4+, or Firefox 113+ is required.");
+    }
+    const u8 = arrayBuffer instanceof Uint8Array ? arrayBuffer : new Uint8Array(arrayBuffer);
+    if (u8.byteLength < 4 || u8[0] !== 0x50 || u8[1] !== 0x4b) {
+      throw new Error("That does not look like an .xlsx file (no ZIP signature). " +
+        "If it is an .xls or .csv, re-save it as .xlsx first.");
+    }
+    const zip = readEntries(u8);
+    if (zip.entries["EncryptedPackage"]) {
+      throw new Error("This workbook is password protected. Remove the protection and try again.");
+    }
+    const wbXml = await readPart(zip, "xl/workbook.xml");
+    if (!wbXml) throw new Error("Not a valid .xlsx workbook: xl/workbook.xml is missing.");
+    const relsXml = await readPart(zip, "xl/_rels/workbook.xml.rels");
+
+    // rId -> part path
+    const rels = {};
+    if (relsXml) {
+      const re = /<Relationship\b([^>]*)\/?>/g;
+      let m;
+      while ((m = re.exec(relsXml))) {
+        const id = attr(m[1], "Id"), target = attr(m[1], "Target");
+        if (id && target) rels[id] = target.replace(/^\/?xl\//, "").replace(/^\//, "");
+      }
+    }
+
+    const shared = parseSharedStrings(await readPart(zip, "xl/sharedStrings.xml"));
+
+    const sheetNames = [], sheetPaths = {};
+    const sRe = /<sheet\b([^>]*)\/?>/g;
+    let sm, idx = 0;
+    while ((sm = sRe.exec(wbXml))) {
+      const name = attr(sm[1], "name");
+      if (!name) continue;
+      idx++;
+      const rid = attr(sm[1], "r:id") || attr(sm[1], "id");
+      let path = rid && rels[rid] ? rels[rid] : "worksheets/sheet" + idx + ".xml";
+      sheetNames.push(name);
+      sheetPaths[name] = "xl/" + path.replace(/^xl\//, "");
+    }
+
+    const sheets = {};
+    for (const name of sheetNames) {
+      let xml = await readPart(zip, sheetPaths[name]);
+      if (xml == null) xml = await readPart(zip, sheetPaths[name].replace("xl/", ""));
+      sheets[name] = makeSheet(parseSheet(xml, shared), name);
+    }
+    return {sheetNames: sheetNames, sheets: sheets};
+  }
+
+  /* ---------- column letter helpers ---------- */
+  function colToNum(letters) {
+    let n = 0;
+    for (let i = 0; i < letters.length; i++) n = n * 26 + (letters.charCodeAt(i) - 64);
+    return n;
+  }
+  function numToCol(n) {
+    let s = "";
+    while (n > 0) { const r = (n - 1) % 26; s = String.fromCharCode(65 + r) + s; n = Math.floor((n - 1) / 26); }
+    return s;
+  }
+
+  /* A thin accessor over the cell map, mirroring the openpyxl calls we make. */
+  function makeSheet(cells, name) {
+    let maxRow = 0, maxCol = 0;
+    for (const ref in cells) {
+      const m = ref.match(/^([A-Z]+)(\d+)$/);
+      if (!m) continue;
+      const r = parseInt(m[2], 10), c = colToNum(m[1]);
+      if (r > maxRow) maxRow = r;
+      if (c > maxCol) maxCol = c;
+    }
+    return {
+      name: name,
+      cells: cells,
+      maxRow: maxRow,
+      maxCol: maxCol,
+      raw: ref => cells[ref] || null,
+      /* cached value at a reference, or null */
+      val: function (ref) { const c = cells[ref]; return c ? c.v : null; },
+      /* formula string at a reference, or null */
+      formula: function (ref) { const c = cells[ref]; return c && c.f ? c.f : null; },
+      at: function (col, row) { return this.val(col + row); },
+      /* trimmed string, or null for blanks */
+      txt: function (ref) {
+        const v = this.val(ref);
+        if (v === null || v === undefined) return null;
+        const s = String(v).trim();
+        return s === "" ? null : s;
+      },
+      /* number, or null for blanks, '-' and error sentinels */
+      num: function (ref) {
+        const v = this.val(ref);
+        if (v === null || v === undefined || typeof v === "boolean") return null;
+        if (typeof v === "number") return v;
+        const s = String(v).trim().replace(/[,$%]/g, "");
+        if (s === "" || s === "-" || s.charAt(0) === "#") return null;
+        const n = parseFloat(s);
+        return isNaN(n) ? null : n;
+      },
+      bool: function (ref) {
+        const v = this.val(ref);
+        if (typeof v === "boolean") return v;
+        if (typeof v === "number") return v !== 0;
+        if (typeof v === "string") return v.trim().toUpperCase() === "TRUE";
+        return false;
+      }
+    };
+  }
+
+  return {
+    read: read,
+    setInflate: setInflate,
+    colToNum: colToNum,
+    numToCol: numToCol,
+    hasInflate: hasInflate,
+    _internals: {parseSheet: parseSheet, parseSharedStrings: parseSharedStrings,
+                 unesc: unesc, translateFormula: translateFormula}
+  };
+});
+
+</script>
+<script>
+/* =====================================================================
+   extract-report.js — the single extractor for both dashboard tabs.
+
+   Used in two places, so there is only ever one implementation of "what
+   the numbers mean":
+     - the browser, when someone drops a new .xlsx onto the page
+     - node, at build time, to bake the snapshot into the page
+
+   Everything is discovered from labels and header text rather than fixed
+   row and column numbers, so added channels, added placement rows, added
+   metric columns and moved columns are all picked up. Anything that cannot
+   be found is reported as a problem instead of being guessed at.
+
+   Each extractor returns {payload, findings, problems}:
+     findings  what was located, to show in the validation report
+     problems  {level: "error"|"warn", text} — errors mean the section
+               cannot be trusted and the page will say so
+   ===================================================================== */
+(function (root, factory) {
+  const api = factory(root.XlsxReader || (typeof require === "function" ? require("./xlsx-reader.js") : null));
+  if (typeof module !== "undefined" && module.exports) module.exports = api;
+  root.ExtractReport = api;
+})(typeof globalThis !== "undefined" ? globalThis : this, function (XlsxReader) {
+  "use strict";
+
+  const numToCol = XlsxReader.numToCol, colToNum = XlsxReader.colToNum;
+
+  const norm = s => String(s == null ? "" : s).replace(/\s+/g, " ").trim().toLowerCase().replace(/:$/, "");
+  const slug = s => norm(s).replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "");
+  const MAX_SCAN = 200;   // rows to scan when hunting for an anchor label
+
+  /* Find the first row in `col` whose text matches `re`. */
+  function findRow(sheet, col, re, limit) {
+    const max = Math.min(sheet.maxRow || MAX_SCAN, limit || MAX_SCAN);
+    for (let r = 1; r <= max; r++) {
+      const t = sheet.txt(col + r);
+      if (t && re.test(norm(t))) return r;
+    }
+    return 0;
+  }
+  /* Value in `valCol` on the row whose `labelCol` text matches `re`. */
+  function labelled(sheet, labelCol, valCol, re) {
+    const r = findRow(sheet, labelCol, re);
+    return r ? {value: sheet.val(valCol + r), num: sheet.num(valCol + r),
+                txt: sheet.txt(valCol + r), cell: valCol + r, row: r} : null;
+  }
+  /* Header text -> column letter, across a row. */
+  function headerMap(sheet, row, fromCol, toCol) {
+    const map = {}, order = [];
+    for (let c = colToNum(fromCol); c <= colToNum(toCol); c++) {
+      const col = numToCol(c), t = sheet.txt(col + row);
+      if (!t) continue;
+      const k = norm(t);
+      if (!(k in map)) { map[k] = col; order.push({key: k, label: t.trim(), col: col}); }
+    }
+    return {map: map, order: order};
+  }
+
+  /* ===================================================================
+     DIGITAL REPORT
+     =================================================================== */
+  function extractDigital(sheet, opts) {
+    const findings = [], problems = [];
+    const err = t => problems.push({level: "error", text: t});
+    const warn = t => problems.push({level: "warn", text: t});
+
+    /* --- anchors --- */
+    const hdrRow = findRow(sheet, "B", /^quarterly toplines$/);
+    if (!hdrRow) {
+      err("Could not find the “Quarterly Toplines” heading in column B, so this tab could not be read.");
+      return {payload: null, findings: findings, problems: problems};
+    }
+    const monthRow = hdrRow, labelRow = hdrRow + 1;
+    findings.push("Found “Quarterly Toplines” at B" + hdrRow + "; column headers on row " + labelRow + ".");
+
+    /* --- period column triples: Goal / Actual / % to Goal --- */
+    const periods = [];
+    for (let c = 2; c <= Math.max(sheet.maxCol, 20); c++) {
+      const g = numToCol(c);
+      if (norm(sheet.txt(g + labelRow)) !== "goal") continue;
+      const a = numToCol(c + 1), p = numToCol(c + 2);
+      if (norm(sheet.txt(a + labelRow)) !== "actual") continue;
+      if (!/^%/.test(norm(sheet.txt(p + labelRow)) || "")) continue;
+      const mLabel = sheet.txt(g + monthRow);
+      periods.push({goalCol: g, actualCol: a, pctCol: p, monthLabel: mLabel});
+    }
+    if (!periods.length) {
+      err("Row " + labelRow + " has no Goal / Actual / % to Goal column group, so this tab could not be read.");
+      return {payload: null, findings: findings, problems: problems};
+    }
+    // the first group is the quarter total; the rest are months, named from the row above
+    const quarterP = periods[0];
+    const monthPs = periods.slice(1).filter(p => p.monthLabel);
+    if (periods.length > 1 && monthPs.length !== periods.length - 1) {
+      warn("A month column group has no month name on row " + monthRow + " and was skipped.");
+    }
+    if (!monthPs.length) err("No month column groups were found next to the quarterly group.");
+    const monthKeys = monthPs.map(p => slug(p.monthLabel));
+    findings.push("Found " + monthPs.length + " month column group(s): " +
+      monthPs.map(p => p.monthLabel.trim() + " (" + p.goalCol + "/" + p.actualCol + "/" + p.pctCol + ")").join(", ") + ".");
+
+    /* --- channel rows: from under the header down to the Overall block --- */
+    const channelRows = [];
+    for (let r = labelRow + 1; r <= sheet.maxRow; r++) {
+      const t = sheet.txt("B" + r);
+      if (!t) break;
+      if (/^overall$/.test(norm(t))) break;
+      channelRows.push(r);
+    }
+    if (!channelRows.length) err("No channel rows were found under row " + labelRow + ".");
+    findings.push("Found " + channelRows.length + " channel row(s): rows " +
+      channelRows[0] + "–" + channelRows[channelRows.length - 1] + ".");
+
+    /* --- helper columns behind the quarterly goal (=SUM(Q14:S14)) --- */
+    let helperCols = null;
+    const f0 = channelRows.length ? sheet.formula(quarterP.goalCol + channelRows[0]) : null;
+    const sumM = f0 && f0.match(/^=\s*SUM\(\s*\$?([A-Z]+)\$?\d+\s*:\s*\$?([A-Z]+)\$?\d+\s*\)/i);
+    if (sumM) {
+      const a = colToNum(sumM[1]), b = colToNum(sumM[2]);
+      helperCols = [];
+      for (let c = a; c <= b; c++) helperCols.push(numToCol(c));
+      if (helperCols.length !== monthPs.length) {
+        warn("The quarterly goal sums " + helperCols.length + " helper column(s) but there are " +
+             monthPs.length + " months; helper provenance may be off.");
+      }
+      findings.push("Quarterly goal is =SUM(" + sumM[1] + ":" + sumM[2] + "); helper columns " +
+        helperCols.join(", ") + ".");
+    } else {
+      warn("Could not read the quarterly goal formula, so hidden helper columns are not shown.");
+    }
+
+    /* --- dynamic goal toggles, e.g. N9 "July:" with a boolean in O9 --- */
+    const toggles = {};
+    const dgRow = findRow(sheet, "N", /display dynamic goals/) ||
+                  (function () { // the label may sit in another column
+                    for (let c = 6; c <= Math.max(sheet.maxCol, 20); c++) {
+                      const r = findRow(sheet, numToCol(c), /display dynamic goals/);
+                      if (r) return r;
+                    }
+                    return 0;
+                  })();
+    monthPs.forEach(p => {
+      const key = slug(p.monthLabel);
+      let found = null;
+      for (let c = 2; c <= Math.max(sheet.maxCol, 22) && !found; c++) {
+        const col = numToCol(c);
+        for (let r = 1; r < labelRow; r++) {
+          const t = sheet.txt(col + r);
+          if (t && norm(t) === norm(p.monthLabel)) {
+            const vc = numToCol(c + 1);
+            if (sheet.raw(vc + r)) { found = {cell: vc + r, value: sheet.bool(vc + r)}; break; }
+          }
+        }
+      }
+      toggles[key] = found || {cell: null, value: false};
+    });
+    const anyToggleOn = Object.keys(toggles).some(k => toggles[k].value);
+    if (anyToggleOn) {
+      warn("A “Display Dynamic Goals” toggle is switched on, which makes the quarterly goal use " +
+           "actuals in place of goals for that month. Goal figures reflect that.");
+    }
+    if (dgRow) findings.push("Dynamic goal toggles read from row(s) near " + dgRow + ".");
+
+    /* --- build channel entries --- */
+    function periodCells(row) {
+      const out = {};
+      out.quarter = mkPeriod(row, quarterP, "Quarter");
+      monthPs.forEach(p => out[slug(p.monthLabel)] = mkPeriod(row, p, p.monthLabel.trim()));
+      return out;
+    }
+    function mkPeriod(row, p, label) {
+      const g = p.goalCol + row, a = p.actualCol + row, pc = p.pctCol + row;
+      return {
+        label: label,
+        goal: sheet.num(g), goal_cell: g,
+        actual: sheet.num(a), actual_cell: a,
+        pct: sheet.num(pc), pct_cell: pc, pct_raw: sheet.val(pc),
+        goal_formula: sheet.formula(g), actual_formula: sheet.formula(a), pct_formula: sheet.formula(pc)
+      };
+    }
+
+    const channels = channelRows.map(row => {
+      const entry = {
+        name: sheet.txt("B" + row), name_cell: "B" + row, row: row,
+        periods: periodCells(row), helpers: {}
+      };
+      if (helperCols) {
+        monthPs.forEach((p, i) => {
+          const col = helperCols[i];
+          if (!col) return;
+          entry.helpers[slug(p.monthLabel)] =
+            {value: sheet.num(col + row), cell: col + row, formula: sheet.formula(col + row)};
+        });
+      }
+      const q = entry.periods.quarter;
+      entry.dormant = !(q.goal || q.actual);
+      return entry;
+    });
+
+    /* --- overall block --- */
+    const overallHdr = findRow(sheet, "B", /^overall$/);
+    const overall = {};
+    const overallKeys = [];
+    if (!overallHdr) {
+      err("Could not find the “Overall” block in column B.");
+    } else {
+      for (let r = overallHdr + 1; r <= sheet.maxRow; r++) {
+        const t = sheet.txt("B" + r);
+        if (!t) break;
+        const key = slug(t);
+        overall[key] = {label: t.trim(), label_cell: "B" + r, row: r, periods: periodCells(r)};
+        overallKeys.push(key);
+      }
+      findings.push("Found “Overall” block at B" + overallHdr + " with " + overallKeys.length +
+        " row(s): " + overallKeys.map(k => overall[k].label).join(", ") + ".");
+    }
+    if (!overall.total_raised) {
+      err("The Overall block has no “Total Raised” row, which the headline stats depend on.");
+    }
+
+    /* --- months with no actuals reported anywhere are pending, not zero --- */
+    const pending = monthKeys.filter(k => channels.every(c => c.periods[k].actual == null));
+
+    /* --- cumulative series, computed here rather than read --- */
+    const cumulative = {};
+    channels.forEach(ch => {
+      const ca = [], cg = [];
+      let runA = 0, runG = 0;
+      monthKeys.forEach((k, i) => {
+        const p = ch.periods[k];
+        runG += p.goal || 0;
+        cg.push({month: p.label, value: runG,
+                 cells: monthKeys.slice(0, i + 1).map(m => ch.periods[m].goal_cell)});
+        if (p.actual == null) ca.push({month: p.label, value: null, pending: true});
+        else {
+          runA += p.actual;
+          ca.push({month: p.label, value: runA, pending: false,
+                   cells: monthKeys.slice(0, i + 1).map(m => ch.periods[m].actual_cell)});
+        }
+      });
+      cumulative[ch.name] = {actual: ca, goal: cg};
+    });
+
+    /* --- header metadata --- */
+    const client = labelled(sheet, "B", "C", /^client$/);
+    const lead = labelled(sheet, "B", "C", /^email lead$/);
+    const year = labelled(sheet, "B", "C", /^year$/);
+    const quarter = labelled(sheet, "B", "C", /^quarter$/);
+    if (!year || year.num == null) warn("Could not read the report year.");
+    if (!quarter || quarter.num == null) warn("Could not read the report quarter.");
+
+    const titleRow = findRow(sheet, "B", /toplines$/, hdrRow - 1);
+
+    /* --- source tab per column, from the IMPORTRANGE formulas --- */
+    const SRC_NAMES = ["Import - Quarterly Goals", "Quarterly Fundraising Toplines",
+                       "Import - Monthly Goals", "Monthly Fundraising Toplines"];
+    const sources = {};
+    if (channels.length) {
+      const first = channels[0];
+      Object.keys(first.periods).forEach(pk => {
+        ["goal", "actual"].forEach(field => {
+          const f = first.periods[pk][field + "_formula"] || "";
+          const hit = SRC_NAMES.filter(n => f.indexOf(n) >= 0)[0];
+          if (hit) sources[pk + "_" + field] = hit;
+        });
+      });
+    }
+
+    const payload = {
+      meta: {
+        title: titleRow ? sheet.txt("B" + titleRow) : "Digital Fundraising Toplines",
+        client: {value: client ? client.txt : null, cell: client ? client.cell : null},
+        email_lead: {value: lead ? lead.txt : null, cell: lead ? lead.cell : null},
+        year: {value: year ? year.num : null, cell: year ? year.cell : null},
+        quarter: {value: quarter ? quarter.num : null, cell: quarter ? quarter.cell : null},
+        dynamic_goals: Object.assign({label: dgRow ? "Display Dynamic Goals:" : null}, toggles),
+        source_workbook: opts.workbookName,
+        extracted_at: opts.extractedAt,
+        sheet: sheet.name
+      },
+      channels: channels,
+      overall: overall,
+      overall_keys: overallKeys,
+      cumulative: cumulative,
+      month_keys: monthKeys,
+      pending_months: pending,
+      sources: sources
+    };
+    return {payload: payload, findings: findings, problems: problems};
+  }
+
+  /* ===================================================================
+     PAID MEDIA REPORT
+     =================================================================== */
+  function metricKind(key, label) {
+    const n = norm(label || key);
+    if (/roas/.test(n)) return "roas";
+    if (/cpa|cost per/.test(n)) return "usd2";
+    if (/^ntl$|names|count/.test(n)) return "count";
+    return "usd";
+  }
+
+  function extractPaid(sheet, opts) {
+    const findings = [], problems = [];
+    const err = t => problems.push({level: "error", text: t});
+    const warn = t => problems.push({level: "warn", text: t});
+
+    const qHdr = findRow(sheet, "B", /^quarterly toplines$/);
+    const mHdr = findRow(sheet, "B", /^monthly toplines$/);
+    const dHdr = findRow(sheet, "B", /^month$/);
+    if (!qHdr || !mHdr || !dHdr) {
+      err("Could not find the " +
+        [!qHdr && "“Quarterly Toplines”", !mHdr && "“Monthly Toplines”", !dHdr && "detail table"]
+          .filter(Boolean).join(" and ") + " heading(s) in column B, so this tab could not be read.");
+      return {payload: null, findings: findings, problems: problems};
+    }
+    findings.push("Headings found at B" + qHdr + " (quarterly), B" + mHdr + " (monthly), B" + dHdr + " (detail).");
+
+    /* --- metric columns, discovered from the detail header row --- */
+    const lastCol = numToCol(Math.max(sheet.maxCol, colToNum("N")));
+    const hm = headerMap(sheet, dHdr, "F", lastCol);
+    const metrics = hm.order.filter(h => h.key !== "helper" && !/^helper/.test(h.key));
+    if (!metrics.length) {
+      err("No metric columns were found on the detail header row " + dHdr + ".");
+      return {payload: null, findings: findings, problems: problems};
+    }
+    const metricOrder = [], metricLabels = {}, metricKinds = {}, metricColumns = {};
+    metrics.forEach(h => {
+      const key = slug(h.label);
+      metricOrder.push(key);
+      metricLabels[key] = h.label;
+      metricKinds[key] = metricKind(key, h.label);
+      metricColumns[key] = h.col;
+    });
+    findings.push("Found " + metricOrder.length + " metric column(s): " +
+      metricOrder.map(k => metricLabels[k] + " (" + metricColumns[k] + ")").join(", ") + ".");
+    // the quarterly/monthly blocks should use the same columns; warn if not
+    [["quarterly", qHdr], ["monthly", mHdr]].forEach(([what, row]) => {
+      const other = headerMap(sheet, row, "F", lastCol);
+      const mismatched = metricOrder.filter(k =>
+        other.map[norm(metricLabels[k])] && other.map[norm(metricLabels[k])] !== metricColumns[k]);
+      if (mismatched.length) {
+        warn("The " + what + " table puts " + mismatched.map(k => metricLabels[k]).join(", ") +
+             " in a different column from the detail table; figures are read from each table's own header.");
+      }
+    });
+
+    function metricsAt(row, colsFor) {
+      const out = {};
+      metricOrder.forEach(key => {
+        const col = (colsFor && colsFor[key]) || metricColumns[key];
+        const ref = col + row;
+        out[key] = {label: metricLabels[key], kind: metricKinds[key],
+                    value: sheet.num(ref), cell: ref, formula: sheet.formula(ref)};
+      });
+      return out;
+    }
+    // per-block column maps, so a shifted column in one table doesn't corrupt another
+    function colsForRow(headerRow) {
+      const other = headerMap(sheet, headerRow, "F", lastCol), cols = {};
+      metricOrder.forEach(k => { cols[k] = other.map[norm(metricLabels[k])] || metricColumns[k]; });
+      return cols;
+    }
+    const qCols = colsForRow(qHdr), mCols = colsForRow(mHdr), dCols = colsForRow(dHdr);
+
+    /* --- quarterly rows: numeric quarter in column E --- */
+    const qLabelCol = (headerMap(sheet, qHdr, "B", "E").map["quarter"]) || "E";
+    const quarters = [];
+    for (let r = qHdr + 1; r <= sheet.maxRow; r++) {
+      const n = sheet.num(qLabelCol + r);
+      if (n == null) break;
+      // `label` is derived for display ("Q1"); the cell holds the number, so the
+      // provenance claim is quarter_cell -> quarter, not label_cell -> label.
+      quarters.push({quarter: Math.round(n), quarter_cell: qLabelCol + r,
+                     label: "Q" + Math.round(n), label_derived: true,
+                     row: r, metrics: metricsAt(r, qCols)});
+    }
+    if (!quarters.length) err("No quarterly rows were found under B" + qHdr + ".");
+
+    /* --- monthly rows: month name in the same label column --- */
+    const mLabelCol = (headerMap(sheet, mHdr, "B", "E").map["month"]) || "E";
+    const months = [];
+    for (let r = mHdr + 1; r <= sheet.maxRow; r++) {
+      const t = sheet.txt(mLabelCol + r);
+      if (!t) break;
+      months.push({label: t, label_cell: mLabelCol + r, row: r, metrics: metricsAt(r, mCols)});
+    }
+    if (!months.length) err("No monthly rows were found under B" + mHdr + ".");
+    findings.push("Read " + quarters.length + " quarterly row(s) and " + months.length + " monthly row(s).");
+
+    /* --- detail rows: dimension columns from the header, then scan down --- */
+    const dimHdr = headerMap(sheet, dHdr, "B", "E");
+    const dimCol = {
+      month: dimHdr.map["month"] || "B",
+      channel: dimHdr.map["channel"] || "C",
+      placement: dimHdr.map["placement"] || "D",
+      objective: dimHdr.map["goal"] || dimHdr.map["objective"] || "E"
+    };
+    const objectiveHeader = sheet.txt(dimCol.objective + dHdr);
+    const detail = [];
+    for (let r = dHdr + 1; r <= sheet.maxRow; r++) {
+      const m = sheet.txt(dimCol.month + r);
+      if (!m) break;
+      detail.push({
+        month: m, month_cell: dimCol.month + r,
+        channel: sheet.txt(dimCol.channel + r), channel_cell: dimCol.channel + r,
+        placement: sheet.txt(dimCol.placement + r), placement_cell: dimCol.placement + r,
+        objective: sheet.txt(dimCol.objective + r), objective_cell: dimCol.objective + r,
+        row: r, metrics: metricsAt(r, dCols)
+      });
+    }
+    if (!detail.length) err("No detail rows were found under the header on row " + dHdr + ".");
+    else findings.push("Read " + detail.length + " detail row(s): rows " + detail[0].row + "–" +
+      detail[detail.length - 1].row + ".");
+    const missingDims = detail.filter(d => !d.channel || !d.placement).length;
+    if (missingDims) warn(missingDims + " detail row(s) are missing a channel or placement name.");
+
+    /* --- definitions key: "Term:" with prose beside it --- */
+    const definitions = [];
+    for (let r = 1; r < qHdr; r++) {
+      for (let c = colToNum("F"); c <= Math.min(colToNum("H"), Math.max(sheet.maxCol, 8)); c++) {
+        const tc = numToCol(c), vc = numToCol(c + 1);
+        const term = sheet.txt(tc + r), text = sheet.txt(vc + r);
+        if (term && text && /:$/.test(term.trim()) && text.length > 12) {
+          definitions.push({term: term.trim().replace(/:$/, ""), text: text,
+                            term_cell: tc + r, text_cell: vc + r});
+          break;
+        }
+      }
+    }
+    if (definitions.length) findings.push("Read " + definitions.length + " metric definition(s) from the key.");
+    else warn("No metric definitions key was found; info bubbles will omit the definitions.");
+
+    /* --- additive vs ratio metrics --- */
+    const additive = metricOrder.filter(k => metricKinds[k] === "usd" || metricKinds[k] === "count");
+    const ratios = metricOrder.filter(k => additive.indexOf(k) < 0);
+
+    /* --- year-to-date rollup: sums for additive, recomputed ratios --- */
+    const ytd = {quarters: quarters.map(q => q.label), metrics: {}};
+    additive.forEach(key => {
+      let tot = 0; const refs = [];
+      quarters.forEach(q => {
+        const m = q.metrics[key];
+        if (m && m.value != null) { tot += m.value; refs.push(m.cell); }
+      });
+      ytd.metrics[key] = {label: metricLabels[key], kind: metricKinds[key],
+                          value: tot, cells: refs, computed: true};
+    });
+    // ratio components by naming convention; anything unresolvable is reported
+    function componentsFor(key) {
+      if (/_cpa$|^cpa$/.test(key)) {
+        const n = additive.filter(k => /spend/.test(k))[0], d = additive.filter(k => /ntl|name/.test(k))[0];
+        return n && d ? [n, d] : null;
+      }
+      if (/_roas$|^roas$/.test(key)) {
+        const n = key.replace(/_?roas$/, "") ? additive.filter(k =>
+          k.indexOf(key.replace(/_?roas$/, "")) === 0 && /rais/.test(k))[0] : null;
+        const d = additive.filter(k => /spend/.test(k))[0];
+        return n && d ? [n, d] : null;
+      }
+      return null;
+    }
+    ratios.forEach(key => {
+      const comp = componentsFor(key);
+      if (!comp) {
+        warn("Could not work out how to combine “" + metricLabels[key] + "” across quarters, " +
+             "so it is omitted from the year-to-date stats rather than averaged.");
+        return;
+      }
+      const [nk, dk] = comp;
+      const nv = ytd.metrics[nk].value, dv = ytd.metrics[dk].value;
+      ytd.metrics[key] = {
+        label: metricLabels[key], kind: metricKinds[key],
+        value: dv ? nv / dv : null, computed: true,
+        numerator: nk, denominator: dk,
+        cells: ytd.metrics[nk].cells.concat(ytd.metrics[dk].cells)
+      };
+    });
+
+    /* --- cumulative series --- */
+    const accumKeys = ["gross_spend", "ntl", "total_raised"].filter(k => metricOrder.indexOf(k) >= 0);
+    if (accumKeys.length < 3) {
+      const fallback = additive.slice(0, 3);
+      warn("Expected Gross Spend, NTL and Total Raised for the accumulation charts; using " +
+           fallback.map(k => metricLabels[k]).join(", ") + " instead.");
+      while (accumKeys.length < Math.min(3, fallback.length)) {
+        const k = fallback[accumKeys.length];
+        if (accumKeys.indexOf(k) < 0) accumKeys.push(k);
+        else break;
+      }
+    }
+    function cumulate(rows) {
+      const out = {};
+      accumKeys.forEach(key => {
+        let run = 0; const series = [];
+        rows.forEach(row => {
+          const v = row.metrics[key] ? row.metrics[key].value : null;
+          if (v != null) run += v;
+          // `value` is a running total computed here; `step_cell` is the single
+          // cell behind `step`, so neither field misattributes the other.
+          series.push({label: row.label, value: run, computed_running_total: true,
+                       step: v, step_cell: row.metrics[key] ? row.metrics[key].cell : null});
+        });
+        out[key] = series;
+      });
+      return out;
+    }
+
+    const year = labelled(sheet, "B", "C", /^year$/);
+    const quarter = labelled(sheet, "B", "C", /^quarter$/);
+    const client = labelled(sheet, "B", "C", /^client$/);
+    const lead = labelled(sheet, "B", "C", /^paid media lead$/);
+    if (!quarter || quarter.num == null) warn("Could not read which quarter this tab is set to.");
+
+    const payload = {
+      meta: {
+        title: sheet.txt("B" + (findRow(sheet, "B", /paid media report/) || 2)),
+        sheet: sheet.name,
+        source_workbook: opts.workbookName,
+        extracted_at: opts.extractedAt,
+        year: {value: year ? year.num : null, cell: year ? year.cell : null},
+        quarter: {value: quarter ? quarter.num : null, cell: quarter ? quarter.cell : null},
+        client: {value: client ? client.txt : null, cell: client ? client.cell : null},
+        lead: {value: lead ? lead.txt : null, cell: lead ? lead.cell : null}
+      },
+      metric_order: metricOrder,
+      metric_labels: metricLabels,
+      metric_kinds: metricKinds,
+      metric_columns: metricColumns,
+      additive: additive,
+      accum_keys: accumKeys,
+      objective_header: objectiveHeader,
+      definitions: definitions,
+      quarters: quarters,
+      months: months,
+      detail: detail,
+      ytd: ytd,
+      cumulative: {quarterly: cumulate(quarters), monthly: cumulate(months)},
+      channels: uniqSorted(detail.map(d => d.channel)),
+      objectives: uniqSorted(detail.map(d => d.objective))
+    };
+    return {payload: payload, findings: findings, problems: problems};
+  }
+
+  function uniqSorted(arr) {
+    const seen = {}, out = [];
+    arr.forEach(v => { if (v && !seen[v]) { seen[v] = 1; out.push(v); } });
+    return out.sort((a, b) => a.localeCompare(b));
+  }
+
+  /* ===================================================================
+     RECONCILIATION — the checks that decide whether to trust a section.
+     These are the same identities the offline verifiers assert, run again
+     on whatever was just dropped in.
+     =================================================================== */
+  function reconcile(dig, paid) {
+    const problems = [], findings = [];
+    const near = (a, b, tol) => a != null && b != null && Math.abs(a - b) <= (tol == null ? 0.02 : tol);
+
+    if (dig) {
+      let bad = 0, checked = 0;
+      dig.channels.forEach(c => {
+        Object.keys(c.periods).forEach(pk => {
+          const p = c.periods[pk];
+          if (!p.goal || p.actual == null || p.pct == null) return;
+          checked++;
+          if (!near(p.pct, p.actual / p.goal, 1e-6)) bad++;
+        });
+      });
+      if (bad) problems.push({level: "error",
+        text: bad + " of " + checked + " “% to goal” cells on the Digital Report do not equal actual ÷ goal."});
+      else if (checked) findings.push("All " + checked + " “% to goal” cells equal actual ÷ goal.");
+
+      const tr = dig.overall && dig.overall.total_raised;
+      if (tr) {
+        ["quarter"].concat(dig.month_keys).forEach(pk => {
+          const stored = tr.periods[pk] && tr.periods[pk].actual;
+          if (stored == null) return;
+          let sum = 0, any = false;
+          dig.channels.forEach(c => {
+            const v = c.periods[pk].actual;
+            if (v != null) { sum += v; any = true; }
+          });
+          if (!any) return;
+          if (!near(sum, stored, 0.05)) {
+            problems.push({level: "error", text: "Digital Report channel rows sum to " +
+              sum.toFixed(2) + " for " + pk + ", but the Overall row (" +
+              tr.periods[pk].actual_cell + ") says " + stored.toFixed(2) + "."});
+          }
+        });
+        findings.push("Channel rows reconcile with the Overall row.");
+      }
+    }
+
+    if (paid) {
+      const rows = paid.quarters.concat(paid.months).concat(paid.detail);
+      let cpaBad = 0, roasBad = 0, cpaN = 0, roasN = 0;
+      rows.forEach(r => {
+        const M = r.metrics, sp = M.gross_spend && M.gross_spend.value,
+              ntl = M.ntl && M.ntl.value, cpa = M.gross_cpa && M.gross_cpa.value;
+        if (sp != null && ntl) { cpaN++; if (!near(cpa, sp / ntl, Math.max(0.02, Math.abs(sp / ntl) * 1e-6))) cpaBad++; }
+        [["immediate_roas", "immediate_raised"], ["lifetime_roas", "lifetime_raised"],
+         ["total_roas", "total_raised"]].forEach(([rk, ak]) => {
+          if (!M[rk] || !M[ak] || !sp) return;
+          roasN++;
+          if (!near(M[rk].value, M[ak].value / sp, 1e-6)) roasBad++;
+        });
+      });
+      if (cpaBad) problems.push({level: "error",
+        text: cpaBad + " of " + cpaN + " Gross CPA cells on the Paid Media tab do not equal spend ÷ NTL."});
+      if (roasBad) problems.push({level: "error",
+        text: roasBad + " of " + roasN + " ROAS cells on the Paid Media tab do not equal raised ÷ spend."});
+      if (!cpaBad && !roasBad && (cpaN || roasN)) {
+        findings.push("All " + cpaN + " CPA and " + roasN + " ROAS cells match their components.");
+      }
+
+      paid.months.forEach(m => {
+        const kids = paid.detail.filter(d => String(d.month).trim() === String(m.label).trim());
+        if (!kids.length) {
+          problems.push({level: "warn", text: "No detail rows match the month “" +
+            String(m.label).trim() + "”, so the placement breakdown will not include it."});
+          return;
+        }
+        paid.additive.forEach(key => {
+          const stored = m.metrics[key] && m.metrics[key].value;
+          if (stored == null) return;
+          const sum = kids.reduce((a, d) => a + ((d.metrics[key] && d.metrics[key].value) || 0), 0);
+          if (!near(sum, stored, key === "ntl" ? 0.5 : 0.05)) {
+            problems.push({level: "error", text: "Paid Media detail rows for " +
+              String(m.label).trim() + " sum to " + sum.toFixed(2) + " for " + paid.metric_labels[key] +
+              ", but the monthly row (" + m.metrics[key].cell + ") says " + stored.toFixed(2) + "."});
+          }
+        });
+      });
+
+      const qsel = paid.meta.quarter.value;
+      const q = paid.quarters.filter(x => x.quarter === qsel)[0];
+      if (q) {
+        paid.additive.forEach(key => {
+          const stored = q.metrics[key] && q.metrics[key].value;
+          if (stored == null) return;
+          const sum = paid.months.reduce((a, m) => a + ((m.metrics[key] && m.metrics[key].value) || 0), 0);
+          if (!near(sum, stored, key === "ntl" ? 0.5 : 0.05)) {
+            problems.push({level: "error", text: "Paid Media monthly rows sum to " + sum.toFixed(2) +
+              " for " + paid.metric_labels[key] + ", but the Q" + qsel + " row (" + q.metrics[key].cell +
+              ") says " + stored.toFixed(2) + "."});
+          }
+        });
+        findings.push("Detail rows reconcile with the monthly rows, and the months with Q" + qsel + ".");
+      } else if (qsel != null) {
+        problems.push({level: "warn", text: "The tab is set to Q" + qsel +
+          " but there is no Q" + qsel + " row in the quarterly table."});
+      }
+    }
+    return {problems: problems, findings: findings};
+  }
+
+  /* ===================================================================
+     TOP LEVEL
+     =================================================================== */
+  const DIGITAL_SHEET = /^digital report$/;
+  const PAID_SHEET = /^paid media report$/;
+
+  function pickSheet(book, re, label, problems) {
+    const exact = book.sheetNames.filter(n => re.test(norm(n)))[0];
+    if (exact) return book.sheets[exact];
+    // tolerate a renamed tab if only one plausibly matches
+    const words = label.toLowerCase().split(" ");
+    const loose = book.sheetNames.filter(n => words.every(w => norm(n).indexOf(w) >= 0));
+    if (loose.length === 1) {
+      problems.push({level: "warn", text: "No tab named “" + label + "”; using “" + loose[0] +
+        "” instead, which looks like a renamed version."});
+      return book.sheets[loose[0]];
+    }
+    problems.push({level: "error", text: "No “" + label + "” tab found in this workbook. " +
+      "Tabs present: " + book.sheetNames.join(", ") + "."});
+    return null;
+  }
+
+  /* book: result of XlsxReader.read; returns the full page payload + report */
+  function extractAll(book, opts) {
+    opts = opts || {};
+    const o = {
+      workbookName: opts.workbookName || "workbook.xlsx",
+      extractedAt: opts.extractedAt || new Date().toISOString().replace(/\.\d+Z$/, "")
+    };
+    const problems = [], findings = [];
+    findings.push("Workbook has " + book.sheetNames.length + " tab(s).");
+
+    const digProblems = [], paidProblems = [];
+    const ds = pickSheet(book, DIGITAL_SHEET, "Digital Report", digProblems);
+    const ps = pickSheet(book, PAID_SHEET, "Paid Media Report", paidProblems);
+
+    let dig = null, paid = null;
+    if (ds) {
+      const r = extractDigital(ds, o);
+      dig = r.payload;
+      r.findings.forEach(f => findings.push("Digital Report: " + f));
+      r.problems.forEach(p => digProblems.push({level: p.level, text: "Digital Report: " + p.text}));
+    }
+    if (ps) {
+      const r = extractPaid(ps, o);
+      paid = r.payload;
+      r.findings.forEach(f => findings.push("Paid Media: " + f));
+      r.problems.forEach(p => paidProblems.push({level: p.level, text: "Paid Media: " + p.text}));
+    }
+    // Reconciliation failures are attributed to the tab they concern, so one
+    // broken tab never suppresses a good one.
+    const rec = reconcile(dig, paid);
+    rec.problems.forEach(p => {
+      if (/paid media/i.test(p.text)) paidProblems.push(p);
+      else if (/digital report/i.test(p.text)) digProblems.push(p);
+      else problems.push(p);
+    });
+    rec.findings.forEach(f => findings.push(f));
+
+    digProblems.forEach(p => { p.tab = "digital"; problems.push(p); });
+    paidProblems.forEach(p => { p.tab = "paid"; problems.push(p); });
+
+    const count = (list, lvl) => list.filter(p => p.level === lvl).length;
+    return {
+      digital: dig, paid: paid,
+      report: {
+        findings: findings,
+        problems: problems,
+        errors: count(problems, "error"),
+        warnings: count(problems, "warn"),
+        digitalErrors: count(digProblems, "error"),
+        paidErrors: count(paidProblems, "error"),
+        workbookName: o.workbookName,
+        extractedAt: o.extractedAt,
+        sheetNames: book.sheetNames
+      }
+    };
+  }
+
+  return {
+    extractAll: extractAll,
+    extractDigital: extractDigital,
+    extractPaid: extractPaid,
+    reconcile: reconcile,
+    _helpers: {norm: norm, slug: slug, findRow: findRow, headerMap: headerMap}
+  };
+});
+
+</script>
+<script>
+/* No data ships with this page — it is a viewer. Both payloads start null and
+   are filled in when the reader loads a workbook, which is why every render
+   path below is a callable function rather than a load-time IIFE. */
+let DATA = null;
 </script>
 <script>
 /* ==================== formatting helpers ==================== */
-const MONTHS = DATA.month_keys;
-const PENDING = new Set(DATA.pending_months || []);
-const SRC = DATA.sources || {};
+/* Derived from DATA, so all of it is recomputed on every render. */
+let MONTHS, PENDING, SRC, byName, active, dormant, SHEET_NOTE, PENDING_CAVEAT;
 
 const usd = (n, cents) => n == null ? "—" : (n < 0 ? "-" : "") + "$" +
   Math.abs(n).toLocaleString("en-US", {minimumFractionDigits: cents ? 2 : 0, maximumFractionDigits: cents ? 2 : 0});
@@ -390,10 +1591,35 @@ const cells = a => a.map(cell).join(" + ");
 const pctClass = p => p == null ? "" : p >= 1 ? "good" : p >= 0.7 ? "warn" : "bad";
 const pctColor = p => p == null ? "var(--muted)" : p >= 1 ? "var(--good)" : p >= 0.7 ? "var(--warn)" : "var(--bad)";
 
-const byName = {};
-DATA.channels.forEach(c => byName[c.name] = c);
-const active = DATA.channels.filter(c => !c.dormant);
-const dormant = DATA.channels.filter(c => c.dormant);
+/* Recompute everything derived from DATA. Called before each render. */
+function deriveOverview() {
+  MONTHS = DATA.month_keys;
+  PENDING = new Set(DATA.pending_months || []);
+  SRC = DATA.sources || {};
+  byName = {};
+  DATA.channels.forEach(c => byName[c.name] = c);
+  active = DATA.channels.filter(c => !c.dormant);
+  dormant = DATA.channels.filter(c => c.dormant);
+  SHEET_NOTE = 'Tab <code>' + esc(DATA.meta.sheet) + '</code> of <code>' +
+               esc(DATA.meta.source_workbook) + '</code>.';
+
+  // Which months have no actuals, and which cell ranges are empty — stated
+  // from the data rather than hardcoded, so it stays true for any workbook.
+  const pend = MONTHS.filter(m => PENDING.has(m));
+  if (!pend.length) {
+    PENDING_CAVEAT = "Every month in this quarter has reported actuals.";
+  } else {
+    const ranges = pend.map(m => {
+      const first = DATA.channels[0], last = DATA.channels[DATA.channels.length - 1];
+      return cell(first.periods[m].actual_cell + ":" + last.periods[m].actual_cell);
+    });
+    const names = pend.map(m => DATA.channels[0].periods[m].label);
+    PENDING_CAVEAT = names.join(" and ") + (names.length > 1 ? " actuals are" : " actuals are") +
+      " not yet reported (" + ranges.join(", ") + (ranges.length > 1 ? " are" : " is") +
+      " empty), so " + (names.length > 1 ? "those months are" : "the month is") +
+      " shown as pending rather than as $0.";
+  }
+}
 
 /* Sum a field across all channels for one period — used where the workbook's
    Overall row is blank or shows a computed zero for an unreported month. */
@@ -529,16 +1755,46 @@ function gapRow(actual, goal) {
           d >= 0 ? "var(--good)" : "var(--bad)"];
 }
 
-const SHEET_NOTE = 'Tab <code>' + esc(DATA.meta.sheet) + '</code> of <code>' + esc(DATA.meta.source_workbook) + '</code>.';
 function srcNote(key) {
   const t = SRC[key];
   return SHEET_NOTE + (t ? ' Imported from the CAB Google Sheet, <code>' + esc(t) + '</code>, via IMPORTRANGE.' : "");
 }
-const PENDING_CAVEAT = 'September actuals are not yet reported (<code>N14:N21</code> are empty), so the month is shown as pending rather than as $0.';
+
+/* Column range across every channel row, e.g. C14:C21 — derived, so it stays
+   correct when channels are added or the grid moves. */
+function chRange(field) {
+  const a = DATA.channels[0].periods.quarter[field];
+  const b = DATA.channels[DATA.channels.length - 1].periods.quarter[field];
+  return a === b ? a : a + ":" + b;
+}
+/* The Overall "Total Raised" quarter figures, whatever row they sit on. */
+function TRQ() { return DATA.overall.total_raised.periods.quarter; }
+
+/* Hidden helper columns only exist when the quarterly goal is a SUM of them.
+   A workbook that states the goal directly is fine; the bubbles just say so. */
+function hasHelpers(c) {
+  return !!c.helpers && MONTHS.every(m => c.helpers[m] && c.helpers[m].cell);
+}
+function helperRange(c) {
+  if (!hasHelpers(c)) return null;
+  return c.helpers[MONTHS[0]].cell + ":" + c.helpers[MONTHS[MONTHS.length - 1]].cell;
+}
+/* State the dynamic-goal toggles as they actually are, naming their cells. */
+function toggleNote() {
+  const dg = DATA.meta.dynamic_goals || {};
+  const named = MONTHS.filter(m => dg[m] && dg[m].cell);
+  if (!named.length) return "No dynamic-goal toggles were found in this workbook.";
+  const on = named.filter(m => dg[m].value);
+  const list = named.map(m => cell(dg[m].cell)).join(", ");
+  return on.length
+    ? "Toggle(s) " + on.map(m => cell(dg[m].cell)).join(", ") + " are TRUE, so those months " +
+      "contribute actuals instead of goals to the quarterly goal."
+    : "All dynamic-goal toggles (" + list + ") are FALSE, so the helpers equal the monthly goals.";
+}
 </script>
 <script>
 /* ==================== header ==================== */
-(function header() {
+function renderHeader() {
   const m = DATA.meta;
   document.getElementById("pgTitle").textContent = m.title || "Digital Fundraising Toplines";
   document.getElementById("pgSub").textContent =
@@ -563,10 +1819,10 @@ const PENDING_CAVEAT = 'September actuals are not yet reported (<code>N14:N21</c
     "</code>, extracted " + esc((m.extracted_at || "").replace("T", " ")) +
     ". Every figure on this page traces to a cell in that tab — click any <b>i</b> to see which. " +
     "Values in the workbook are cached IMPORTRANGE results from the upstream CAB Google Sheet.";
-})();
+}
 
 /* ==================== hero stats ==================== */
-(function heroes() {
+function renderHeroes() {
   const o = DATA.overall;
   const q = k => o[k].periods.quarter;
   const defs = [
@@ -582,8 +1838,10 @@ const PENDING_CAVEAT = 'September actuals are not yet reported (<code>N14:N21</c
             ["% to goal", cell(p.pct_cell) + " = " + pct(p.pct, 2)]
           ],
           calc: pct(p.pct, 2) + " = " + usdc(p.actual) + " ÷ " + usdc(p.goal),
-          formula: '=IFERROR(D23/C23,"-")',
-          caveat: "Sums all eight channel rows <code>B14:B21</code>. " + PENDING_CAVEAT,
+          formula: '=IFERROR(' + p.actual_cell + "/" + p.goal_cell + ',"-")',
+          caveat: "Sums all " + DATA.channels.length + " channel rows " +
+                  cell(DATA.channels[0].name_cell + ":" + DATA.channels[DATA.channels.length - 1].name_cell) +
+                  ". " + PENDING_CAVEAT,
           source: srcNote("quarter_actual")
         };
       }
@@ -595,10 +1853,11 @@ const PENDING_CAVEAT = 'September actuals are not yet reported (<code>N14:N21</c
         return {
           title: "Total donations, quarter to date",
           rows: [["Value", cell(p.actual_cell) + " = " + int(p.actual) + " donations"]],
-          calc: "July " + cell(o.total_donations.periods.july.actual_cell) + " " +
-                int(o.total_donations.periods.july.actual) + " + August " +
-                cell(o.total_donations.periods.august.actual_cell) + " " +
-                int(o.total_donations.periods.august.actual) + " = " + int(p.actual),
+          calc: MONTHS.filter(m => o.total_donations.periods[m].actual != null)
+                  .map(m => o.total_donations.periods[m].label + " " +
+                       cell(o.total_donations.periods[m].actual_cell) + " " +
+                       int(o.total_donations.periods[m].actual)).join(" + ") +
+                " = " + int(p.actual),
           caveat: "The workbook sets no goal for donation count, so no percent to goal is shown.",
           source: srcNote("quarter_actual")
         };
@@ -626,12 +1885,13 @@ const PENDING_CAVEAT = 'September actuals are not yet reported (<code>N14:N21</c
         const p = q("total_finance");
         return {
           title: "Total finance, quarter to date",
-          rows: [
-            ["Value", cell(p.actual_cell) + " = " + usdc(p.actual)],
-            ["July", cell(o.total_finance.periods.july.actual_cell) + " = " + usdc(o.total_finance.periods.july.actual)],
-            ["August", cell(o.total_finance.periods.august.actual_cell) + " = " + usdc(o.total_finance.periods.august.actual)]
-          ],
-          calc: usdc(o.total_finance.periods.july.actual) + " + " + usdc(o.total_finance.periods.august.actual) +
+          rows: [["Value", cell(p.actual_cell) + " = " + usdc(p.actual)]].concat(
+            MONTHS.map(m => [o.total_finance.periods[m].label,
+              cell(o.total_finance.periods[m].actual_cell) + " = " +
+              (o.total_finance.periods[m].actual == null
+                ? "not reported" : usdc(o.total_finance.periods[m].actual))])),
+          calc: MONTHS.filter(m => o.total_finance.periods[m].actual != null)
+                  .map(m => usdc(o.total_finance.periods[m].actual)).join(" + ") +
                 " = " + usdc(p.actual),
           caveat: "Reported separately from the channel grid; it is not part of Total raised.",
           source: SHEET_NOTE
@@ -641,7 +1901,31 @@ const PENDING_CAVEAT = 'September actuals are not yet reported (<code>N14:N21</c
   ];
 
   const host = document.getElementById("heroes");
-  defs.forEach(d => {
+  host.innerHTML = "";
+
+  // Any Overall row the workbook gains beyond the four we style specially still
+  // gets a card, rather than being silently dropped.
+  const known = defs.map(d => d.key);
+  (DATA.overall_keys || Object.keys(o)).forEach(k => {
+    if (known.indexOf(k) >= 0 || !o[k]) return;
+    defs.push({
+      key: k, label: o[k].label, fmt: usdc, showGoal: false,
+      info: () => {
+        const p = q(k);
+        return {
+          title: o[k].label + ", quarter to date",
+          rows: [["Value", cell(p.actual_cell) + " = " + usdc(p.actual)]].concat(
+            MONTHS.map(m => [o[k].periods[m].label, cell(o[k].periods[m].actual_cell) + " = " +
+              (o[k].periods[m].actual == null ? "not reported" : usdc(o[k].periods[m].actual))])),
+          caveat: "This row was found in the workbook's Overall block (" + cell(o[k].label_cell) +
+                  ") and is shown with default formatting.",
+          source: SHEET_NOTE
+        };
+      }
+    });
+  });
+
+  defs.filter(d => o[d.key]).forEach(d => {
     const p = q(d.key);
     const el = document.createElement("div");
     el.className = "hero";
@@ -674,11 +1958,11 @@ const PENDING_CAVEAT = 'September actuals are not yet reported (<code>N14:N21</c
     }
     host.appendChild(el);
   });
-})();
+}
 </script>
 <script>
 /* ==================== chart 1: goal vs actual by month ==================== */
-(function monthChart() {
+function renderMonthChart() {
   const rows = MONTHS.map(k => {
     const ref = DATA.channels[0].periods[k];
     const pending = PENDING.has(k);
@@ -784,13 +2068,13 @@ const PENDING_CAVEAT = 'September actuals are not yet reported (<code>N14:N21</c
   });
   const qg = DATA.overall.total_raised.periods.quarter;
   t += "</tbody><tfoot><tr><td>Quarter</td><td>" + usdc(qg.goal) + "</td><td>" + usdc(qg.actual) +
-    "</td><td>" + pct(qg.pct, 2) + '</td><td class="ref">C23 / D23</td></tr></tfoot></table>';
+    "</td><td>" + pct(qg.pct, 2) + '</td><td class="ref">' + qg.goal_cell + " / " + qg.actual_cell + "</td></tr></tfoot></table>";
   document.getElementById("tbMonth").innerHTML = t;
-})();
+}
 </script>
 <script>
 /* ==================== chart 2: goal vs actual by channel ==================== */
-(function channelChart() {
+function renderChannelChart() {
   const list = DATA.channels.slice().sort((a, b) => {
     if (a.dormant !== b.dormant) return a.dormant ? 1 : -1;
     const pa = a.periods.quarter.pct, pb = b.periods.quarter.pct;
@@ -824,17 +2108,24 @@ const PENDING_CAVEAT = 'September actuals are not yet reported (<code>N14:N21</c
         ["Monthly actuals", MONTHS.map(m => cell(c.periods[m].actual_cell)).join(", ")]
       ],
       calc: q.goal
-        ? pct(q.pct, 2) + " = " + usdc(q.actual) + " ÷ " + usdc(q.goal) + "<br>" +
-          "Goal " + usdc(q.goal) + " = SUM(" + MONTHS.map(m => cell(c.helpers[m].cell)).join(", ") + ") = " +
-          MONTHS.map(m => usdc(c.helpers[m].value)).join(" + ")
+        ? pct(q.pct, 2) + " = " + usdc(q.actual) + " ÷ " + usdc(q.goal) +
+          (hasHelpers(c)
+            ? "<br>Goal " + usdc(q.goal) + " = SUM(" +
+              MONTHS.map(m => cell(c.helpers[m].cell)).join(", ") + ") = " +
+              MONTHS.map(m => usdc(c.helpers[m].value)).join(" + ")
+            : "<br>Goal " + usdc(q.goal) + " is read from " + cell(q.goal_cell) + " directly.")
         : "No goal set, so the workbook stores “-” for percent to goal.",
-      formula: q.goal ? "=SUM(" + c.helpers.july.cell + ":" + c.helpers.september.cell + ")   ·   " +
-        "=IFERROR(" + q.actual_cell + "/" + q.goal_cell + ',"-")' : null,
+      formula: q.goal
+        ? (hasHelpers(c) ? "=SUM(" + helperRange(c) + ")   ·   " : "") +
+          "=IFERROR(" + q.actual_cell + "/" + q.goal_cell + ',"-")'
+        : null,
       caveat: c.dormant
         ? "This channel has no goal and no activity this quarter, so it is greyed out rather than shown at 0%."
-        : "Helper cells <code>" + c.helpers.july.cell + ":" + c.helpers.september.cell + "</code> are hidden in the " +
-          "workbook; each is <code>=IF($O$9,actual,goal)</code>-style, and both dynamic-goal toggles " +
-          "(<code>O9</code>, <code>O10</code>) are FALSE, so they equal the monthly goals.",
+        : hasHelpers(c)
+          ? "Helper cells " + cell(helperRange(c)) + " are hidden in the workbook; each is " +
+            "<code>=IF(toggle,actual,goal)</code>-style. " + toggleNote()
+          : "This workbook's quarterly goal is not a SUM of hidden helper cells, so the goal is " +
+            "reported straight from " + cell(q.goal_cell) + ".",
       source: srcNote("quarter_actual")
     }));
     row.appendChild(nm);
@@ -885,17 +2176,19 @@ const PENDING_CAVEAT = 'September actuals are not yet reported (<code>N14:N21</c
   document.querySelector("#s-channel .sechead").appendChild(infoBubble({
     title: "Goal vs. actual by channel",
     rows: [
-      ["Goals", cell("C14") + ":" + cell("C21") + " (each = SUM of " + cell("Q") + ":" + cell("S") + " on its row)"],
-      ["Actuals", cell("D14") + ":" + cell("D21")],
-      ["% to goal", cell("E14") + ":" + cell("E21") + " = D ÷ C"],
+      ["Goals", cell(chRange("goal_cell")) +
+        (hasHelpers(DATA.channels[0]) ? " (each = SUM of its hidden helper cells)" : "")],
+      ["Actuals", cell(chRange("actual_cell"))],
+      ["% to goal", cell(chRange("pct_cell")) + " = actual ÷ goal"],
       ["Bar length", "identical for every channel — it represents that channel's own goal, not its size"],
       ["Fill", "actual ÷ goal, capped at 100% of the bar"],
       ["Largest goal", "for reference, " + usdc(maxV) + " (" +
         cell(DATA.channels.reduce((a, b) =>
           (b.periods.quarter.goal || 0) > (a.periods.quarter.goal || 0) ? b : a).periods.quarter.goal_cell) + ")"]
     ],
-    calc: "Channel rows sum to the workbook's Overall row: " + cell("C23") + " = " + usdc(DATA.overall.total_raised.periods.quarter.goal) +
-          " and " + cell("D23") + " = " + usdc(DATA.overall.total_raised.periods.quarter.actual) + " — both verified.",
+    calc: "Channel rows sum to the workbook's Overall row: " + cell(TRQ().goal_cell) + " = " +
+          usdc(TRQ().goal) + " and " + cell(TRQ().actual_cell) + " = " + usdc(TRQ().actual) +
+          " — both verified.",
     caveat: dormant.length
       ? dormant.map(c => c.name).join(" and ") + " have zero goal and zero actual, so the workbook stores “-” " +
         "for percent to goal. They are greyed rather than shown at 0%."
@@ -912,13 +2205,14 @@ const PENDING_CAVEAT = 'September actuals are not yet reported (<code>N14:N21</c
   });
   const qq = DATA.overall.total_raised.periods.quarter;
   t += "</tbody><tfoot><tr><td>Total raised</td><td>" + usdc(qq.goal) + "</td><td>" + usdc(qq.actual) + "</td><td>" +
-    pct(qq.pct, 2) + '</td><td class="ref">C23 / D23 / E23</td></tr></tfoot></table>';
+    pct(qq.pct, 2) + '</td><td class="ref">' + qq.goal_cell + " / " + qq.actual_cell + " / " +
+    qq.pct_cell + "</td></tr></tfoot></table>";
   document.getElementById("tbChannel").innerHTML = t;
-})();
+}
 </script>
 <script>
 /* ==================== chart 3: accumulation small multiples ==================== */
-(function accumCharts() {
+function renderAccumCharts() {
   const host = document.getElementById("chAccum");
   const series = active.map(c => ({channel: c, cum: DATA.cumulative[c.name]}));
   const gmax = Math.max(...series.map(s =>
@@ -1091,7 +2385,7 @@ const PENDING_CAVEAT = 'September actuals are not yet reported (<code>N14:N21</c
       return "<td>" + usdc(v) + "</td>";
     }).join("") + "</tr></tfoot></table>";
   document.getElementById("tbAccum").innerHTML = t;
-})();
+}
 
 /* ============================================================
    PAID MEDIA TAB
@@ -1099,14 +2393,20 @@ const PENDING_CAVEAT = 'September actuals are not yet reported (<code>N14:N21</c
    chart naming its source cells, hover tooltips with exact figures, and a
    collapsible table of underlying numbers beneath each chart group.
    ============================================================ */
-const PM = {"meta":{"title":"Paid Media Report","sheet":"Paid Media Report","source_workbook":"EXTERNAL_ CAB Digital Report.xlsx","extracted_at":"2026-08-25T14:25:46","year":{"value":2026.0,"cell":"C4"},"quarter":{"value":1.0,"cell":"C5"},"client":{"value":"Cory Booker","cell":"C7"},"lead":{"value":null,"cell":"C8"}},"metric_order":["gross_spend","ntl","gross_cpa","immediate_raised","immediate_roas","lifetime_raised","lifetime_roas","total_raised","total_roas"],"metric_labels":{"gross_spend":"Gross Spend","ntl":"NTL","gross_cpa":"Gross CPA","immediate_raised":"Immediate Raised","immediate_roas":"Immediate ROAS","lifetime_raised":"Lifetime Raised","lifetime_roas":"Lifetime ROAS","total_raised":"Total Raised","total_roas":"Total ROAS"},"metric_kinds":{"gross_spend":"usd","ntl":"count","gross_cpa":"usd2","immediate_raised":"usd","immediate_roas":"roas","lifetime_raised":"usd","lifetime_roas":"roas","total_raised":"usd","total_roas":"roas"},"metric_columns":{"gross_spend":"F","ntl":"G","gross_cpa":"H","immediate_raised":"I","immediate_roas":"J","lifetime_raised":"K","lifetime_roas":"L","total_raised":"M","total_roas":"N"},"additive":["gross_spend","ntl","immediate_raised","lifetime_raised","total_raised"],"accum_keys":["gross_spend","ntl","total_raised"],"definitions":[{"term":"NTL","text":"Count of \"new-to-list\" names","term_cell":"F4","text_cell":"G4"},{"term":"CPA","text":"\"Cost per acquisition,\" i.e., cost per name added to email list","term_cell":"F5","text_cell":"G5"},{"term":"ROAS","text":"Return on ad spend","term_cell":"F6","text_cell":"G6"},{"term":"Immediate Raised","text":"Amount raised in direct response to an ad or campaign (from everyone)","term_cell":"F7","text_cell":"G7"},{"term":"Lifetime Raised","text":"Amount raised over time from NTL names only (all digital platforms)","term_cell":"F8","text_cell":"G8"},{"term":"Total Raised","text":"Amount raised from both immediate and lifetime (removing immediate from NTL so as to not count twice)","term_cell":"F9","text_cell":"G9"}],"quarters":[{"quarter":1,"label":"Q1","label_cell":"E12","row":12,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":195366.372,"cell":"F12","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),195366.37202804303)"},"ntl":{"label":"NTL","kind":"count","value":154883.0,"cell":"G12","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),154883.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":1.261380345,"cell":"H12","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.2613803453448282)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":185929.03,"cell":"I12","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),185929.03)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":0.9516941328,"cell":"J12","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.9516941327717936)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":46830.73,"cell":"K12","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),46830.729999999996)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.2397072204,"cell":"L12","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.23970722040780837)"},"total_raised":{"label":"Total Raised","kind":"usd","value":209182.32,"cell":"M12","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),209182.32)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.070718148,"cell":"N12","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.070718147798608)"}}},{"quarter":2,"label":"Q2","label_cell":"E13","row":13,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":176504.8982,"cell":"F13","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),176504.89823429543)"},"ntl":{"label":"NTL","kind":"count","value":1800.0,"cell":"G13","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1800.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":98.0582768,"cell":"H13","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),98.0582767968308)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":227476.01,"cell":"I13","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),227476.00999999998)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.288780154,"cell":"J13","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.2887801544070732)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":54223.5,"cell":"K13","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),54223.5)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.3072067718,"cell":"L13","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.3072067718371354)"},"total_raised":{"label":"Total Raised","kind":"usd","value":245477.59,"cell":"M13","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),245477.58999999997)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.390769279,"cell":"N13","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.3907692786754795)"}}},{"quarter":3,"label":"Q3","label_cell":"E14","row":14,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":82242.79348,"cell":"F14","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),82242.79348455915)"},"ntl":{"label":"NTL","kind":"count","value":36616.0,"cell":"G14","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),36616.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":2.246088963,"cell":"H14","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),2.246088963419247)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":115383.99,"cell":"I14","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),115383.99000000002)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.402967787,"cell":"J14","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.402967787343739)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":28179.27,"cell":"K14","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),28179.27)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.3426351271,"cell":"L14","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.34263512711652455)"},"total_raised":{"label":"Total Raised","kind":"usd","value":119725.27,"cell":"M14","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),119725.27000000003)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.455753932,"cell":"N14","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.4557539320752535)"}}}],"months":[{"label":"January","label_cell":"E18","row":18,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":3067.614839,"cell":"F18","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),3067.6148387096778)"},"ntl":{"label":"NTL","kind":"count","value":24.0,"cell":"G18","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),24.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":127.8172849,"cell":"H18","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),127.81728494623657)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":3866.37,"cell":"I18","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),3866.37)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.260383133,"cell":"J18","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.2603831325924542)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":623.57,"cell":"K18","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),623.5699999999999)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.2032751935,"cell":"L18","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.20327519352536788)"},"total_raised":{"label":"Total Raised","kind":"usd","value":4123.38,"cell":"M18","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),4123.38)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.344164837,"cell":"N18","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.3441648371131252)"}}},{"label":"February","label_cell":"E19","row":19,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":118393.3095,"cell":"F19","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),118393.30950116129)"},"ntl":{"label":"NTL","kind":"count","value":154291.0,"cell":"G19","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),154291.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":0.7673377546,"cell":"H19","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.7673377546400068)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":82850.42,"cell":"I19","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),82850.42)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":0.6997897124,"cell":"J19","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.6997897123501505)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":27141.56,"cell":"K19","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),27141.559999999998)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.229249103,"cell":"L19","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.22924910296332052)"},"total_raised":{"label":"Total Raised","kind":"usd","value":96942.1,"cell":"M19","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),96942.09999999999)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":0.8188140057,"cell":"N19","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.81881400569387)"}}},{"label":"March","label_cell":"E20","row":20,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":73905.44769,"cell":"F20","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),73905.447688172)"},"ntl":{"label":"NTL","kind":"count","value":568.0,"cell":"G20","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),568.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":130.1152248,"cell":"H20","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),130.11522480311973)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":99212.24,"cell":"I20","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),99212.24)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.342421203,"cell":"J20","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.3424212030837634)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":19065.6,"cell":"K20","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),19065.6)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.2579728639,"cell":"L20","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.2579728639280173)"},"total_raised":{"label":"Total Raised","kind":"usd","value":108116.84,"cell":"M20","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),108116.84)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.462907585,"cell":"N20","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.4629075850561861)"}}}],"detail":[{"month":"January","month_cell":"B23","channel":"SMS P2P","channel_cell":"C23","placement":"Grassroots Analytics P2P","placement_cell":"D23","objective":"Donations SMS","objective_cell":"E23","row":23,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":1250.31,"cell":"F23","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1250.31)"},"ntl":{"label":"NTL","kind":"count","value":16.0,"cell":"G23","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),16.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":78.144375,"cell":"H23","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),78.144375)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":1525.37,"cell":"I23","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1525.37)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.219993442,"cell":"J23","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.2199934416264766)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":436.57,"cell":"K23","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),436.57)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.349169406,"cell":"L23","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.34916940598731516)"},"total_raised":{"label":"Total Raised","kind":"usd","value":1747.38,"cell":"M23","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1747.3799999999999)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.397557406,"cell":"N23","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.3975574057633706)"}}},{"month":"January","month_cell":"B24","channel":"SMS P2P","channel_cell":"C24","placement":"Leverage P2P","placement_cell":"D24","objective":"Donations SMS","objective_cell":"E24","row":24,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":246.0,"cell":"F24","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),246.0)"},"ntl":{"label":"NTL","kind":"count","value":3.0,"cell":"G24","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),3.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":82.0,"cell":"H24","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),82.0)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":246.0,"cell":"I24","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),246.0)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.0,"cell":"J24","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.0)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":32.0,"cell":"K24","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),32.0)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.1300813008,"cell":"L24","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.13008130081300814)"},"total_raised":{"label":"Total Raised","kind":"usd","value":246.0,"cell":"M24","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),246.0)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.0,"cell":"N24","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.0)"}}},{"month":"January","month_cell":"B25","channel":"SMS P2P","channel_cell":"C25","placement":"Scale to Win","placement_cell":"D25","objective":"Donations SMS","objective_cell":"E25","row":25,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":1376.274839,"cell":"F25","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1376.2748387096774)"},"ntl":{"label":"NTL","kind":"count","value":1.0,"cell":"G25","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":1376.274839,"cell":"H25","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1376.2748387096774)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":1865.0,"cell":"I25","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1865.0)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.355107241,"cell":"J25","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.3551072413330796)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":35.0,"cell":"K25","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),35.0)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.025430967,"cell":"L25","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.025430966995526962)"},"total_raised":{"label":"Total Raised","kind":"usd","value":1890.0,"cell":"M25","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1890.0)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.373272218,"cell":"N25","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.373272217758456)"}}},{"month":"January","month_cell":"B26","channel":"SMS P2P","channel_cell":"C26","placement":"Textify P2P","placement_cell":"D26","objective":"Donations SMS","objective_cell":"E26","row":26,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":195.03,"cell":"F26","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),195.03)"},"ntl":{"label":"NTL","kind":"count","value":4.0,"cell":"G26","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),4.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":48.7575,"cell":"H26","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),48.7575)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":230.0,"cell":"I26","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),230.0)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.179305748,"cell":"J26","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.1793057478336666)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":120.0,"cell":"K26","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),120.0)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.6152899554,"cell":"L26","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.6152899553914782)"},"total_raised":{"label":"Total Raised","kind":"usd","value":240.0,"cell":"M26","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),240.0)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.230579911,"cell":"N26","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.2305799107829565)"}}},{"month":"February","month_cell":"B27","channel":"Facebook","channel_cell":"C27","placement":"Meta","placement_cell":"D27","objective":"Donations","objective_cell":"E27","row":27,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":278.28,"cell":"F27","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),278.28)"},"ntl":{"label":"NTL","kind":"count","value":5.0,"cell":"G27","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),5.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":55.656,"cell":"H27","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),55.65599999999999)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":345.0,"cell":"I27","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),345.0)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.239758517,"cell":"J27","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.2397585166019838)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":185.0,"cell":"K27","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),185.0)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.6647980451,"cell":"L27","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.6647980451343971)"},"total_raised":{"label":"Total Raised","kind":"usd","value":385.0,"cell":"M27","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),385.0)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.383498634,"cell":"N27","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.3834986344688804)"}}},{"month":"February","month_cell":"B28","channel":"Fixed CPA","channel_cell":"C28","placement":"Blue Action","placement_cell":"D28","objective":"Sign Ups","objective_cell":"E28","row":28,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":10026.08554,"cell":"F28","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),10026.085544)"},"ntl":{"label":"NTL","kind":"count","value":40518.0,"cell":"G28","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),40518.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":0.247447691,"cell":"H28","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.24744769100153016)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":0.0,"cell":"I28","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":0.0,"cell":"J28","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":3314.28,"cell":"K28","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),3314.2799999999997)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.3305657014,"cell":"L28","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.3305657013851626)"},"total_raised":{"label":"Total Raised","kind":"usd","value":3314.28,"cell":"M28","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),3314.2799999999997)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":0.3305657014,"cell":"N28","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.3305657013851626)"}}},{"month":"February","month_cell":"B29","channel":"Fixed CPA","channel_cell":"C29","placement":"True Blue Analytics","placement_cell":"D29","objective":"Sign Ups","objective_cell":"E29","row":29,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":40183.25331,"cell":"F29","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),40183.253312)"},"ntl":{"label":"NTL","kind":"count","value":112931.0,"cell":"G29","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),112931.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":0.355821283,"cell":"H29","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.35582128301352156)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":0.0,"cell":"I29","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":0.0,"cell":"J29","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":2422.76,"cell":"K29","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),2422.76)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.06029277872,"cell":"L29","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0602927787152686)"},"total_raised":{"label":"Total Raised","kind":"usd","value":2422.76,"cell":"M29","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),2422.76)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":0.06029277872,"cell":"N29","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0602927787152686)"}}},{"month":"February","month_cell":"B30","channel":"SMS P2P","channel_cell":"C30","placement":"Grassroots Analytics P2P","placement_cell":"D30","objective":"Donations SMS","objective_cell":"E30","row":30,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":8624.27,"cell":"F30","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),8624.27)"},"ntl":{"label":"NTL","kind":"count","value":198.0,"cell":"G30","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),198.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":43.55691919,"cell":"H30","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),43.55691919191919)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":10456.12,"cell":"I30","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),10456.12)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.212406383,"cell":"J30","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.2124063833808543)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":4758.0,"cell":"K30","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),4758.0)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.5516988684,"cell":"L30","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.5516988684259653)"},"total_raised":{"label":"Total Raised","kind":"usd","value":12323.12,"cell":"M30","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),12323.12)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.428888474,"cell":"N30","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.4288884740389622)"}}},{"month":"February","month_cell":"B31","channel":"SMS P2P","channel_cell":"C31","placement":"Leverage P2P","placement_cell":"D31","objective":"Donations SMS","objective_cell":"E31","row":31,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":5650.0,"cell":"F31","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),5650.0)"},"ntl":{"label":"NTL","kind":"count","value":93.0,"cell":"G31","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),93.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":60.75268817,"cell":"H31","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),60.75268817204301)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":7261.0,"cell":"I31","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),7261.0)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.285132743,"cell":"J31","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.285132743362832)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":2462.0,"cell":"K31","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),2462.0)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.4357522124,"cell":"L31","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.43575221238938056)"},"total_raised":{"label":"Total Raised","kind":"usd","value":7967.0,"cell":"M31","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),7967.0)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.410088496,"cell":"N31","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.4100884955752213)"}}},{"month":"February","month_cell":"B32","channel":"SMS P2P","channel_cell":"C32","placement":"Scale to Win","placement_cell":"D32","objective":"Donations SMS","objective_cell":"E32","row":32,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":1374.540645,"cell":"F32","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1374.5406451612903)"},"ntl":{"label":"NTL","kind":"count","value":0.0,"cell":"G32","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":null,"cell":"H32","formula":null},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":1881.97,"cell":"I32","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1881.97)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.369162859,"cell":"J32","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.3691628593341214)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":0.0,"cell":"K32","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.0,"cell":"L32","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"},"total_raised":{"label":"Total Raised","kind":"usd","value":1881.97,"cell":"M32","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1881.97)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.369162859,"cell":"N32","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.3691628593341214)"}}},{"month":"February","month_cell":"B33","channel":"SMS P2P","channel_cell":"C33","placement":"Textify P2P","placement_cell":"D33","objective":"Donations SMS","objective_cell":"E33","row":33,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":4333.56,"cell":"F33","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),4333.56)"},"ntl":{"label":"NTL","kind":"count","value":107.0,"cell":"G33","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),107.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":40.50056075,"cell":"H33","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),40.500560747663556)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":5854.22,"cell":"I33","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),5854.22)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.350903184,"cell":"J33","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.3509031835257848)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":2699.0,"cell":"K33","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),2699.0)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.6228135759,"cell":"L33","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.6228135759052603)"},"total_raised":{"label":"Total Raised","kind":"usd","value":6874.22,"cell":"M33","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),6874.220000000001)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.586275487,"cell":"N33","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.5862754871283657)"}}},{"month":"February","month_cell":"B34","channel":"SMS P2P","channel_cell":"C34","placement":"True Blue Analytics P2P","placement_cell":"D34","objective":"Donations SMS","objective_cell":"E34","row":34,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":47923.32,"cell":"F34","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),47923.32)"},"ntl":{"label":"NTL","kind":"count","value":439.0,"cell":"G34","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),439.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":109.164738,"cell":"H34","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),109.16473804100228)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":57052.11,"cell":"I34","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),57052.11)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.190487429,"cell":"J34","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.190487428667296)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":11300.52,"cell":"K34","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),11300.52)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.2358041972,"cell":"L34","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.23580419720503507)"},"total_raised":{"label":"Total Raised","kind":"usd","value":61773.75,"cell":"M34","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),61773.75000000001)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.289012322,"cell":"N34","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.2890123221846903)"}}},{"month":"March","month_cell":"B35","channel":"Facebook","channel_cell":"C35","placement":"Meta","placement_cell":"D35","objective":"Donations","objective_cell":"E35","row":35,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":3971.72,"cell":"F35","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),3971.72)"},"ntl":{"label":"NTL","kind":"count","value":39.0,"cell":"G35","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),39.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":101.8389744,"cell":"H35","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),101.83897435897435)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":5643.0,"cell":"I35","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),5643.0)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.420795021,"cell":"J35","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.420795020797035)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":3213.0,"cell":"K35","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),3213.0)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.8089694138,"cell":"L35","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.8089694137552497)"},"total_raised":{"label":"Total Raised","kind":"usd","value":7418.0,"cell":"M35","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),7418.0)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.867704672,"cell":"N35","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.8677046720312611)"}}},{"month":"March","month_cell":"B36","channel":"SMS P2P","channel_cell":"C36","placement":"Grassroots Analytics P2P","placement_cell":"D36","objective":"Donations SMS","objective_cell":"E36","row":36,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":14442.93,"cell":"F36","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),14442.930000000004)"},"ntl":{"label":"NTL","kind":"count","value":127.0,"cell":"G36","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),127.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":113.7238583,"cell":"H36","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),113.72385826771657)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":17647.52,"cell":"I36","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),17647.52)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.221879494,"cell":"J36","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.2218794939807918)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":5281.0,"cell":"K36","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),5281.0)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.3656460289,"cell":"L36","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.3656460288874902)"},"total_raised":{"label":"Total Raised","kind":"usd","value":20269.52,"cell":"M36","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),20269.52)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.403421605,"cell":"N36","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.4034216048959591)"}}},{"month":"March","month_cell":"B37","channel":"SMS P2P","channel_cell":"C37","placement":"Leverage P2P","placement_cell":"D37","objective":"Donations SMS","objective_cell":"E37","row":37,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":639.0,"cell":"F37","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),639.0)"},"ntl":{"label":"NTL","kind":"count","value":11.0,"cell":"G37","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),11.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":58.09090909,"cell":"H37","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),58.09090909090909)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":694.0,"cell":"I37","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),694.0)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.086071987,"cell":"J37","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.086071987480438)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":414.5,"cell":"K37","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),414.5)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.6486697966,"cell":"L37","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.6486697965571205)"},"total_raised":{"label":"Total Raised","kind":"usd","value":801.5,"cell":"M37","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),801.5)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.254303599,"cell":"N37","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.254303599374022)"}}},{"month":"March","month_cell":"B38","channel":"SMS P2P","channel_cell":"C38","placement":"Scale to Win","placement_cell":"D38","objective":"Donations SMS","objective_cell":"E38","row":38,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":21392.29935,"cell":"F38","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),21392.299354838713)"},"ntl":{"label":"NTL","kind":"count","value":26.0,"cell":"G38","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),26.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":822.7807444,"cell":"H38","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),822.7807444168736)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":34348.77,"cell":"I38","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),34348.770000000004)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.605660496,"cell":"J38","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.605660496342609)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":418.0,"cell":"K38","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),418.0)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.01953974152,"cell":"L38","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.019539741524113106)"},"total_raised":{"label":"Total Raised","kind":"usd","value":34347.77,"cell":"M38","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),34347.770000000004)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.605613751,"cell":"N38","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.6056137505494892)"}}},{"month":"March","month_cell":"B39","channel":"SMS P2P","channel_cell":"C39","placement":"Textify P2P","placement_cell":"D39","objective":"Donations SMS","objective_cell":"E39","row":39,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":6035.64,"cell":"F39","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),6035.64)"},"ntl":{"label":"NTL","kind":"count","value":115.0,"cell":"G39","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),115.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":52.48382609,"cell":"H39","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),52.483826086956526)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":7780.32,"cell":"I39","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),7780.32)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.289062966,"cell":"J39","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.2890629659820665)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":2869.0,"cell":"K39","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),2869.0)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.4753431285,"cell":"L39","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.4753431284834748)"},"total_raised":{"label":"Total Raised","kind":"usd","value":9080.32,"cell":"M39","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),9080.32)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.504450232,"cell":"N39","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.5044502322868825)"}}},{"month":"March","month_cell":"B40","channel":"SMS P2P","channel_cell":"C40","placement":"True Blue Analytics P2P","placement_cell":"D40","objective":"Donations SMS","objective_cell":"E40","row":40,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":27423.85833,"cell":"F40","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),27423.8583333333)"},"ntl":{"label":"NTL","kind":"count","value":250.0,"cell":"G40","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),250.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":109.6954333,"cell":"H40","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),109.6954333333332)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":33098.63,"cell":"I40","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),33098.630000000005)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.206928274,"cell":"J40","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.2069282738296931)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":6870.1,"cell":"K40","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),6870.1)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.2505154423,"cell":"L40","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.2505154423019132)"},"total_raised":{"label":"Total Raised","kind":"usd","value":36199.73,"cell":"M40","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),36199.73)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.320008642,"cell":"N40","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.3200086421099892)"}}}],"ytd":{"quarters":["Q1","Q2","Q3"],"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":454114.06368,"cells":["F12","F13","F14"],"computed":true},"ntl":{"label":"NTL","kind":"count","value":193299.0,"cells":["G12","G13","G14"],"computed":true},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":528789.03,"cells":["I12","I13","I14"],"computed":true},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":129233.50000000001,"cells":["K12","K13","K14"],"computed":true},"total_raised":{"label":"Total Raised","kind":"usd","value":574385.18,"cells":["M12","M13","M14"],"computed":true},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":2.3492830468859127,"computed":true,"numerator":"gross_spend","denominator":"ntl","cells":["F12","F13","F14","G12","G13","G14"]},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.1644409902544246,"computed":true,"numerator":"immediate_raised","denominator":"gross_spend","cells":["I12","I13","I14","F12","F13","F14"]},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.2845837870616287,"computed":true,"numerator":"lifetime_raised","denominator":"gross_spend","cells":["K12","K13","K14","F12","F13","F14"]},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.2648478123433573,"computed":true,"numerator":"total_raised","denominator":"gross_spend","cells":["M12","M13","M14","F12","F13","F14"]}}},"cumulative":{"quarterly":{"gross_spend":[{"label":"Q1","value":195366.372,"step":195366.372,"cell":"F12"},{"label":"Q2","value":371871.2702,"step":176504.8982,"cell":"F13"},{"label":"Q3","value":454114.06368,"step":82242.79348,"cell":"F14"}],"ntl":[{"label":"Q1","value":154883.0,"step":154883.0,"cell":"G12"},{"label":"Q2","value":156683.0,"step":1800.0,"cell":"G13"},{"label":"Q3","value":193299.0,"step":36616.0,"cell":"G14"}],"total_raised":[{"label":"Q1","value":209182.32,"step":209182.32,"cell":"M12"},{"label":"Q2","value":454659.91000000003,"step":245477.59,"cell":"M13"},{"label":"Q3","value":574385.18,"step":119725.27,"cell":"M14"}]},"monthly":{"gross_spend":[{"label":"January","value":3067.614839,"step":3067.614839,"cell":"F18"},{"label":"February","value":121460.924339,"step":118393.3095,"cell":"F19"},{"label":"March","value":195366.37202900002,"step":73905.44769,"cell":"F20"}],"ntl":[{"label":"January","value":24.0,"step":24.0,"cell":"G18"},{"label":"February","value":154315.0,"step":154291.0,"cell":"G19"},{"label":"March","value":154883.0,"step":568.0,"cell":"G20"}],"total_raised":[{"label":"January","value":4123.38,"step":4123.38,"cell":"M18"},{"label":"February","value":101065.48000000001,"step":96942.1,"cell":"M19"},{"label":"March","value":209182.32,"step":108116.84,"cell":"M20"}]}},"channels":["Facebook","Fixed CPA","SMS P2P"],"objectives":["Donations","Donations SMS","Sign Ups"]};
+let PM = null;
 
-if (!PM) {
-  const tb = document.getElementById("t-paid");
-  if (tb) tb.remove();
-  const pn = document.getElementById("p-paid");
-  if (pn) pn.remove();
-} else (function paidMedia() {
+function renderPaidMedia() {
+  const tabBtn = document.getElementById("t-paid");
+  const panel = document.getElementById("p-paid");
+  // Hidden rather than removed, so a later workbook that does have the tab can
+  // bring it back without rebuilding the page.
+  const usable = PM && PM.quarters && PM.quarters.length && PM.months && PM.months.length;
+  if (tabBtn) tabBtn.hidden = !usable;
+  if (!usable) {
+    if (panel) panel.hidden = true;
+    if (tabBtn && tabBtn.getAttribute("aria-selected") === "true") selectTab("t-overview");
+    return;
+  }
 
   /* ---------- formatting by metric kind ---------- */
   const KIND = PM.metric_kinds, LABEL = PM.metric_labels, COL = PM.metric_columns;
@@ -1133,7 +2433,12 @@ if (!PM) {
 
   /* ---------- definitions key, reused across info bubbles ---------- */
   const DEF = {};
-  PM.definitions.forEach(d => DEF[d.term.toLowerCase()] = d);
+  (PM.definitions || []).forEach(d => DEF[d.term.toLowerCase()] = d);
+  /* Cite the definition's own cell, or say plainly that there is no key. */
+  function defCell(term) {
+    const d = DEF[String(term).toLowerCase()];
+    return d ? cell(d.text_cell) : "the metric definitions key";
+  }
   function defNote(terms) {
     const hits = terms.map(t => DEF[t.toLowerCase()]).filter(Boolean);
     if (!hits.length) return null;
@@ -1152,14 +2457,27 @@ if (!PM) {
   const CH_COLOR = {};
   PM.channels.forEach((c, i) => CH_COLOR[c] = "var(--ch" + ((i % 6) + 1) + ")");
 
-  /* ---------- scope banner ---------- */
-  document.getElementById("pmScope").innerHTML =
-    "<div>&#9432;</div><div><b>Two different periods on this tab.</b> The year-to-date " +
-    "toplines below cover <b>" + PM.ytd.quarters.join(", ") + " " + PM_YEAR + "</b>, summed from the " +
-    "workbook's quarterly table. The monthly toplines and placement breakdown cover only " +
-    "<b>Q" + QSEL + "</b> (" + PM.months.map(m => m.label).join(", ") + "), which is the quarter this " +
-    "tab is set to in " + cell(PM.meta.quarter.cell) + ". The Overview tab reports Q" +
-    DATA.meta.quarter.value + ", a different quarter again.</div>";
+  /* ---------- scope banner ----------
+     Only claims a mismatch with the Overview tab when that tab is actually
+     present and actually reports a different quarter. */
+  const ovQ = (DATA && DATA.meta && DATA.meta.quarter) ? DATA.meta.quarter.value : null;
+  const spans = PM.ytd.quarters.length > 1;
+  let scope = "<div>&#9432;</div><div>";
+  if (spans) {
+    scope += "<b>Two different periods on this tab.</b> The year-to-date toplines below cover <b>" +
+      PM.ytd.quarters.join(", ") + " " + PM_YEAR + "</b>, summed from the workbook's quarterly " +
+      "table. The monthly toplines and placement breakdown cover only ";
+  } else {
+    scope += "<b>Scope.</b> This tab covers ";
+  }
+  scope += "<b>Q" + QSEL + "</b> (" + PM.months.map(m => m.label.trim()).join(", ") +
+    "), which is the quarter this tab is set to in " + cell(PM.meta.quarter.cell) + ".";
+  if (ovQ != null && ovQ !== QSEL) {
+    scope += " The Overview tab reports Q" + ovQ + ", a different quarter again.";
+  } else if (ovQ == null) {
+    scope += " The Overview tab is not available for this workbook.";
+  }
+  document.getElementById("pmScope").innerHTML = scope + "</div>";
 
   /* ---------- shared chart primitives ---------- */
 
@@ -1440,7 +2758,7 @@ if (!PM) {
                 cell(PM.quarters[PM.quarters.length - 1].metrics[cd.key].cell) + ". " +
                 "The monthly and placement sections below cover Q" + QSEL + " only." +
                 (cd.key === "total_raised"
-                  ? " Total Raised is not Immediate + Lifetime: per " + cell("G9") +
+                  ? " Total Raised is not Immediate + Lifetime: per " + defCell("Total Raised") +
                     ", immediate is removed from NTL so it is not counted twice."
                   : ""),
         source: PM_SHEET + (dn ? "<br>" + dn : "")
@@ -1600,7 +2918,7 @@ if (!PM) {
       h3.appendChild(infoBubble({
         title: LABEL[key] + " — cumulative by " + grainWord,
         rows: series.map((p, i) => [p.label.trim(),
-          fmtM(key, p.value) + " (" + cells(series.slice(0, i + 1).map(q => q.cell)) + ")"]),
+          fmtM(key, p.value) + " (" + cells(series.slice(0, i + 1).map(q => q.step_cell)) + ")"]),
         calc: "Each point is the running sum of the " + grainWord + "ly cells listed above — computed " +
               "on this page, not read from a workbook cell. Final value " +
               fmtM(key, series[series.length - 1].value) + ".",
@@ -1637,7 +2955,7 @@ if (!PM) {
               ["", ""],
               ["Share of final", pct(p.value / series[series.length - 1].value, 1)]
             ],
-            foot: "sum of " + series.slice(0, i + 1).map(q => q.cell).join(" + ")
+            foot: "sum of " + series.slice(0, i + 1).map(q => q.step_cell).join(" + ")
           }
         }))
       });
@@ -1957,7 +3275,7 @@ if (!PM) {
       rows: [["Source", cell(DR("M")) + ", grouped by month " + cell(DR("B")) +
         " and channel " + cell(DR("C"))]],
       calc: "Sum of Total Raised per channel per month.",
-      caveat: "Total Raised is not Immediate + Lifetime — per " + cell("G9") + ", immediate is removed " +
+      caveat: "Total Raised is not Immediate + Lifetime — per " + defCell("Total Raised") + ", immediate is removed " +
               "from NTL so it is not double counted. Summing the stacks will therefore not equal " +
               "Immediate plus Lifetime.",
       source: PM_SHEET + "<br>" + defNote(["Total Raised", "Immediate Raised", "Lifetime Raised"])
@@ -2000,20 +3318,259 @@ if (!PM) {
     const head = card && card.querySelector(".sechead.sub h3");
     if (head) head.appendChild(infoBubble(spec));
   });
-
-})();
+}
 
 /* ==================== tabs ==================== */
-document.querySelectorAll(".tab").forEach(tab => {
-  tab.addEventListener("click", () => {
-    document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", String(t === tab)));
-    document.querySelectorAll(".panel").forEach(p => {
-      p.hidden = p.id !== tab.getAttribute("aria-controls");
-    });
-    closePop();
+function selectTab(tabId) {
+  const tab = document.getElementById(tabId);
+  if (!tab || tab.hidden) return;
+  document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", String(t === tab)));
+  document.querySelectorAll(".panel").forEach(p => {
+    p.hidden = p.id !== tab.getAttribute("aria-controls");
   });
+  closePop();
+  hideTip();
+}
+document.querySelectorAll(".tab").forEach(tab => {
+  tab.addEventListener("click", () => selectTab(tab.id));
 });
-window.addEventListener("resize", closePop);
+window.addEventListener("resize", () => { closePop(); hideTip(); });
+
+/* ==================== render orchestration ====================
+   Everything above is a pure function of DATA and PM, so swapping in a new
+   workbook is just: replace the two payloads, then call renderAll(). */
+function resetChrome() {
+  closePop();
+  hideTip();
+  TIPS.length = 0;                       // tooltip registry is rebuilt each render
+  document.querySelectorAll("button.info").forEach(b => b.remove());
+  ["heroes", "chMonth", "chChannel", "chAccum", "tbMonth", "tbChannel", "tbAccum",
+   "pmHeroes", "pmChQSpend", "pmChQNtl", "pmChMSpend", "pmChMNtl",
+   "pmAccumQ", "pmAccumM", "pmTbQ", "pmTbM", "pmTbAcc",
+   "pmFilters", "pmFilterStat", "pmChStackSpend", "pmChStackRaised", "pmChScatter", "pmLeader",
+   "pmScope", "lgMonth", "lgChannel", "pmLgQSpend", "pmLgQNtl", "pmLgMSpend", "pmLgMNtl"
+  ].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = ""; });
+}
+
+function renderAll() {
+  resetChrome();
+
+  // Nothing is shown until a workbook has been loaded.
+  const anything = !!(DATA || PM);
+  document.getElementById("emptyState").hidden = anything;
+  ["pgHeader", "pgFoot"].forEach(id => { document.getElementById(id).hidden = !anything; });
+  document.querySelector(".srcbar").hidden = !anything;
+  document.querySelector(".tabs").hidden = !anything;
+  if (!anything) {
+    document.querySelectorAll(".panel").forEach(p => p.hidden = true);
+    document.title = "Digital Report Viewer";
+    return;
+  }
+
+  const haveOverview = !!(DATA && DATA.channels && DATA.channels.length &&
+                          DATA.overall && DATA.overall.total_raised);
+  const ovTab = document.getElementById("t-overview");
+  const ovPanel = document.getElementById("p-overview");
+  if (ovTab) ovTab.hidden = !haveOverview;
+  if (haveOverview) {
+    deriveOverview();
+    renderHeader();
+    renderHeroes();
+    renderMonthChart();
+    renderChannelChart();
+    renderAccumCharts();
+  } else {
+    if (ovPanel) ovPanel.hidden = true;
+    document.getElementById("pgTitle").textContent = "Digital Fundraising Report";
+    document.getElementById("pgSub").textContent = "The Digital Report tab could not be read — see the report above.";
+    document.getElementById("pgMeta").innerHTML = "";
+    document.getElementById("pgFoot").innerHTML = "";
+  }
+  renderPaidMedia();
+
+  // make sure a visible tab is selected
+  const tabs = [...document.querySelectorAll(".tab")].filter(t => !t.hidden);
+  const current = tabs.filter(t => t.getAttribute("aria-selected") === "true")[0];
+  if (tabs.length && !current) selectTab(tabs[0].id);
+  else if (current) selectTab(current.id);
+  document.querySelector(".tabs").hidden = tabs.length < 2;
+}
+
+/* ==================== loading a workbook ====================
+   Session only: the page holds the parsed workbook in memory and nothing is
+   written to browser storage, so reloading returns to the empty state. */
+let LOADED = null;   // {name, report} once a workbook has been loaded
+
+function fmtBytes(n) {
+  return n >= 1048576 ? (n / 1048576).toFixed(1) + " MB" : Math.max(1, Math.round(n / 1024)) + " KB";
+}
+
+function renderSourceBar() {
+  const el = document.getElementById("srcNow");
+  if (LOADED) {
+    const when = String(LOADED.report.extractedAt || "").replace("T", " ");
+    el.innerHTML = '<span class="live">' + esc(LOADED.name) + "</span>Read in your browser at " +
+      esc(when) + " — nothing was uploaded. Drop another <code>.xlsx</code> to replace it.";
+  } else {
+    el.innerHTML = "No workbook loaded.";
+  }
+  document.getElementById("btnClear").hidden = !LOADED;
+  document.getElementById("btnPick").textContent = LOADED ? "Load another…" : "Load a workbook…";
+}
+
+function showReport(rep, opts) {
+  opts = opts || {};
+  const host = document.getElementById("report");
+  const errs = rep.problems.filter(p => p.level === "error");
+  const warns = rep.problems.filter(p => p.level === "warn");
+  const cls = opts.fatal || errs.length ? "bad" : warns.length ? "warn" : "ok";
+  const tag = opts.fatal ? "Not loaded" : errs.length ? "Loaded with errors" :
+              warns.length ? "Loaded with warnings" : "Loaded and reconciled";
+  let h = '<h3><span class="tag">' + esc(tag) + "</span><span>" + esc(rep.workbookName || "workbook") +
+    "</span><button class='close' type='button' aria-label='Dismiss'>&times;</button></h3>";
+
+  if (errs.length || warns.length) {
+    h += "<ul>";
+    errs.forEach(p => h += '<li class="err">' + p.text + "</li>");
+    warns.forEach(p => h += '<li class="wrn">' + p.text + "</li>");
+    h += "</ul>";
+  }
+  if (opts.fatal) {
+    h += "<p style='margin:8px 0 0;color:var(--bad)'>Nothing was changed — " +
+         (LOADED ? "still showing <b>" + esc(LOADED.name) + "</b>."
+                 : "no workbook is loaded.") + "</p>";
+  } else if (errs.length) {
+    h += "<p style='margin:8px 0 0'>Sections with errors above are hidden rather than shown with " +
+         "numbers that do not reconcile.</p>";
+  }
+  if (rep.findings && rep.findings.length) {
+    h += "<details><summary>What was found (" + rep.findings.length + ")</summary><ul>" +
+      rep.findings.map(f => "<li>" + f + "</li>").join("") + "</ul></details>";
+  }
+  h += '<div class="foot">Tabs in the file: ' + esc((rep.sheetNames || []).join(", ")) + "</div>";
+  host.className = "report " + cls;
+  host.innerHTML = h;
+  host.hidden = false;
+  host.querySelector(".close").addEventListener("click", () => { host.hidden = true; });
+}
+
+async function loadWorkbookFile(file) {
+  const btn = document.getElementById("btnPick");
+  const label = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = "Reading…";
+  try {
+    if (!/\.xlsx$/i.test(file.name)) {
+      throw new Error("“" + file.name + "” is not an .xlsx file. Re-save it as .xlsx and try again.");
+    }
+    if (file.size > 80 * 1024 * 1024) {
+      throw new Error("That file is " + fmtBytes(file.size) + ", which is too large to parse in the browser.");
+    }
+    const buf = await file.arrayBuffer();
+    const book = await XlsxReader.read(new Uint8Array(buf));
+    const out = ExtractReport.extractAll(book, {
+      workbookName: file.name,
+      extractedAt: new Date().toISOString().replace(/\.\d+Z$/, "")
+    });
+    const rep = out.report;
+
+    const digOk = out.digital && !rep.digitalErrors;
+    const paidOk = out.paid && !rep.paidErrors;
+    if (!digOk && !paidOk) {
+      showReport(rep, {fatal: true});
+      return;
+    }
+    // A loaded workbook replaces both tabs. A tab that could not be read is
+    // hidden, never left showing the previous file's numbers.
+    DATA = digOk ? out.digital : null;
+    PM = paidOk ? out.paid : null;
+    LOADED = {name: file.name, report: rep};
+    renderAll();
+    renderSourceBar();
+    showReport(rep, {});
+    if (typeof window.scrollTo === "function") {
+      try { window.scrollTo({top: 0, behavior: "smooth"}); } catch (e) { /* not critical */ }
+    }
+  } catch (e) {
+    showReport({
+      workbookName: file.name,
+      sheetNames: [],
+      findings: [],
+      problems: [{level: "error", text: esc(e && e.message ? e.message : String(e))}]
+    }, {fatal: true});
+  } finally {
+    btn.disabled = false;
+    btn.textContent = label;
+  }
+}
+
+function clearWorkbook() {
+  DATA = null;
+  PM = null;
+  LOADED = null;
+  renderAll();
+  renderSourceBar();
+  document.getElementById("report").hidden = true;
+}
+
+/* wire the controls */
+(function wireLoader() {
+  const pick = document.getElementById("filePick");
+  document.getElementById("btnPick").addEventListener("click", () => pick.click());
+  document.getElementById("btnPickEmpty").addEventListener("click", () => pick.click());
+  document.getElementById("btnClear").addEventListener("click", clearWorkbook);
+  pick.addEventListener("change", () => {
+    if (pick.files && pick.files[0]) loadWorkbookFile(pick.files[0]);
+    pick.value = "";      // allow re-picking the same file after an edit
+  });
+
+  const veil = document.getElementById("dropVeil");
+  let depth = 0;
+  const isFile = e => e.dataTransfer && [...(e.dataTransfer.types || [])].indexOf("Files") >= 0;
+  window.addEventListener("dragenter", e => {
+    if (!isFile(e)) return;
+    e.preventDefault();
+    depth++;
+    veil.classList.add("on");
+  });
+  window.addEventListener("dragover", e => { if (isFile(e)) e.preventDefault(); });
+  window.addEventListener("dragleave", e => {
+    if (!isFile(e)) return;
+    depth = Math.max(0, depth - 1);
+    if (!depth) veil.classList.remove("on");
+  });
+  window.addEventListener("drop", e => {
+    if (!isFile(e)) return;
+    e.preventDefault();
+    depth = 0;
+    veil.classList.remove("on");
+    const f = e.dataTransfer.files && e.dataTransfer.files[0];
+    if (f) loadWorkbookFile(f);
+  });
+
+  // This page is useless without the parser, so say so up front rather than
+  // letting someone discover it when the drop silently fails.
+  if (!XlsxReader.hasInflate()) {
+    document.getElementById("btnPick").disabled = true;
+    document.getElementById("btnPickEmpty").disabled = true;
+    document.getElementById("esWarn").innerHTML =
+      "This browser cannot open <code>.xlsx</code> files. Chrome 103+, Safari 16.4+ " +
+      "or Firefox 113+ is needed.";
+  }
+})();
+
+/* A small, deliberate surface for the verification harness: it lets the tests
+   inspect and drive exactly what a user can, without reaching into
+   script-scoped bindings. Harmless in normal use. */
+window.__dashboard = {
+  state: () => ({DATA: DATA, PM: PM, LOADED: LOADED}),
+  load: f => loadWorkbookFile(f),
+  clear: clearWorkbook,
+  render: renderAll
+};
+
+renderAll();
+renderSourceBar();
 </script>
 </body>
 </html>
