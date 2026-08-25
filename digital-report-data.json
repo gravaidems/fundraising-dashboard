@@ -1,0 +1,1262 @@
+{
+  "meta": {
+    "title": "Digital Fundraising Toplines",
+    "client": {
+      "value": "Cory Booker",
+      "cell": "C6"
+    },
+    "email_lead": {
+      "value": "Amanda Powell",
+      "cell": "C7"
+    },
+    "year": {
+      "value": 2026.0,
+      "cell": "C9"
+    },
+    "quarter": {
+      "value": 3.0,
+      "cell": "C10"
+    },
+    "dynamic_goals": {
+      "july": {
+        "value": false,
+        "cell": "O9"
+      },
+      "august": {
+        "value": false,
+        "cell": "O10"
+      },
+      "label": "Display Dynamic Goals:"
+    },
+    "source_workbook": "EXTERNAL_ CAB Digital Report.xlsx",
+    "extracted_at": "2026-08-25T14:25:45",
+    "sheet": "Digital Report"
+  },
+  "channels": [
+    {
+      "name": "Email",
+      "name_cell": "B14",
+      "row": 14,
+      "periods": {
+        "quarter": {
+          "label": "Quarter",
+          "goal": 400000.0,
+          "goal_cell": "C14",
+          "actual": 83568.6,
+          "actual_cell": "D14",
+          "pct": 0.2089215,
+          "pct_cell": "E14",
+          "pct_raw": 0.2089215,
+          "goal_formula": "=SUM(Q14:S14)",
+          "actual_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"TRANSPOSE(QUERY(IMPORTRANGE(\"\"https://docs.google.com/spreadsheets/d/1BtcJvMe8of-zuMB48bULVYsLVLrzOcJtgbdPjPbL36s/\"\", \"\"Quarterly Fundraising Toplines!A:Q\"\"),\"\"Select Col3,Col4,Col5,Col6,Col7,Col8,Col9,Col10 WHERE Col2 contains '\"\"&C10&\"\"' and Col1 contai\"&\"ns '\"\"&C9&\"\"'\"\",0))\"),83568.59999999999)",
+          "pct_formula": "=IFERROR(D14/C14,\"-\")"
+        },
+        "july": {
+          "label": "July",
+          "goal": 50000.0,
+          "goal_cell": "G14",
+          "actual": 36077.5,
+          "actual_cell": "H14",
+          "pct": 0.72155,
+          "pct_cell": "I14",
+          "pct_raw": 0.72155,
+          "goal_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"QUERY(TRANSPOSE(QUERY(IMPORTRANGE(\"\"https://docs.google.com/spreadsheets/d/1BtcJvMe8of-zuMB48bULVYsLVLrzOcJtgbdPjPbL36s/\"\",\"\"Import - Monthly Goals!A:L\"\"),\"\"Select Col5,Col6,Col7,Col8,Col9,Col10,Col11,Col12 WHERE Col2 contains '\"\"&C10&\"\"' and Col1 contain\"&\"s '\"\"&C9&\"\"'\"\",0)),\"\"Select Col1\"\",0)\"),50000.0)",
+          "actual_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"QUERY(TRANSPOSE(QUERY(IMPORTRANGE(\"\"https://docs.google.com/spreadsheets/d/1BtcJvMe8of-zuMB48bULVYsLVLrzOcJtgbdPjPbL36s/\"\",\"\"Monthly Fundraising Toplines!A:T\"\"),\"\"Select Col6,Col7,Col8,Col9,Col10,Col11,Col12,Col13 WHERE Col3 contains '\"\"&C10&\"\"' and Col2 \"&\"contains '\"\"&C9&\"\"'\"\",0)),\"\"Select Col1\"\")\"),36077.49999999993)",
+          "pct_formula": "=IFERROR(H14/G14,\"-\")"
+        },
+        "august": {
+          "label": "August",
+          "goal": 100000.0,
+          "goal_cell": "J14",
+          "actual": 47491.1,
+          "actual_cell": "K14",
+          "pct": 0.474911,
+          "pct_cell": "L14",
+          "pct_raw": 0.474911,
+          "goal_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"QUERY(TRANSPOSE(QUERY(IMPORTRANGE(\"\"https://docs.google.com/spreadsheets/d/1BtcJvMe8of-zuMB48bULVYsLVLrzOcJtgbdPjPbL36s/\"\",\"\"Import - Monthly Goals!A:L\"\"),\"\"Select Col5,Col6,Col7,Col8,Col9,Col10,Col11,Col12 WHERE Col2 contains '\"\"&C10&\"\"' and Col1 contain\"&\"s '\"\"&C9&\"\"'\"\",0)),\"\"Select Col2\"\",0)\"),100000.0)",
+          "actual_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"QUERY(TRANSPOSE(QUERY(IMPORTRANGE(\"\"https://docs.google.com/spreadsheets/d/1BtcJvMe8of-zuMB48bULVYsLVLrzOcJtgbdPjPbL36s/\"\",\"\"Monthly Fundraising Toplines!A:T\"\"),\"\"Select Col6,Col7,Col8,Col9,Col10,Col11,Col12,Col13 WHERE Col3 contains '\"\"&C10&\"\"' and Col2 \"&\"contains '\"\"&C9&\"\"'\"\",0)),\"\"Select Col2\"\")\"),47491.100000000064)",
+          "pct_formula": "=IFERROR(K14/J14,\"-\")"
+        },
+        "september": {
+          "label": "September",
+          "goal": 250000.0,
+          "goal_cell": "M14",
+          "actual": null,
+          "actual_cell": "N14",
+          "pct": 0.0,
+          "pct_cell": "O14",
+          "pct_raw": 0,
+          "goal_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"QUERY(TRANSPOSE(QUERY(IMPORTRANGE(\"\"https://docs.google.com/spreadsheets/d/1BtcJvMe8of-zuMB48bULVYsLVLrzOcJtgbdPjPbL36s/\"\",\"\"Import - Monthly Goals!A:L\"\"),\"\"Select Col5,Col6,Col7,Col8,Col9,Col10,Col11,Col12 WHERE Col2 contains '\"\"&C10&\"\"' and Col1 contain\"&\"s '\"\"&C9&\"\"'\"\",0)),\"\"Select Col3\"\",0)\"),250000.0)",
+          "actual_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"QUERY(TRANSPOSE(QUERY(IMPORTRANGE(\"\"https://docs.google.com/spreadsheets/d/1BtcJvMe8of-zuMB48bULVYsLVLrzOcJtgbdPjPbL36s/\"\",\"\"Monthly Fundraising Toplines!A:T\"\"),\"\"Select Col6,Col7,Col8,Col9,Col10,Col11,Col12,Col13 WHERE Col3 contains '\"\"&C10&\"\"' and Col2 \"&\"contains '\"\"&C9&\"\"'\"\",0)),\"\"Select Col3\"\")\"),\"\")",
+          "pct_formula": "=IFERROR(N14/M14,\"-\")"
+        }
+      },
+      "helpers": {
+        "july": {
+          "value": 50000.0,
+          "cell": "Q14",
+          "formula": "=IF($O$9,H14,G14)"
+        },
+        "august": {
+          "value": 100000.0,
+          "cell": "R14",
+          "formula": "=IF($O$10,K14,J14)"
+        },
+        "september": {
+          "value": 250000.0,
+          "cell": "S14",
+          "formula": "=M14"
+        }
+      },
+      "dormant": false
+    },
+    {
+      "name": "Recurring",
+      "name_cell": "B15",
+      "row": 15,
+      "periods": {
+        "quarter": {
+          "label": "Quarter",
+          "goal": 390507.6,
+          "goal_cell": "C15",
+          "actual": 138105.76,
+          "actual_cell": "D15",
+          "pct": 0.3536570351,
+          "pct_cell": "E15",
+          "pct_raw": 0.3536570351,
+          "goal_formula": "=SUM(Q15:S15)",
+          "actual_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),138105.76)",
+          "pct_formula": "=IFERROR(D15/C15,\"-\")"
+        },
+        "july": {
+          "label": "July",
+          "goal": 114183.51,
+          "goal_cell": "G15",
+          "actual": 76532.24,
+          "actual_cell": "H15",
+          "pct": 0.670256502,
+          "pct_cell": "I15",
+          "pct_raw": 0.670256502,
+          "goal_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),114183.51)",
+          "actual_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),76532.24)",
+          "pct_formula": "=IFERROR(H15/G15,\"-\")"
+        },
+        "august": {
+          "label": "August",
+          "goal": 125601.86,
+          "goal_cell": "J15",
+          "actual": 61573.52,
+          "actual_cell": "K15",
+          "pct": 0.4902277721,
+          "pct_cell": "L15",
+          "pct_raw": 0.4902277721,
+          "goal_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),125601.86)",
+          "actual_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),61573.520000000004)",
+          "pct_formula": "=IFERROR(K15/J15,\"-\")"
+        },
+        "september": {
+          "label": "September",
+          "goal": 150722.23,
+          "goal_cell": "M15",
+          "actual": null,
+          "actual_cell": "N15",
+          "pct": 0.0,
+          "pct_cell": "O15",
+          "pct_raw": 0,
+          "goal_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),150722.23)",
+          "actual_formula": null,
+          "pct_formula": "=IFERROR(N15/M15,\"-\")"
+        }
+      },
+      "helpers": {
+        "july": {
+          "value": 114183.51,
+          "cell": "Q15",
+          "formula": "=IF($O$9,H15,G15)"
+        },
+        "august": {
+          "value": 125601.86,
+          "cell": "R15",
+          "formula": "=IF($O$10,K15,J15)"
+        },
+        "september": {
+          "value": 150722.23,
+          "cell": "S15",
+          "formula": "=M15"
+        }
+      },
+      "dormant": false
+    },
+    {
+      "name": "Ads",
+      "name_cell": "B16",
+      "row": 16,
+      "periods": {
+        "quarter": {
+          "label": "Quarter",
+          "goal": 312000.0,
+          "goal_cell": "C16",
+          "actual": 100902.75,
+          "actual_cell": "D16",
+          "pct": 0.32340625,
+          "pct_cell": "E16",
+          "pct_raw": 0.32340625,
+          "goal_formula": "=SUM(Q16:S16)",
+          "actual_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),100902.75)",
+          "pct_formula": "=IFERROR(D16/C16,\"-\")"
+        },
+        "july": {
+          "label": "July",
+          "goal": 72000.0,
+          "goal_cell": "G16",
+          "actual": 57835.76,
+          "actual_cell": "H16",
+          "pct": 0.8032744444,
+          "pct_cell": "I16",
+          "pct_raw": 0.8032744444,
+          "goal_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),72000.0)",
+          "actual_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),57835.76)",
+          "pct_formula": "=IFERROR(H16/G16,\"-\")"
+        },
+        "august": {
+          "label": "August",
+          "goal": 90000.0,
+          "goal_cell": "J16",
+          "actual": 43066.99,
+          "actual_cell": "K16",
+          "pct": 0.4785221111,
+          "pct_cell": "L16",
+          "pct_raw": 0.4785221111,
+          "goal_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),90000.0)",
+          "actual_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),43066.990000000005)",
+          "pct_formula": "=IFERROR(K16/J16,\"-\")"
+        },
+        "september": {
+          "label": "September",
+          "goal": 150000.0,
+          "goal_cell": "M16",
+          "actual": null,
+          "actual_cell": "N16",
+          "pct": 0.0,
+          "pct_cell": "O16",
+          "pct_raw": 0,
+          "goal_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),150000.0)",
+          "actual_formula": null,
+          "pct_formula": "=IFERROR(N16/M16,\"-\")"
+        }
+      },
+      "helpers": {
+        "july": {
+          "value": 72000.0,
+          "cell": "Q16",
+          "formula": "=IF($O$9,H16,G16)"
+        },
+        "august": {
+          "value": 90000.0,
+          "cell": "R16",
+          "formula": "=IF($O$10,K16,J16)"
+        },
+        "september": {
+          "value": 150000.0,
+          "cell": "S16",
+          "formula": "=M16"
+        }
+      },
+      "dormant": false
+    },
+    {
+      "name": "Website",
+      "name_cell": "B17",
+      "row": 17,
+      "periods": {
+        "quarter": {
+          "label": "Quarter",
+          "goal": 220846.6,
+          "goal_cell": "C17",
+          "actual": 54696.36,
+          "actual_cell": "D17",
+          "pct": 0.2476667515,
+          "pct_cell": "E17",
+          "pct_raw": 0.2476667515,
+          "goal_formula": "=SUM(Q17:S17)",
+          "actual_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),54696.36)",
+          "pct_formula": "=IFERROR(D17/C17,\"-\")"
+        },
+        "july": {
+          "label": "July",
+          "goal": 46494.02,
+          "goal_cell": "G17",
+          "actual": 25754.3,
+          "actual_cell": "H17",
+          "pct": 0.5539271502,
+          "pct_cell": "I17",
+          "pct_raw": 0.5539271502,
+          "goal_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),46494.02)",
+          "actual_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),25754.300000000003)",
+          "pct_formula": "=IFERROR(H17/G17,\"-\")"
+        },
+        "august": {
+          "label": "August",
+          "goal": 69741.03,
+          "goal_cell": "J17",
+          "actual": 28942.06,
+          "actual_cell": "K17",
+          "pct": 0.4149932973,
+          "pct_cell": "L17",
+          "pct_raw": 0.4149932973,
+          "goal_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),69741.03)",
+          "actual_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),28942.059999999998)",
+          "pct_formula": "=IFERROR(K17/J17,\"-\")"
+        },
+        "september": {
+          "label": "September",
+          "goal": 104611.55,
+          "goal_cell": "M17",
+          "actual": null,
+          "actual_cell": "N17",
+          "pct": 0.0,
+          "pct_cell": "O17",
+          "pct_raw": 0,
+          "goal_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),104611.55)",
+          "actual_formula": null,
+          "pct_formula": "=IFERROR(N17/M17,\"-\")"
+        }
+      },
+      "helpers": {
+        "july": {
+          "value": 46494.02,
+          "cell": "Q17",
+          "formula": "=IF($O$9,H17,G17)"
+        },
+        "august": {
+          "value": 69741.03,
+          "cell": "R17",
+          "formula": "=IF($O$10,K17,J17)"
+        },
+        "september": {
+          "value": 104611.55,
+          "cell": "S17",
+          "formula": "=M17"
+        }
+      },
+      "dormant": false
+    },
+    {
+      "name": "Tandem",
+      "name_cell": "B18",
+      "row": 18,
+      "periods": {
+        "quarter": {
+          "label": "Quarter",
+          "goal": 1279.71,
+          "goal_cell": "C18",
+          "actual": 1515.36,
+          "actual_cell": "D18",
+          "pct": 1.184143282,
+          "pct_cell": "E18",
+          "pct_raw": 1.184143282,
+          "goal_formula": "=SUM(Q18:S18)",
+          "actual_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1515.3600000000001)",
+          "pct_formula": "=IFERROR(D18/C18,\"-\")"
+        },
+        "july": {
+          "label": "July",
+          "goal": 269.41,
+          "goal_cell": "G18",
+          "actual": 888.61,
+          "actual_cell": "H18",
+          "pct": 3.298355666,
+          "pct_cell": "I18",
+          "pct_raw": 3.298355666,
+          "goal_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),269.41)",
+          "actual_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),888.61)",
+          "pct_formula": "=IFERROR(H18/G18,\"-\")"
+        },
+        "august": {
+          "label": "August",
+          "goal": 404.12,
+          "goal_cell": "J18",
+          "actual": 626.75,
+          "actual_cell": "K18",
+          "pct": 1.550900723,
+          "pct_cell": "L18",
+          "pct_raw": 1.550900723,
+          "goal_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),404.12)",
+          "actual_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),626.75)",
+          "pct_formula": "=IFERROR(K18/J18,\"-\")"
+        },
+        "september": {
+          "label": "September",
+          "goal": 606.18,
+          "goal_cell": "M18",
+          "actual": null,
+          "actual_cell": "N18",
+          "pct": 0.0,
+          "pct_cell": "O18",
+          "pct_raw": 0,
+          "goal_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),606.18)",
+          "actual_formula": null,
+          "pct_formula": "=IFERROR(N18/M18,\"-\")"
+        }
+      },
+      "helpers": {
+        "july": {
+          "value": 269.41,
+          "cell": "Q18",
+          "formula": "=IF($O$9,H18,G18)"
+        },
+        "august": {
+          "value": 404.12,
+          "cell": "R18",
+          "formula": "=IF($O$10,K18,J18)"
+        },
+        "september": {
+          "value": 606.18,
+          "cell": "S18",
+          "formula": "=M18"
+        }
+      },
+      "dormant": false
+    },
+    {
+      "name": "SMS Broadcast",
+      "name_cell": "B19",
+      "row": 19,
+      "periods": {
+        "quarter": {
+          "label": "Quarter",
+          "goal": 0.0,
+          "goal_cell": "C19",
+          "actual": 0.0,
+          "actual_cell": "D19",
+          "pct": null,
+          "pct_cell": "E19",
+          "pct_raw": "-",
+          "goal_formula": "=SUM(Q19:S19)",
+          "actual_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)",
+          "pct_formula": "=IFERROR(D19/C19,\"-\")"
+        },
+        "july": {
+          "label": "July",
+          "goal": null,
+          "goal_cell": "G19",
+          "actual": 0.0,
+          "actual_cell": "H19",
+          "pct": null,
+          "pct_cell": "I19",
+          "pct_raw": "-",
+          "goal_formula": null,
+          "actual_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)",
+          "pct_formula": "=IFERROR(H19/G19,\"-\")"
+        },
+        "august": {
+          "label": "August",
+          "goal": null,
+          "goal_cell": "J19",
+          "actual": 0.0,
+          "actual_cell": "K19",
+          "pct": null,
+          "pct_cell": "L19",
+          "pct_raw": "-",
+          "goal_formula": null,
+          "actual_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)",
+          "pct_formula": "=IFERROR(K19/J19,\"-\")"
+        },
+        "september": {
+          "label": "September",
+          "goal": null,
+          "goal_cell": "M19",
+          "actual": null,
+          "actual_cell": "N19",
+          "pct": null,
+          "pct_cell": "O19",
+          "pct_raw": "-",
+          "goal_formula": null,
+          "actual_formula": null,
+          "pct_formula": "=IFERROR(N19/M19,\"-\")"
+        }
+      },
+      "helpers": {
+        "july": {
+          "value": null,
+          "cell": "Q19",
+          "formula": "=IF($O$9,H19,G19)"
+        },
+        "august": {
+          "value": null,
+          "cell": "R19",
+          "formula": "=IF($O$10,K19,J19)"
+        },
+        "september": {
+          "value": null,
+          "cell": "S19",
+          "formula": "=M19"
+        }
+      },
+      "dormant": true
+    },
+    {
+      "name": "SMS P2P",
+      "name_cell": "B20",
+      "row": 20,
+      "periods": {
+        "quarter": {
+          "label": "Quarter",
+          "goal": 27000.0,
+          "goal_cell": "C20",
+          "actual": 13540.47,
+          "actual_cell": "D20",
+          "pct": 0.5014988889,
+          "pct_cell": "E20",
+          "pct_raw": 0.5014988889,
+          "goal_formula": "=SUM(Q20:S20)",
+          "actual_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),13540.47)",
+          "pct_formula": "=IFERROR(D20/C20,\"-\")"
+        },
+        "july": {
+          "label": "July",
+          "goal": 6000.0,
+          "goal_cell": "G20",
+          "actual": 5118.26,
+          "actual_cell": "H20",
+          "pct": 0.8530433333,
+          "pct_cell": "I20",
+          "pct_raw": 0.8530433333,
+          "goal_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),6000.0)",
+          "actual_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),5118.26)",
+          "pct_formula": "=IFERROR(H20/G20,\"-\")"
+        },
+        "august": {
+          "label": "August",
+          "goal": 9000.0,
+          "goal_cell": "J20",
+          "actual": 8422.21,
+          "actual_cell": "K20",
+          "pct": 0.9358011111,
+          "pct_cell": "L20",
+          "pct_raw": 0.9358011111,
+          "goal_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),9000.0)",
+          "actual_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),8422.21)",
+          "pct_formula": "=IFERROR(K20/J20,\"-\")"
+        },
+        "september": {
+          "label": "September",
+          "goal": 12000.0,
+          "goal_cell": "M20",
+          "actual": null,
+          "actual_cell": "N20",
+          "pct": 0.0,
+          "pct_cell": "O20",
+          "pct_raw": 0,
+          "goal_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),12000.0)",
+          "actual_formula": null,
+          "pct_formula": "=IFERROR(N20/M20,\"-\")"
+        }
+      },
+      "helpers": {
+        "july": {
+          "value": 6000.0,
+          "cell": "Q20",
+          "formula": "=IF($O$9,H20,G20)"
+        },
+        "august": {
+          "value": 9000.0,
+          "cell": "R20",
+          "formula": "=IF($O$10,K20,J20)"
+        },
+        "september": {
+          "value": 12000.0,
+          "cell": "S20",
+          "formula": "=M20"
+        }
+      },
+      "dormant": false
+    },
+    {
+      "name": "Social",
+      "name_cell": "B21",
+      "row": 21,
+      "periods": {
+        "quarter": {
+          "label": "Quarter",
+          "goal": 0.0,
+          "goal_cell": "C21",
+          "actual": 0.0,
+          "actual_cell": "D21",
+          "pct": null,
+          "pct_cell": "E21",
+          "pct_raw": "-",
+          "goal_formula": "=SUM(Q21:S21)",
+          "actual_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)",
+          "pct_formula": "=IFERROR(D21/C21,\"-\")"
+        },
+        "july": {
+          "label": "July",
+          "goal": null,
+          "goal_cell": "G21",
+          "actual": 0.0,
+          "actual_cell": "H21",
+          "pct": null,
+          "pct_cell": "I21",
+          "pct_raw": "-",
+          "goal_formula": null,
+          "actual_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)",
+          "pct_formula": "=IFERROR(H21/G21,\"-\")"
+        },
+        "august": {
+          "label": "August",
+          "goal": null,
+          "goal_cell": "J21",
+          "actual": 0.0,
+          "actual_cell": "K21",
+          "pct": null,
+          "pct_cell": "L21",
+          "pct_raw": "-",
+          "goal_formula": null,
+          "actual_formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)",
+          "pct_formula": "=IFERROR(K21/J21,\"-\")"
+        },
+        "september": {
+          "label": "September",
+          "goal": null,
+          "goal_cell": "M21",
+          "actual": null,
+          "actual_cell": "N21",
+          "pct": null,
+          "pct_cell": "O21",
+          "pct_raw": "-",
+          "goal_formula": null,
+          "actual_formula": null,
+          "pct_formula": "=IFERROR(N21/M21,\"-\")"
+        }
+      },
+      "helpers": {
+        "july": {
+          "value": null,
+          "cell": "Q21",
+          "formula": "=IF($O$9,H21,G21)"
+        },
+        "august": {
+          "value": null,
+          "cell": "R21",
+          "formula": "=IF($O$10,K21,J21)"
+        },
+        "september": {
+          "value": null,
+          "cell": "S21",
+          "formula": "=M21"
+        }
+      },
+      "dormant": true
+    }
+  ],
+  "overall": {
+    "total_raised": {
+      "label": "Total Raised",
+      "label_cell": "B23",
+      "row": 23,
+      "periods": {
+        "quarter": {
+          "label": "Quarter",
+          "goal": 1351633.91,
+          "goal_cell": "C23",
+          "actual": 392329.3,
+          "actual_cell": "D23",
+          "pct": 0.2902629899,
+          "pct_cell": "E23"
+        },
+        "july": {
+          "label": "July",
+          "goal": 288946.94,
+          "goal_cell": "G23",
+          "actual": 202206.67,
+          "actual_cell": "H23",
+          "pct": 0.6998055422,
+          "pct_cell": "I23"
+        },
+        "august": {
+          "label": "August",
+          "goal": 394747.01,
+          "goal_cell": "J23",
+          "actual": 190122.63,
+          "actual_cell": "K23",
+          "pct": 0.4816315898,
+          "pct_cell": "L23"
+        },
+        "september": {
+          "label": "September",
+          "goal": 667939.96,
+          "goal_cell": "M23",
+          "actual": 0.0,
+          "actual_cell": "N23",
+          "pct": 0.0,
+          "pct_cell": "O23"
+        }
+      }
+    },
+    "total_donations": {
+      "label": "Total Donations",
+      "label_cell": "B24",
+      "row": 24,
+      "periods": {
+        "quarter": {
+          "label": "Quarter",
+          "goal": null,
+          "goal_cell": "C24",
+          "actual": 22618.0,
+          "actual_cell": "D24",
+          "pct": null,
+          "pct_cell": "E24"
+        },
+        "july": {
+          "label": "July",
+          "goal": null,
+          "goal_cell": "G24",
+          "actual": 12330.0,
+          "actual_cell": "H24",
+          "pct": null,
+          "pct_cell": "I24"
+        },
+        "august": {
+          "label": "August",
+          "goal": null,
+          "goal_cell": "J24",
+          "actual": 10288.0,
+          "actual_cell": "K24",
+          "pct": null,
+          "pct_cell": "L24"
+        },
+        "september": {
+          "label": "September",
+          "goal": null,
+          "goal_cell": "M24",
+          "actual": null,
+          "actual_cell": "N24",
+          "pct": null,
+          "pct_cell": "O24"
+        }
+      }
+    },
+    "average_donation": {
+      "label": "Average Donation",
+      "label_cell": "B25",
+      "row": 25,
+      "periods": {
+        "quarter": {
+          "label": "Quarter",
+          "goal": null,
+          "goal_cell": "C25",
+          "actual": 17.34588823,
+          "actual_cell": "D25",
+          "pct": null,
+          "pct_cell": "E25"
+        },
+        "july": {
+          "label": "July",
+          "goal": null,
+          "goal_cell": "G25",
+          "actual": 16.39956772,
+          "actual_cell": "H25",
+          "pct": null,
+          "pct_cell": "I25"
+        },
+        "august": {
+          "label": "August",
+          "goal": null,
+          "goal_cell": "J25",
+          "actual": 18.48003791,
+          "actual_cell": "K25",
+          "pct": null,
+          "pct_cell": "L25"
+        },
+        "september": {
+          "label": "September",
+          "goal": null,
+          "goal_cell": "M25",
+          "actual": null,
+          "actual_cell": "N25",
+          "pct": null,
+          "pct_cell": "O25"
+        }
+      }
+    },
+    "total_finance": {
+      "label": "Total Finance",
+      "label_cell": "B26",
+      "row": 26,
+      "periods": {
+        "quarter": {
+          "label": "Quarter",
+          "goal": null,
+          "goal_cell": "C26",
+          "actual": 4850.43,
+          "actual_cell": "D26",
+          "pct": null,
+          "pct_cell": "E26"
+        },
+        "july": {
+          "label": "July",
+          "goal": null,
+          "goal_cell": "G26",
+          "actual": 606.05,
+          "actual_cell": "H26",
+          "pct": null,
+          "pct_cell": "I26"
+        },
+        "august": {
+          "label": "August",
+          "goal": null,
+          "goal_cell": "J26",
+          "actual": 4244.38,
+          "actual_cell": "K26",
+          "pct": null,
+          "pct_cell": "L26"
+        },
+        "september": {
+          "label": "September",
+          "goal": null,
+          "goal_cell": "M26",
+          "actual": null,
+          "actual_cell": "N26",
+          "pct": null,
+          "pct_cell": "O26"
+        }
+      }
+    }
+  },
+  "cumulative": {
+    "Email": {
+      "actual": [
+        {
+          "month": "July",
+          "value": 36077.5,
+          "pending": false,
+          "cells": [
+            "H14"
+          ]
+        },
+        {
+          "month": "August",
+          "value": 83568.6,
+          "pending": false,
+          "cells": [
+            "H14",
+            "K14"
+          ]
+        },
+        {
+          "month": "September",
+          "value": null,
+          "pending": true
+        }
+      ],
+      "goal": [
+        {
+          "month": "July",
+          "value": 50000.0,
+          "cells": [
+            "G14"
+          ]
+        },
+        {
+          "month": "August",
+          "value": 150000.0,
+          "cells": [
+            "G14",
+            "J14"
+          ]
+        },
+        {
+          "month": "September",
+          "value": 400000.0,
+          "cells": [
+            "G14",
+            "J14",
+            "M14"
+          ]
+        }
+      ]
+    },
+    "Recurring": {
+      "actual": [
+        {
+          "month": "July",
+          "value": 76532.24,
+          "pending": false,
+          "cells": [
+            "H15"
+          ]
+        },
+        {
+          "month": "August",
+          "value": 138105.76,
+          "pending": false,
+          "cells": [
+            "H15",
+            "K15"
+          ]
+        },
+        {
+          "month": "September",
+          "value": null,
+          "pending": true
+        }
+      ],
+      "goal": [
+        {
+          "month": "July",
+          "value": 114183.51,
+          "cells": [
+            "G15"
+          ]
+        },
+        {
+          "month": "August",
+          "value": 239785.37,
+          "cells": [
+            "G15",
+            "J15"
+          ]
+        },
+        {
+          "month": "September",
+          "value": 390507.6,
+          "cells": [
+            "G15",
+            "J15",
+            "M15"
+          ]
+        }
+      ]
+    },
+    "Ads": {
+      "actual": [
+        {
+          "month": "July",
+          "value": 57835.76,
+          "pending": false,
+          "cells": [
+            "H16"
+          ]
+        },
+        {
+          "month": "August",
+          "value": 100902.75,
+          "pending": false,
+          "cells": [
+            "H16",
+            "K16"
+          ]
+        },
+        {
+          "month": "September",
+          "value": null,
+          "pending": true
+        }
+      ],
+      "goal": [
+        {
+          "month": "July",
+          "value": 72000.0,
+          "cells": [
+            "G16"
+          ]
+        },
+        {
+          "month": "August",
+          "value": 162000.0,
+          "cells": [
+            "G16",
+            "J16"
+          ]
+        },
+        {
+          "month": "September",
+          "value": 312000.0,
+          "cells": [
+            "G16",
+            "J16",
+            "M16"
+          ]
+        }
+      ]
+    },
+    "Website": {
+      "actual": [
+        {
+          "month": "July",
+          "value": 25754.3,
+          "pending": false,
+          "cells": [
+            "H17"
+          ]
+        },
+        {
+          "month": "August",
+          "value": 54696.36,
+          "pending": false,
+          "cells": [
+            "H17",
+            "K17"
+          ]
+        },
+        {
+          "month": "September",
+          "value": null,
+          "pending": true
+        }
+      ],
+      "goal": [
+        {
+          "month": "July",
+          "value": 46494.02,
+          "cells": [
+            "G17"
+          ]
+        },
+        {
+          "month": "August",
+          "value": 116235.04999999999,
+          "cells": [
+            "G17",
+            "J17"
+          ]
+        },
+        {
+          "month": "September",
+          "value": 220846.59999999998,
+          "cells": [
+            "G17",
+            "J17",
+            "M17"
+          ]
+        }
+      ]
+    },
+    "Tandem": {
+      "actual": [
+        {
+          "month": "July",
+          "value": 888.61,
+          "pending": false,
+          "cells": [
+            "H18"
+          ]
+        },
+        {
+          "month": "August",
+          "value": 1515.3600000000001,
+          "pending": false,
+          "cells": [
+            "H18",
+            "K18"
+          ]
+        },
+        {
+          "month": "September",
+          "value": null,
+          "pending": true
+        }
+      ],
+      "goal": [
+        {
+          "month": "July",
+          "value": 269.41,
+          "cells": [
+            "G18"
+          ]
+        },
+        {
+          "month": "August",
+          "value": 673.53,
+          "cells": [
+            "G18",
+            "J18"
+          ]
+        },
+        {
+          "month": "September",
+          "value": 1279.71,
+          "cells": [
+            "G18",
+            "J18",
+            "M18"
+          ]
+        }
+      ]
+    },
+    "SMS Broadcast": {
+      "actual": [
+        {
+          "month": "July",
+          "value": 0.0,
+          "pending": false,
+          "cells": [
+            "H19"
+          ]
+        },
+        {
+          "month": "August",
+          "value": 0.0,
+          "pending": false,
+          "cells": [
+            "H19",
+            "K19"
+          ]
+        },
+        {
+          "month": "September",
+          "value": null,
+          "pending": true
+        }
+      ],
+      "goal": [
+        {
+          "month": "July",
+          "value": 0.0,
+          "cells": [
+            "G19"
+          ]
+        },
+        {
+          "month": "August",
+          "value": 0.0,
+          "cells": [
+            "G19",
+            "J19"
+          ]
+        },
+        {
+          "month": "September",
+          "value": 0.0,
+          "cells": [
+            "G19",
+            "J19",
+            "M19"
+          ]
+        }
+      ]
+    },
+    "SMS P2P": {
+      "actual": [
+        {
+          "month": "July",
+          "value": 5118.26,
+          "pending": false,
+          "cells": [
+            "H20"
+          ]
+        },
+        {
+          "month": "August",
+          "value": 13540.47,
+          "pending": false,
+          "cells": [
+            "H20",
+            "K20"
+          ]
+        },
+        {
+          "month": "September",
+          "value": null,
+          "pending": true
+        }
+      ],
+      "goal": [
+        {
+          "month": "July",
+          "value": 6000.0,
+          "cells": [
+            "G20"
+          ]
+        },
+        {
+          "month": "August",
+          "value": 15000.0,
+          "cells": [
+            "G20",
+            "J20"
+          ]
+        },
+        {
+          "month": "September",
+          "value": 27000.0,
+          "cells": [
+            "G20",
+            "J20",
+            "M20"
+          ]
+        }
+      ]
+    },
+    "Social": {
+      "actual": [
+        {
+          "month": "July",
+          "value": 0.0,
+          "pending": false,
+          "cells": [
+            "H21"
+          ]
+        },
+        {
+          "month": "August",
+          "value": 0.0,
+          "pending": false,
+          "cells": [
+            "H21",
+            "K21"
+          ]
+        },
+        {
+          "month": "September",
+          "value": null,
+          "pending": true
+        }
+      ],
+      "goal": [
+        {
+          "month": "July",
+          "value": 0.0,
+          "cells": [
+            "G21"
+          ]
+        },
+        {
+          "month": "August",
+          "value": 0.0,
+          "cells": [
+            "G21",
+            "J21"
+          ]
+        },
+        {
+          "month": "September",
+          "value": 0.0,
+          "cells": [
+            "G21",
+            "J21",
+            "M21"
+          ]
+        }
+      ]
+    }
+  },
+  "month_keys": [
+    "july",
+    "august",
+    "september"
+  ],
+  "sources": {
+    "quarter_actual": "Quarterly Fundraising Toplines",
+    "july_goal": "Import - Monthly Goals",
+    "july_actual": "Monthly Fundraising Toplines",
+    "august_goal": "Import - Monthly Goals",
+    "august_actual": "Monthly Fundraising Toplines",
+    "september_goal": "Import - Monthly Goals",
+    "september_actual": "Monthly Fundraising Toplines"
+  },
+  "pending_months": [
+    "september"
+  ]
+}

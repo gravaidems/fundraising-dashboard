@@ -1,0 +1,2179 @@
+{
+  "meta": {
+    "title": "Paid Media Report",
+    "sheet": "Paid Media Report",
+    "source_workbook": "EXTERNAL_ CAB Digital Report.xlsx",
+    "extracted_at": "2026-08-25T14:25:46",
+    "year": {
+      "value": 2026.0,
+      "cell": "C4"
+    },
+    "quarter": {
+      "value": 1.0,
+      "cell": "C5"
+    },
+    "client": {
+      "value": "Cory Booker",
+      "cell": "C7"
+    },
+    "lead": {
+      "value": null,
+      "cell": "C8"
+    }
+  },
+  "metric_order": [
+    "gross_spend",
+    "ntl",
+    "gross_cpa",
+    "immediate_raised",
+    "immediate_roas",
+    "lifetime_raised",
+    "lifetime_roas",
+    "total_raised",
+    "total_roas"
+  ],
+  "metric_labels": {
+    "gross_spend": "Gross Spend",
+    "ntl": "NTL",
+    "gross_cpa": "Gross CPA",
+    "immediate_raised": "Immediate Raised",
+    "immediate_roas": "Immediate ROAS",
+    "lifetime_raised": "Lifetime Raised",
+    "lifetime_roas": "Lifetime ROAS",
+    "total_raised": "Total Raised",
+    "total_roas": "Total ROAS"
+  },
+  "metric_kinds": {
+    "gross_spend": "usd",
+    "ntl": "count",
+    "gross_cpa": "usd2",
+    "immediate_raised": "usd",
+    "immediate_roas": "roas",
+    "lifetime_raised": "usd",
+    "lifetime_roas": "roas",
+    "total_raised": "usd",
+    "total_roas": "roas"
+  },
+  "metric_columns": {
+    "gross_spend": "F",
+    "ntl": "G",
+    "gross_cpa": "H",
+    "immediate_raised": "I",
+    "immediate_roas": "J",
+    "lifetime_raised": "K",
+    "lifetime_roas": "L",
+    "total_raised": "M",
+    "total_roas": "N"
+  },
+  "additive": [
+    "gross_spend",
+    "ntl",
+    "immediate_raised",
+    "lifetime_raised",
+    "total_raised"
+  ],
+  "accum_keys": [
+    "gross_spend",
+    "ntl",
+    "total_raised"
+  ],
+  "definitions": [
+    {
+      "term": "NTL",
+      "text": "Count of \"new-to-list\" names",
+      "term_cell": "F4",
+      "text_cell": "G4"
+    },
+    {
+      "term": "CPA",
+      "text": "\"Cost per acquisition,\" i.e., cost per name added to email list",
+      "term_cell": "F5",
+      "text_cell": "G5"
+    },
+    {
+      "term": "ROAS",
+      "text": "Return on ad spend",
+      "term_cell": "F6",
+      "text_cell": "G6"
+    },
+    {
+      "term": "Immediate Raised",
+      "text": "Amount raised in direct response to an ad or campaign (from everyone)",
+      "term_cell": "F7",
+      "text_cell": "G7"
+    },
+    {
+      "term": "Lifetime Raised",
+      "text": "Amount raised over time from NTL names only (all digital platforms)",
+      "term_cell": "F8",
+      "text_cell": "G8"
+    },
+    {
+      "term": "Total Raised",
+      "text": "Amount raised from both immediate and lifetime (removing immediate from NTL so as to not count twice)",
+      "term_cell": "F9",
+      "text_cell": "G9"
+    }
+  ],
+  "quarters": [
+    {
+      "quarter": 1,
+      "label": "Q1",
+      "label_cell": "E12",
+      "row": 12,
+      "metrics": {
+        "gross_spend": {
+          "label": "Gross Spend",
+          "kind": "usd",
+          "value": 195366.372,
+          "cell": "F12",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),195366.37202804303)"
+        },
+        "ntl": {
+          "label": "NTL",
+          "kind": "count",
+          "value": 154883.0,
+          "cell": "G12",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),154883.0)"
+        },
+        "gross_cpa": {
+          "label": "Gross CPA",
+          "kind": "usd2",
+          "value": 1.261380345,
+          "cell": "H12",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.2613803453448282)"
+        },
+        "immediate_raised": {
+          "label": "Immediate Raised",
+          "kind": "usd",
+          "value": 185929.03,
+          "cell": "I12",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),185929.03)"
+        },
+        "immediate_roas": {
+          "label": "Immediate ROAS",
+          "kind": "roas",
+          "value": 0.9516941328,
+          "cell": "J12",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.9516941327717936)"
+        },
+        "lifetime_raised": {
+          "label": "Lifetime Raised",
+          "kind": "usd",
+          "value": 46830.73,
+          "cell": "K12",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),46830.729999999996)"
+        },
+        "lifetime_roas": {
+          "label": "Lifetime ROAS",
+          "kind": "roas",
+          "value": 0.2397072204,
+          "cell": "L12",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.23970722040780837)"
+        },
+        "total_raised": {
+          "label": "Total Raised",
+          "kind": "usd",
+          "value": 209182.32,
+          "cell": "M12",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),209182.32)"
+        },
+        "total_roas": {
+          "label": "Total ROAS",
+          "kind": "roas",
+          "value": 1.070718148,
+          "cell": "N12",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.070718147798608)"
+        }
+      }
+    },
+    {
+      "quarter": 2,
+      "label": "Q2",
+      "label_cell": "E13",
+      "row": 13,
+      "metrics": {
+        "gross_spend": {
+          "label": "Gross Spend",
+          "kind": "usd",
+          "value": 176504.8982,
+          "cell": "F13",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),176504.89823429543)"
+        },
+        "ntl": {
+          "label": "NTL",
+          "kind": "count",
+          "value": 1800.0,
+          "cell": "G13",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1800.0)"
+        },
+        "gross_cpa": {
+          "label": "Gross CPA",
+          "kind": "usd2",
+          "value": 98.0582768,
+          "cell": "H13",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),98.0582767968308)"
+        },
+        "immediate_raised": {
+          "label": "Immediate Raised",
+          "kind": "usd",
+          "value": 227476.01,
+          "cell": "I13",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),227476.00999999998)"
+        },
+        "immediate_roas": {
+          "label": "Immediate ROAS",
+          "kind": "roas",
+          "value": 1.288780154,
+          "cell": "J13",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.2887801544070732)"
+        },
+        "lifetime_raised": {
+          "label": "Lifetime Raised",
+          "kind": "usd",
+          "value": 54223.5,
+          "cell": "K13",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),54223.5)"
+        },
+        "lifetime_roas": {
+          "label": "Lifetime ROAS",
+          "kind": "roas",
+          "value": 0.3072067718,
+          "cell": "L13",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.3072067718371354)"
+        },
+        "total_raised": {
+          "label": "Total Raised",
+          "kind": "usd",
+          "value": 245477.59,
+          "cell": "M13",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),245477.58999999997)"
+        },
+        "total_roas": {
+          "label": "Total ROAS",
+          "kind": "roas",
+          "value": 1.390769279,
+          "cell": "N13",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.3907692786754795)"
+        }
+      }
+    },
+    {
+      "quarter": 3,
+      "label": "Q3",
+      "label_cell": "E14",
+      "row": 14,
+      "metrics": {
+        "gross_spend": {
+          "label": "Gross Spend",
+          "kind": "usd",
+          "value": 82242.79348,
+          "cell": "F14",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),82242.79348455915)"
+        },
+        "ntl": {
+          "label": "NTL",
+          "kind": "count",
+          "value": 36616.0,
+          "cell": "G14",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),36616.0)"
+        },
+        "gross_cpa": {
+          "label": "Gross CPA",
+          "kind": "usd2",
+          "value": 2.246088963,
+          "cell": "H14",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),2.246088963419247)"
+        },
+        "immediate_raised": {
+          "label": "Immediate Raised",
+          "kind": "usd",
+          "value": 115383.99,
+          "cell": "I14",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),115383.99000000002)"
+        },
+        "immediate_roas": {
+          "label": "Immediate ROAS",
+          "kind": "roas",
+          "value": 1.402967787,
+          "cell": "J14",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.402967787343739)"
+        },
+        "lifetime_raised": {
+          "label": "Lifetime Raised",
+          "kind": "usd",
+          "value": 28179.27,
+          "cell": "K14",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),28179.27)"
+        },
+        "lifetime_roas": {
+          "label": "Lifetime ROAS",
+          "kind": "roas",
+          "value": 0.3426351271,
+          "cell": "L14",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.34263512711652455)"
+        },
+        "total_raised": {
+          "label": "Total Raised",
+          "kind": "usd",
+          "value": 119725.27,
+          "cell": "M14",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),119725.27000000003)"
+        },
+        "total_roas": {
+          "label": "Total ROAS",
+          "kind": "roas",
+          "value": 1.455753932,
+          "cell": "N14",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.4557539320752535)"
+        }
+      }
+    }
+  ],
+  "months": [
+    {
+      "label": "January",
+      "label_cell": "E18",
+      "row": 18,
+      "metrics": {
+        "gross_spend": {
+          "label": "Gross Spend",
+          "kind": "usd",
+          "value": 3067.614839,
+          "cell": "F18",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),3067.6148387096778)"
+        },
+        "ntl": {
+          "label": "NTL",
+          "kind": "count",
+          "value": 24.0,
+          "cell": "G18",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),24.0)"
+        },
+        "gross_cpa": {
+          "label": "Gross CPA",
+          "kind": "usd2",
+          "value": 127.8172849,
+          "cell": "H18",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),127.81728494623657)"
+        },
+        "immediate_raised": {
+          "label": "Immediate Raised",
+          "kind": "usd",
+          "value": 3866.37,
+          "cell": "I18",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),3866.37)"
+        },
+        "immediate_roas": {
+          "label": "Immediate ROAS",
+          "kind": "roas",
+          "value": 1.260383133,
+          "cell": "J18",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.2603831325924542)"
+        },
+        "lifetime_raised": {
+          "label": "Lifetime Raised",
+          "kind": "usd",
+          "value": 623.57,
+          "cell": "K18",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),623.5699999999999)"
+        },
+        "lifetime_roas": {
+          "label": "Lifetime ROAS",
+          "kind": "roas",
+          "value": 0.2032751935,
+          "cell": "L18",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.20327519352536788)"
+        },
+        "total_raised": {
+          "label": "Total Raised",
+          "kind": "usd",
+          "value": 4123.38,
+          "cell": "M18",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),4123.38)"
+        },
+        "total_roas": {
+          "label": "Total ROAS",
+          "kind": "roas",
+          "value": 1.344164837,
+          "cell": "N18",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.3441648371131252)"
+        }
+      }
+    },
+    {
+      "label": "February",
+      "label_cell": "E19",
+      "row": 19,
+      "metrics": {
+        "gross_spend": {
+          "label": "Gross Spend",
+          "kind": "usd",
+          "value": 118393.3095,
+          "cell": "F19",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),118393.30950116129)"
+        },
+        "ntl": {
+          "label": "NTL",
+          "kind": "count",
+          "value": 154291.0,
+          "cell": "G19",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),154291.0)"
+        },
+        "gross_cpa": {
+          "label": "Gross CPA",
+          "kind": "usd2",
+          "value": 0.7673377546,
+          "cell": "H19",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.7673377546400068)"
+        },
+        "immediate_raised": {
+          "label": "Immediate Raised",
+          "kind": "usd",
+          "value": 82850.42,
+          "cell": "I19",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),82850.42)"
+        },
+        "immediate_roas": {
+          "label": "Immediate ROAS",
+          "kind": "roas",
+          "value": 0.6997897124,
+          "cell": "J19",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.6997897123501505)"
+        },
+        "lifetime_raised": {
+          "label": "Lifetime Raised",
+          "kind": "usd",
+          "value": 27141.56,
+          "cell": "K19",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),27141.559999999998)"
+        },
+        "lifetime_roas": {
+          "label": "Lifetime ROAS",
+          "kind": "roas",
+          "value": 0.229249103,
+          "cell": "L19",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.22924910296332052)"
+        },
+        "total_raised": {
+          "label": "Total Raised",
+          "kind": "usd",
+          "value": 96942.1,
+          "cell": "M19",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),96942.09999999999)"
+        },
+        "total_roas": {
+          "label": "Total ROAS",
+          "kind": "roas",
+          "value": 0.8188140057,
+          "cell": "N19",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.81881400569387)"
+        }
+      }
+    },
+    {
+      "label": "March",
+      "label_cell": "E20",
+      "row": 20,
+      "metrics": {
+        "gross_spend": {
+          "label": "Gross Spend",
+          "kind": "usd",
+          "value": 73905.44769,
+          "cell": "F20",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),73905.447688172)"
+        },
+        "ntl": {
+          "label": "NTL",
+          "kind": "count",
+          "value": 568.0,
+          "cell": "G20",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),568.0)"
+        },
+        "gross_cpa": {
+          "label": "Gross CPA",
+          "kind": "usd2",
+          "value": 130.1152248,
+          "cell": "H20",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),130.11522480311973)"
+        },
+        "immediate_raised": {
+          "label": "Immediate Raised",
+          "kind": "usd",
+          "value": 99212.24,
+          "cell": "I20",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),99212.24)"
+        },
+        "immediate_roas": {
+          "label": "Immediate ROAS",
+          "kind": "roas",
+          "value": 1.342421203,
+          "cell": "J20",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.3424212030837634)"
+        },
+        "lifetime_raised": {
+          "label": "Lifetime Raised",
+          "kind": "usd",
+          "value": 19065.6,
+          "cell": "K20",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),19065.6)"
+        },
+        "lifetime_roas": {
+          "label": "Lifetime ROAS",
+          "kind": "roas",
+          "value": 0.2579728639,
+          "cell": "L20",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.2579728639280173)"
+        },
+        "total_raised": {
+          "label": "Total Raised",
+          "kind": "usd",
+          "value": 108116.84,
+          "cell": "M20",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),108116.84)"
+        },
+        "total_roas": {
+          "label": "Total ROAS",
+          "kind": "roas",
+          "value": 1.462907585,
+          "cell": "N20",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.4629075850561861)"
+        }
+      }
+    }
+  ],
+  "detail": [
+    {
+      "month": "January",
+      "month_cell": "B23",
+      "channel": "SMS P2P",
+      "channel_cell": "C23",
+      "placement": "Grassroots Analytics P2P",
+      "placement_cell": "D23",
+      "objective": "Donations SMS",
+      "objective_cell": "E23",
+      "row": 23,
+      "metrics": {
+        "gross_spend": {
+          "label": "Gross Spend",
+          "kind": "usd",
+          "value": 1250.31,
+          "cell": "F23",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1250.31)"
+        },
+        "ntl": {
+          "label": "NTL",
+          "kind": "count",
+          "value": 16.0,
+          "cell": "G23",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),16.0)"
+        },
+        "gross_cpa": {
+          "label": "Gross CPA",
+          "kind": "usd2",
+          "value": 78.144375,
+          "cell": "H23",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),78.144375)"
+        },
+        "immediate_raised": {
+          "label": "Immediate Raised",
+          "kind": "usd",
+          "value": 1525.37,
+          "cell": "I23",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1525.37)"
+        },
+        "immediate_roas": {
+          "label": "Immediate ROAS",
+          "kind": "roas",
+          "value": 1.219993442,
+          "cell": "J23",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.2199934416264766)"
+        },
+        "lifetime_raised": {
+          "label": "Lifetime Raised",
+          "kind": "usd",
+          "value": 436.57,
+          "cell": "K23",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),436.57)"
+        },
+        "lifetime_roas": {
+          "label": "Lifetime ROAS",
+          "kind": "roas",
+          "value": 0.349169406,
+          "cell": "L23",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.34916940598731516)"
+        },
+        "total_raised": {
+          "label": "Total Raised",
+          "kind": "usd",
+          "value": 1747.38,
+          "cell": "M23",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1747.3799999999999)"
+        },
+        "total_roas": {
+          "label": "Total ROAS",
+          "kind": "roas",
+          "value": 1.397557406,
+          "cell": "N23",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.3975574057633706)"
+        }
+      }
+    },
+    {
+      "month": "January",
+      "month_cell": "B24",
+      "channel": "SMS P2P",
+      "channel_cell": "C24",
+      "placement": "Leverage P2P",
+      "placement_cell": "D24",
+      "objective": "Donations SMS",
+      "objective_cell": "E24",
+      "row": 24,
+      "metrics": {
+        "gross_spend": {
+          "label": "Gross Spend",
+          "kind": "usd",
+          "value": 246.0,
+          "cell": "F24",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),246.0)"
+        },
+        "ntl": {
+          "label": "NTL",
+          "kind": "count",
+          "value": 3.0,
+          "cell": "G24",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),3.0)"
+        },
+        "gross_cpa": {
+          "label": "Gross CPA",
+          "kind": "usd2",
+          "value": 82.0,
+          "cell": "H24",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),82.0)"
+        },
+        "immediate_raised": {
+          "label": "Immediate Raised",
+          "kind": "usd",
+          "value": 246.0,
+          "cell": "I24",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),246.0)"
+        },
+        "immediate_roas": {
+          "label": "Immediate ROAS",
+          "kind": "roas",
+          "value": 1.0,
+          "cell": "J24",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.0)"
+        },
+        "lifetime_raised": {
+          "label": "Lifetime Raised",
+          "kind": "usd",
+          "value": 32.0,
+          "cell": "K24",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),32.0)"
+        },
+        "lifetime_roas": {
+          "label": "Lifetime ROAS",
+          "kind": "roas",
+          "value": 0.1300813008,
+          "cell": "L24",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.13008130081300814)"
+        },
+        "total_raised": {
+          "label": "Total Raised",
+          "kind": "usd",
+          "value": 246.0,
+          "cell": "M24",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),246.0)"
+        },
+        "total_roas": {
+          "label": "Total ROAS",
+          "kind": "roas",
+          "value": 1.0,
+          "cell": "N24",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.0)"
+        }
+      }
+    },
+    {
+      "month": "January",
+      "month_cell": "B25",
+      "channel": "SMS P2P",
+      "channel_cell": "C25",
+      "placement": "Scale to Win",
+      "placement_cell": "D25",
+      "objective": "Donations SMS",
+      "objective_cell": "E25",
+      "row": 25,
+      "metrics": {
+        "gross_spend": {
+          "label": "Gross Spend",
+          "kind": "usd",
+          "value": 1376.274839,
+          "cell": "F25",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1376.2748387096774)"
+        },
+        "ntl": {
+          "label": "NTL",
+          "kind": "count",
+          "value": 1.0,
+          "cell": "G25",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.0)"
+        },
+        "gross_cpa": {
+          "label": "Gross CPA",
+          "kind": "usd2",
+          "value": 1376.274839,
+          "cell": "H25",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1376.2748387096774)"
+        },
+        "immediate_raised": {
+          "label": "Immediate Raised",
+          "kind": "usd",
+          "value": 1865.0,
+          "cell": "I25",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1865.0)"
+        },
+        "immediate_roas": {
+          "label": "Immediate ROAS",
+          "kind": "roas",
+          "value": 1.355107241,
+          "cell": "J25",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.3551072413330796)"
+        },
+        "lifetime_raised": {
+          "label": "Lifetime Raised",
+          "kind": "usd",
+          "value": 35.0,
+          "cell": "K25",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),35.0)"
+        },
+        "lifetime_roas": {
+          "label": "Lifetime ROAS",
+          "kind": "roas",
+          "value": 0.025430967,
+          "cell": "L25",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.025430966995526962)"
+        },
+        "total_raised": {
+          "label": "Total Raised",
+          "kind": "usd",
+          "value": 1890.0,
+          "cell": "M25",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1890.0)"
+        },
+        "total_roas": {
+          "label": "Total ROAS",
+          "kind": "roas",
+          "value": 1.373272218,
+          "cell": "N25",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.373272217758456)"
+        }
+      }
+    },
+    {
+      "month": "January",
+      "month_cell": "B26",
+      "channel": "SMS P2P",
+      "channel_cell": "C26",
+      "placement": "Textify P2P",
+      "placement_cell": "D26",
+      "objective": "Donations SMS",
+      "objective_cell": "E26",
+      "row": 26,
+      "metrics": {
+        "gross_spend": {
+          "label": "Gross Spend",
+          "kind": "usd",
+          "value": 195.03,
+          "cell": "F26",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),195.03)"
+        },
+        "ntl": {
+          "label": "NTL",
+          "kind": "count",
+          "value": 4.0,
+          "cell": "G26",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),4.0)"
+        },
+        "gross_cpa": {
+          "label": "Gross CPA",
+          "kind": "usd2",
+          "value": 48.7575,
+          "cell": "H26",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),48.7575)"
+        },
+        "immediate_raised": {
+          "label": "Immediate Raised",
+          "kind": "usd",
+          "value": 230.0,
+          "cell": "I26",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),230.0)"
+        },
+        "immediate_roas": {
+          "label": "Immediate ROAS",
+          "kind": "roas",
+          "value": 1.179305748,
+          "cell": "J26",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.1793057478336666)"
+        },
+        "lifetime_raised": {
+          "label": "Lifetime Raised",
+          "kind": "usd",
+          "value": 120.0,
+          "cell": "K26",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),120.0)"
+        },
+        "lifetime_roas": {
+          "label": "Lifetime ROAS",
+          "kind": "roas",
+          "value": 0.6152899554,
+          "cell": "L26",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.6152899553914782)"
+        },
+        "total_raised": {
+          "label": "Total Raised",
+          "kind": "usd",
+          "value": 240.0,
+          "cell": "M26",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),240.0)"
+        },
+        "total_roas": {
+          "label": "Total ROAS",
+          "kind": "roas",
+          "value": 1.230579911,
+          "cell": "N26",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.2305799107829565)"
+        }
+      }
+    },
+    {
+      "month": "February",
+      "month_cell": "B27",
+      "channel": "Facebook",
+      "channel_cell": "C27",
+      "placement": "Meta",
+      "placement_cell": "D27",
+      "objective": "Donations",
+      "objective_cell": "E27",
+      "row": 27,
+      "metrics": {
+        "gross_spend": {
+          "label": "Gross Spend",
+          "kind": "usd",
+          "value": 278.28,
+          "cell": "F27",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),278.28)"
+        },
+        "ntl": {
+          "label": "NTL",
+          "kind": "count",
+          "value": 5.0,
+          "cell": "G27",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),5.0)"
+        },
+        "gross_cpa": {
+          "label": "Gross CPA",
+          "kind": "usd2",
+          "value": 55.656,
+          "cell": "H27",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),55.65599999999999)"
+        },
+        "immediate_raised": {
+          "label": "Immediate Raised",
+          "kind": "usd",
+          "value": 345.0,
+          "cell": "I27",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),345.0)"
+        },
+        "immediate_roas": {
+          "label": "Immediate ROAS",
+          "kind": "roas",
+          "value": 1.239758517,
+          "cell": "J27",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.2397585166019838)"
+        },
+        "lifetime_raised": {
+          "label": "Lifetime Raised",
+          "kind": "usd",
+          "value": 185.0,
+          "cell": "K27",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),185.0)"
+        },
+        "lifetime_roas": {
+          "label": "Lifetime ROAS",
+          "kind": "roas",
+          "value": 0.6647980451,
+          "cell": "L27",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.6647980451343971)"
+        },
+        "total_raised": {
+          "label": "Total Raised",
+          "kind": "usd",
+          "value": 385.0,
+          "cell": "M27",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),385.0)"
+        },
+        "total_roas": {
+          "label": "Total ROAS",
+          "kind": "roas",
+          "value": 1.383498634,
+          "cell": "N27",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.3834986344688804)"
+        }
+      }
+    },
+    {
+      "month": "February",
+      "month_cell": "B28",
+      "channel": "Fixed CPA",
+      "channel_cell": "C28",
+      "placement": "Blue Action",
+      "placement_cell": "D28",
+      "objective": "Sign Ups",
+      "objective_cell": "E28",
+      "row": 28,
+      "metrics": {
+        "gross_spend": {
+          "label": "Gross Spend",
+          "kind": "usd",
+          "value": 10026.08554,
+          "cell": "F28",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),10026.085544)"
+        },
+        "ntl": {
+          "label": "NTL",
+          "kind": "count",
+          "value": 40518.0,
+          "cell": "G28",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),40518.0)"
+        },
+        "gross_cpa": {
+          "label": "Gross CPA",
+          "kind": "usd2",
+          "value": 0.247447691,
+          "cell": "H28",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.24744769100153016)"
+        },
+        "immediate_raised": {
+          "label": "Immediate Raised",
+          "kind": "usd",
+          "value": 0.0,
+          "cell": "I28",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"
+        },
+        "immediate_roas": {
+          "label": "Immediate ROAS",
+          "kind": "roas",
+          "value": 0.0,
+          "cell": "J28",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"
+        },
+        "lifetime_raised": {
+          "label": "Lifetime Raised",
+          "kind": "usd",
+          "value": 3314.28,
+          "cell": "K28",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),3314.2799999999997)"
+        },
+        "lifetime_roas": {
+          "label": "Lifetime ROAS",
+          "kind": "roas",
+          "value": 0.3305657014,
+          "cell": "L28",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.3305657013851626)"
+        },
+        "total_raised": {
+          "label": "Total Raised",
+          "kind": "usd",
+          "value": 3314.28,
+          "cell": "M28",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),3314.2799999999997)"
+        },
+        "total_roas": {
+          "label": "Total ROAS",
+          "kind": "roas",
+          "value": 0.3305657014,
+          "cell": "N28",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.3305657013851626)"
+        }
+      }
+    },
+    {
+      "month": "February",
+      "month_cell": "B29",
+      "channel": "Fixed CPA",
+      "channel_cell": "C29",
+      "placement": "True Blue Analytics",
+      "placement_cell": "D29",
+      "objective": "Sign Ups",
+      "objective_cell": "E29",
+      "row": 29,
+      "metrics": {
+        "gross_spend": {
+          "label": "Gross Spend",
+          "kind": "usd",
+          "value": 40183.25331,
+          "cell": "F29",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),40183.253312)"
+        },
+        "ntl": {
+          "label": "NTL",
+          "kind": "count",
+          "value": 112931.0,
+          "cell": "G29",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),112931.0)"
+        },
+        "gross_cpa": {
+          "label": "Gross CPA",
+          "kind": "usd2",
+          "value": 0.355821283,
+          "cell": "H29",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.35582128301352156)"
+        },
+        "immediate_raised": {
+          "label": "Immediate Raised",
+          "kind": "usd",
+          "value": 0.0,
+          "cell": "I29",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"
+        },
+        "immediate_roas": {
+          "label": "Immediate ROAS",
+          "kind": "roas",
+          "value": 0.0,
+          "cell": "J29",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"
+        },
+        "lifetime_raised": {
+          "label": "Lifetime Raised",
+          "kind": "usd",
+          "value": 2422.76,
+          "cell": "K29",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),2422.76)"
+        },
+        "lifetime_roas": {
+          "label": "Lifetime ROAS",
+          "kind": "roas",
+          "value": 0.06029277872,
+          "cell": "L29",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0602927787152686)"
+        },
+        "total_raised": {
+          "label": "Total Raised",
+          "kind": "usd",
+          "value": 2422.76,
+          "cell": "M29",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),2422.76)"
+        },
+        "total_roas": {
+          "label": "Total ROAS",
+          "kind": "roas",
+          "value": 0.06029277872,
+          "cell": "N29",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0602927787152686)"
+        }
+      }
+    },
+    {
+      "month": "February",
+      "month_cell": "B30",
+      "channel": "SMS P2P",
+      "channel_cell": "C30",
+      "placement": "Grassroots Analytics P2P",
+      "placement_cell": "D30",
+      "objective": "Donations SMS",
+      "objective_cell": "E30",
+      "row": 30,
+      "metrics": {
+        "gross_spend": {
+          "label": "Gross Spend",
+          "kind": "usd",
+          "value": 8624.27,
+          "cell": "F30",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),8624.27)"
+        },
+        "ntl": {
+          "label": "NTL",
+          "kind": "count",
+          "value": 198.0,
+          "cell": "G30",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),198.0)"
+        },
+        "gross_cpa": {
+          "label": "Gross CPA",
+          "kind": "usd2",
+          "value": 43.55691919,
+          "cell": "H30",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),43.55691919191919)"
+        },
+        "immediate_raised": {
+          "label": "Immediate Raised",
+          "kind": "usd",
+          "value": 10456.12,
+          "cell": "I30",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),10456.12)"
+        },
+        "immediate_roas": {
+          "label": "Immediate ROAS",
+          "kind": "roas",
+          "value": 1.212406383,
+          "cell": "J30",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.2124063833808543)"
+        },
+        "lifetime_raised": {
+          "label": "Lifetime Raised",
+          "kind": "usd",
+          "value": 4758.0,
+          "cell": "K30",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),4758.0)"
+        },
+        "lifetime_roas": {
+          "label": "Lifetime ROAS",
+          "kind": "roas",
+          "value": 0.5516988684,
+          "cell": "L30",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.5516988684259653)"
+        },
+        "total_raised": {
+          "label": "Total Raised",
+          "kind": "usd",
+          "value": 12323.12,
+          "cell": "M30",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),12323.12)"
+        },
+        "total_roas": {
+          "label": "Total ROAS",
+          "kind": "roas",
+          "value": 1.428888474,
+          "cell": "N30",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.4288884740389622)"
+        }
+      }
+    },
+    {
+      "month": "February",
+      "month_cell": "B31",
+      "channel": "SMS P2P",
+      "channel_cell": "C31",
+      "placement": "Leverage P2P",
+      "placement_cell": "D31",
+      "objective": "Donations SMS",
+      "objective_cell": "E31",
+      "row": 31,
+      "metrics": {
+        "gross_spend": {
+          "label": "Gross Spend",
+          "kind": "usd",
+          "value": 5650.0,
+          "cell": "F31",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),5650.0)"
+        },
+        "ntl": {
+          "label": "NTL",
+          "kind": "count",
+          "value": 93.0,
+          "cell": "G31",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),93.0)"
+        },
+        "gross_cpa": {
+          "label": "Gross CPA",
+          "kind": "usd2",
+          "value": 60.75268817,
+          "cell": "H31",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),60.75268817204301)"
+        },
+        "immediate_raised": {
+          "label": "Immediate Raised",
+          "kind": "usd",
+          "value": 7261.0,
+          "cell": "I31",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),7261.0)"
+        },
+        "immediate_roas": {
+          "label": "Immediate ROAS",
+          "kind": "roas",
+          "value": 1.285132743,
+          "cell": "J31",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.285132743362832)"
+        },
+        "lifetime_raised": {
+          "label": "Lifetime Raised",
+          "kind": "usd",
+          "value": 2462.0,
+          "cell": "K31",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),2462.0)"
+        },
+        "lifetime_roas": {
+          "label": "Lifetime ROAS",
+          "kind": "roas",
+          "value": 0.4357522124,
+          "cell": "L31",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.43575221238938056)"
+        },
+        "total_raised": {
+          "label": "Total Raised",
+          "kind": "usd",
+          "value": 7967.0,
+          "cell": "M31",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),7967.0)"
+        },
+        "total_roas": {
+          "label": "Total ROAS",
+          "kind": "roas",
+          "value": 1.410088496,
+          "cell": "N31",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.4100884955752213)"
+        }
+      }
+    },
+    {
+      "month": "February",
+      "month_cell": "B32",
+      "channel": "SMS P2P",
+      "channel_cell": "C32",
+      "placement": "Scale to Win",
+      "placement_cell": "D32",
+      "objective": "Donations SMS",
+      "objective_cell": "E32",
+      "row": 32,
+      "metrics": {
+        "gross_spend": {
+          "label": "Gross Spend",
+          "kind": "usd",
+          "value": 1374.540645,
+          "cell": "F32",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1374.5406451612903)"
+        },
+        "ntl": {
+          "label": "NTL",
+          "kind": "count",
+          "value": 0.0,
+          "cell": "G32",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"
+        },
+        "gross_cpa": {
+          "label": "Gross CPA",
+          "kind": "usd2",
+          "value": null,
+          "cell": "H32",
+          "formula": null
+        },
+        "immediate_raised": {
+          "label": "Immediate Raised",
+          "kind": "usd",
+          "value": 1881.97,
+          "cell": "I32",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1881.97)"
+        },
+        "immediate_roas": {
+          "label": "Immediate ROAS",
+          "kind": "roas",
+          "value": 1.369162859,
+          "cell": "J32",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.3691628593341214)"
+        },
+        "lifetime_raised": {
+          "label": "Lifetime Raised",
+          "kind": "usd",
+          "value": 0.0,
+          "cell": "K32",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"
+        },
+        "lifetime_roas": {
+          "label": "Lifetime ROAS",
+          "kind": "roas",
+          "value": 0.0,
+          "cell": "L32",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"
+        },
+        "total_raised": {
+          "label": "Total Raised",
+          "kind": "usd",
+          "value": 1881.97,
+          "cell": "M32",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1881.97)"
+        },
+        "total_roas": {
+          "label": "Total ROAS",
+          "kind": "roas",
+          "value": 1.369162859,
+          "cell": "N32",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.3691628593341214)"
+        }
+      }
+    },
+    {
+      "month": "February",
+      "month_cell": "B33",
+      "channel": "SMS P2P",
+      "channel_cell": "C33",
+      "placement": "Textify P2P",
+      "placement_cell": "D33",
+      "objective": "Donations SMS",
+      "objective_cell": "E33",
+      "row": 33,
+      "metrics": {
+        "gross_spend": {
+          "label": "Gross Spend",
+          "kind": "usd",
+          "value": 4333.56,
+          "cell": "F33",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),4333.56)"
+        },
+        "ntl": {
+          "label": "NTL",
+          "kind": "count",
+          "value": 107.0,
+          "cell": "G33",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),107.0)"
+        },
+        "gross_cpa": {
+          "label": "Gross CPA",
+          "kind": "usd2",
+          "value": 40.50056075,
+          "cell": "H33",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),40.500560747663556)"
+        },
+        "immediate_raised": {
+          "label": "Immediate Raised",
+          "kind": "usd",
+          "value": 5854.22,
+          "cell": "I33",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),5854.22)"
+        },
+        "immediate_roas": {
+          "label": "Immediate ROAS",
+          "kind": "roas",
+          "value": 1.350903184,
+          "cell": "J33",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.3509031835257848)"
+        },
+        "lifetime_raised": {
+          "label": "Lifetime Raised",
+          "kind": "usd",
+          "value": 2699.0,
+          "cell": "K33",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),2699.0)"
+        },
+        "lifetime_roas": {
+          "label": "Lifetime ROAS",
+          "kind": "roas",
+          "value": 0.6228135759,
+          "cell": "L33",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.6228135759052603)"
+        },
+        "total_raised": {
+          "label": "Total Raised",
+          "kind": "usd",
+          "value": 6874.22,
+          "cell": "M33",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),6874.220000000001)"
+        },
+        "total_roas": {
+          "label": "Total ROAS",
+          "kind": "roas",
+          "value": 1.586275487,
+          "cell": "N33",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.5862754871283657)"
+        }
+      }
+    },
+    {
+      "month": "February",
+      "month_cell": "B34",
+      "channel": "SMS P2P",
+      "channel_cell": "C34",
+      "placement": "True Blue Analytics P2P",
+      "placement_cell": "D34",
+      "objective": "Donations SMS",
+      "objective_cell": "E34",
+      "row": 34,
+      "metrics": {
+        "gross_spend": {
+          "label": "Gross Spend",
+          "kind": "usd",
+          "value": 47923.32,
+          "cell": "F34",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),47923.32)"
+        },
+        "ntl": {
+          "label": "NTL",
+          "kind": "count",
+          "value": 439.0,
+          "cell": "G34",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),439.0)"
+        },
+        "gross_cpa": {
+          "label": "Gross CPA",
+          "kind": "usd2",
+          "value": 109.164738,
+          "cell": "H34",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),109.16473804100228)"
+        },
+        "immediate_raised": {
+          "label": "Immediate Raised",
+          "kind": "usd",
+          "value": 57052.11,
+          "cell": "I34",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),57052.11)"
+        },
+        "immediate_roas": {
+          "label": "Immediate ROAS",
+          "kind": "roas",
+          "value": 1.190487429,
+          "cell": "J34",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.190487428667296)"
+        },
+        "lifetime_raised": {
+          "label": "Lifetime Raised",
+          "kind": "usd",
+          "value": 11300.52,
+          "cell": "K34",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),11300.52)"
+        },
+        "lifetime_roas": {
+          "label": "Lifetime ROAS",
+          "kind": "roas",
+          "value": 0.2358041972,
+          "cell": "L34",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.23580419720503507)"
+        },
+        "total_raised": {
+          "label": "Total Raised",
+          "kind": "usd",
+          "value": 61773.75,
+          "cell": "M34",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),61773.75000000001)"
+        },
+        "total_roas": {
+          "label": "Total ROAS",
+          "kind": "roas",
+          "value": 1.289012322,
+          "cell": "N34",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.2890123221846903)"
+        }
+      }
+    },
+    {
+      "month": "March",
+      "month_cell": "B35",
+      "channel": "Facebook",
+      "channel_cell": "C35",
+      "placement": "Meta",
+      "placement_cell": "D35",
+      "objective": "Donations",
+      "objective_cell": "E35",
+      "row": 35,
+      "metrics": {
+        "gross_spend": {
+          "label": "Gross Spend",
+          "kind": "usd",
+          "value": 3971.72,
+          "cell": "F35",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),3971.72)"
+        },
+        "ntl": {
+          "label": "NTL",
+          "kind": "count",
+          "value": 39.0,
+          "cell": "G35",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),39.0)"
+        },
+        "gross_cpa": {
+          "label": "Gross CPA",
+          "kind": "usd2",
+          "value": 101.8389744,
+          "cell": "H35",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),101.83897435897435)"
+        },
+        "immediate_raised": {
+          "label": "Immediate Raised",
+          "kind": "usd",
+          "value": 5643.0,
+          "cell": "I35",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),5643.0)"
+        },
+        "immediate_roas": {
+          "label": "Immediate ROAS",
+          "kind": "roas",
+          "value": 1.420795021,
+          "cell": "J35",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.420795020797035)"
+        },
+        "lifetime_raised": {
+          "label": "Lifetime Raised",
+          "kind": "usd",
+          "value": 3213.0,
+          "cell": "K35",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),3213.0)"
+        },
+        "lifetime_roas": {
+          "label": "Lifetime ROAS",
+          "kind": "roas",
+          "value": 0.8089694138,
+          "cell": "L35",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.8089694137552497)"
+        },
+        "total_raised": {
+          "label": "Total Raised",
+          "kind": "usd",
+          "value": 7418.0,
+          "cell": "M35",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),7418.0)"
+        },
+        "total_roas": {
+          "label": "Total ROAS",
+          "kind": "roas",
+          "value": 1.867704672,
+          "cell": "N35",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.8677046720312611)"
+        }
+      }
+    },
+    {
+      "month": "March",
+      "month_cell": "B36",
+      "channel": "SMS P2P",
+      "channel_cell": "C36",
+      "placement": "Grassroots Analytics P2P",
+      "placement_cell": "D36",
+      "objective": "Donations SMS",
+      "objective_cell": "E36",
+      "row": 36,
+      "metrics": {
+        "gross_spend": {
+          "label": "Gross Spend",
+          "kind": "usd",
+          "value": 14442.93,
+          "cell": "F36",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),14442.930000000004)"
+        },
+        "ntl": {
+          "label": "NTL",
+          "kind": "count",
+          "value": 127.0,
+          "cell": "G36",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),127.0)"
+        },
+        "gross_cpa": {
+          "label": "Gross CPA",
+          "kind": "usd2",
+          "value": 113.7238583,
+          "cell": "H36",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),113.72385826771657)"
+        },
+        "immediate_raised": {
+          "label": "Immediate Raised",
+          "kind": "usd",
+          "value": 17647.52,
+          "cell": "I36",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),17647.52)"
+        },
+        "immediate_roas": {
+          "label": "Immediate ROAS",
+          "kind": "roas",
+          "value": 1.221879494,
+          "cell": "J36",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.2218794939807918)"
+        },
+        "lifetime_raised": {
+          "label": "Lifetime Raised",
+          "kind": "usd",
+          "value": 5281.0,
+          "cell": "K36",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),5281.0)"
+        },
+        "lifetime_roas": {
+          "label": "Lifetime ROAS",
+          "kind": "roas",
+          "value": 0.3656460289,
+          "cell": "L36",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.3656460288874902)"
+        },
+        "total_raised": {
+          "label": "Total Raised",
+          "kind": "usd",
+          "value": 20269.52,
+          "cell": "M36",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),20269.52)"
+        },
+        "total_roas": {
+          "label": "Total ROAS",
+          "kind": "roas",
+          "value": 1.403421605,
+          "cell": "N36",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.4034216048959591)"
+        }
+      }
+    },
+    {
+      "month": "March",
+      "month_cell": "B37",
+      "channel": "SMS P2P",
+      "channel_cell": "C37",
+      "placement": "Leverage P2P",
+      "placement_cell": "D37",
+      "objective": "Donations SMS",
+      "objective_cell": "E37",
+      "row": 37,
+      "metrics": {
+        "gross_spend": {
+          "label": "Gross Spend",
+          "kind": "usd",
+          "value": 639.0,
+          "cell": "F37",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),639.0)"
+        },
+        "ntl": {
+          "label": "NTL",
+          "kind": "count",
+          "value": 11.0,
+          "cell": "G37",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),11.0)"
+        },
+        "gross_cpa": {
+          "label": "Gross CPA",
+          "kind": "usd2",
+          "value": 58.09090909,
+          "cell": "H37",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),58.09090909090909)"
+        },
+        "immediate_raised": {
+          "label": "Immediate Raised",
+          "kind": "usd",
+          "value": 694.0,
+          "cell": "I37",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),694.0)"
+        },
+        "immediate_roas": {
+          "label": "Immediate ROAS",
+          "kind": "roas",
+          "value": 1.086071987,
+          "cell": "J37",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.086071987480438)"
+        },
+        "lifetime_raised": {
+          "label": "Lifetime Raised",
+          "kind": "usd",
+          "value": 414.5,
+          "cell": "K37",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),414.5)"
+        },
+        "lifetime_roas": {
+          "label": "Lifetime ROAS",
+          "kind": "roas",
+          "value": 0.6486697966,
+          "cell": "L37",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.6486697965571205)"
+        },
+        "total_raised": {
+          "label": "Total Raised",
+          "kind": "usd",
+          "value": 801.5,
+          "cell": "M37",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),801.5)"
+        },
+        "total_roas": {
+          "label": "Total ROAS",
+          "kind": "roas",
+          "value": 1.254303599,
+          "cell": "N37",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.254303599374022)"
+        }
+      }
+    },
+    {
+      "month": "March",
+      "month_cell": "B38",
+      "channel": "SMS P2P",
+      "channel_cell": "C38",
+      "placement": "Scale to Win",
+      "placement_cell": "D38",
+      "objective": "Donations SMS",
+      "objective_cell": "E38",
+      "row": 38,
+      "metrics": {
+        "gross_spend": {
+          "label": "Gross Spend",
+          "kind": "usd",
+          "value": 21392.29935,
+          "cell": "F38",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),21392.299354838713)"
+        },
+        "ntl": {
+          "label": "NTL",
+          "kind": "count",
+          "value": 26.0,
+          "cell": "G38",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),26.0)"
+        },
+        "gross_cpa": {
+          "label": "Gross CPA",
+          "kind": "usd2",
+          "value": 822.7807444,
+          "cell": "H38",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),822.7807444168736)"
+        },
+        "immediate_raised": {
+          "label": "Immediate Raised",
+          "kind": "usd",
+          "value": 34348.77,
+          "cell": "I38",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),34348.770000000004)"
+        },
+        "immediate_roas": {
+          "label": "Immediate ROAS",
+          "kind": "roas",
+          "value": 1.605660496,
+          "cell": "J38",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.605660496342609)"
+        },
+        "lifetime_raised": {
+          "label": "Lifetime Raised",
+          "kind": "usd",
+          "value": 418.0,
+          "cell": "K38",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),418.0)"
+        },
+        "lifetime_roas": {
+          "label": "Lifetime ROAS",
+          "kind": "roas",
+          "value": 0.01953974152,
+          "cell": "L38",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.019539741524113106)"
+        },
+        "total_raised": {
+          "label": "Total Raised",
+          "kind": "usd",
+          "value": 34347.77,
+          "cell": "M38",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),34347.770000000004)"
+        },
+        "total_roas": {
+          "label": "Total ROAS",
+          "kind": "roas",
+          "value": 1.605613751,
+          "cell": "N38",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.6056137505494892)"
+        }
+      }
+    },
+    {
+      "month": "March",
+      "month_cell": "B39",
+      "channel": "SMS P2P",
+      "channel_cell": "C39",
+      "placement": "Textify P2P",
+      "placement_cell": "D39",
+      "objective": "Donations SMS",
+      "objective_cell": "E39",
+      "row": 39,
+      "metrics": {
+        "gross_spend": {
+          "label": "Gross Spend",
+          "kind": "usd",
+          "value": 6035.64,
+          "cell": "F39",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),6035.64)"
+        },
+        "ntl": {
+          "label": "NTL",
+          "kind": "count",
+          "value": 115.0,
+          "cell": "G39",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),115.0)"
+        },
+        "gross_cpa": {
+          "label": "Gross CPA",
+          "kind": "usd2",
+          "value": 52.48382609,
+          "cell": "H39",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),52.483826086956526)"
+        },
+        "immediate_raised": {
+          "label": "Immediate Raised",
+          "kind": "usd",
+          "value": 7780.32,
+          "cell": "I39",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),7780.32)"
+        },
+        "immediate_roas": {
+          "label": "Immediate ROAS",
+          "kind": "roas",
+          "value": 1.289062966,
+          "cell": "J39",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.2890629659820665)"
+        },
+        "lifetime_raised": {
+          "label": "Lifetime Raised",
+          "kind": "usd",
+          "value": 2869.0,
+          "cell": "K39",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),2869.0)"
+        },
+        "lifetime_roas": {
+          "label": "Lifetime ROAS",
+          "kind": "roas",
+          "value": 0.4753431285,
+          "cell": "L39",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.4753431284834748)"
+        },
+        "total_raised": {
+          "label": "Total Raised",
+          "kind": "usd",
+          "value": 9080.32,
+          "cell": "M39",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),9080.32)"
+        },
+        "total_roas": {
+          "label": "Total ROAS",
+          "kind": "roas",
+          "value": 1.504450232,
+          "cell": "N39",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.5044502322868825)"
+        }
+      }
+    },
+    {
+      "month": "March",
+      "month_cell": "B40",
+      "channel": "SMS P2P",
+      "channel_cell": "C40",
+      "placement": "True Blue Analytics P2P",
+      "placement_cell": "D40",
+      "objective": "Donations SMS",
+      "objective_cell": "E40",
+      "row": 40,
+      "metrics": {
+        "gross_spend": {
+          "label": "Gross Spend",
+          "kind": "usd",
+          "value": 27423.85833,
+          "cell": "F40",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),27423.8583333333)"
+        },
+        "ntl": {
+          "label": "NTL",
+          "kind": "count",
+          "value": 250.0,
+          "cell": "G40",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),250.0)"
+        },
+        "gross_cpa": {
+          "label": "Gross CPA",
+          "kind": "usd2",
+          "value": 109.6954333,
+          "cell": "H40",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),109.6954333333332)"
+        },
+        "immediate_raised": {
+          "label": "Immediate Raised",
+          "kind": "usd",
+          "value": 33098.63,
+          "cell": "I40",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),33098.630000000005)"
+        },
+        "immediate_roas": {
+          "label": "Immediate ROAS",
+          "kind": "roas",
+          "value": 1.206928274,
+          "cell": "J40",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.2069282738296931)"
+        },
+        "lifetime_raised": {
+          "label": "Lifetime Raised",
+          "kind": "usd",
+          "value": 6870.1,
+          "cell": "K40",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),6870.1)"
+        },
+        "lifetime_roas": {
+          "label": "Lifetime ROAS",
+          "kind": "roas",
+          "value": 0.2505154423,
+          "cell": "L40",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.2505154423019132)"
+        },
+        "total_raised": {
+          "label": "Total Raised",
+          "kind": "usd",
+          "value": 36199.73,
+          "cell": "M40",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),36199.73)"
+        },
+        "total_roas": {
+          "label": "Total ROAS",
+          "kind": "roas",
+          "value": 1.320008642,
+          "cell": "N40",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.3200086421099892)"
+        }
+      }
+    }
+  ],
+  "ytd": {
+    "quarters": [
+      "Q1",
+      "Q2",
+      "Q3"
+    ],
+    "metrics": {
+      "gross_spend": {
+        "label": "Gross Spend",
+        "kind": "usd",
+        "value": 454114.06368,
+        "cells": [
+          "F12",
+          "F13",
+          "F14"
+        ],
+        "computed": true
+      },
+      "ntl": {
+        "label": "NTL",
+        "kind": "count",
+        "value": 193299.0,
+        "cells": [
+          "G12",
+          "G13",
+          "G14"
+        ],
+        "computed": true
+      },
+      "immediate_raised": {
+        "label": "Immediate Raised",
+        "kind": "usd",
+        "value": 528789.03,
+        "cells": [
+          "I12",
+          "I13",
+          "I14"
+        ],
+        "computed": true
+      },
+      "lifetime_raised": {
+        "label": "Lifetime Raised",
+        "kind": "usd",
+        "value": 129233.50000000001,
+        "cells": [
+          "K12",
+          "K13",
+          "K14"
+        ],
+        "computed": true
+      },
+      "total_raised": {
+        "label": "Total Raised",
+        "kind": "usd",
+        "value": 574385.18,
+        "cells": [
+          "M12",
+          "M13",
+          "M14"
+        ],
+        "computed": true
+      },
+      "gross_cpa": {
+        "label": "Gross CPA",
+        "kind": "usd2",
+        "value": 2.3492830468859127,
+        "computed": true,
+        "numerator": "gross_spend",
+        "denominator": "ntl",
+        "cells": [
+          "F12",
+          "F13",
+          "F14",
+          "G12",
+          "G13",
+          "G14"
+        ]
+      },
+      "immediate_roas": {
+        "label": "Immediate ROAS",
+        "kind": "roas",
+        "value": 1.1644409902544246,
+        "computed": true,
+        "numerator": "immediate_raised",
+        "denominator": "gross_spend",
+        "cells": [
+          "I12",
+          "I13",
+          "I14",
+          "F12",
+          "F13",
+          "F14"
+        ]
+      },
+      "lifetime_roas": {
+        "label": "Lifetime ROAS",
+        "kind": "roas",
+        "value": 0.2845837870616287,
+        "computed": true,
+        "numerator": "lifetime_raised",
+        "denominator": "gross_spend",
+        "cells": [
+          "K12",
+          "K13",
+          "K14",
+          "F12",
+          "F13",
+          "F14"
+        ]
+      },
+      "total_roas": {
+        "label": "Total ROAS",
+        "kind": "roas",
+        "value": 1.2648478123433573,
+        "computed": true,
+        "numerator": "total_raised",
+        "denominator": "gross_spend",
+        "cells": [
+          "M12",
+          "M13",
+          "M14",
+          "F12",
+          "F13",
+          "F14"
+        ]
+      }
+    }
+  },
+  "cumulative": {
+    "quarterly": {
+      "gross_spend": [
+        {
+          "label": "Q1",
+          "value": 195366.372,
+          "step": 195366.372,
+          "cell": "F12"
+        },
+        {
+          "label": "Q2",
+          "value": 371871.2702,
+          "step": 176504.8982,
+          "cell": "F13"
+        },
+        {
+          "label": "Q3",
+          "value": 454114.06368,
+          "step": 82242.79348,
+          "cell": "F14"
+        }
+      ],
+      "ntl": [
+        {
+          "label": "Q1",
+          "value": 154883.0,
+          "step": 154883.0,
+          "cell": "G12"
+        },
+        {
+          "label": "Q2",
+          "value": 156683.0,
+          "step": 1800.0,
+          "cell": "G13"
+        },
+        {
+          "label": "Q3",
+          "value": 193299.0,
+          "step": 36616.0,
+          "cell": "G14"
+        }
+      ],
+      "total_raised": [
+        {
+          "label": "Q1",
+          "value": 209182.32,
+          "step": 209182.32,
+          "cell": "M12"
+        },
+        {
+          "label": "Q2",
+          "value": 454659.91000000003,
+          "step": 245477.59,
+          "cell": "M13"
+        },
+        {
+          "label": "Q3",
+          "value": 574385.18,
+          "step": 119725.27,
+          "cell": "M14"
+        }
+      ]
+    },
+    "monthly": {
+      "gross_spend": [
+        {
+          "label": "January",
+          "value": 3067.614839,
+          "step": 3067.614839,
+          "cell": "F18"
+        },
+        {
+          "label": "February",
+          "value": 121460.924339,
+          "step": 118393.3095,
+          "cell": "F19"
+        },
+        {
+          "label": "March",
+          "value": 195366.37202900002,
+          "step": 73905.44769,
+          "cell": "F20"
+        }
+      ],
+      "ntl": [
+        {
+          "label": "January",
+          "value": 24.0,
+          "step": 24.0,
+          "cell": "G18"
+        },
+        {
+          "label": "February",
+          "value": 154315.0,
+          "step": 154291.0,
+          "cell": "G19"
+        },
+        {
+          "label": "March",
+          "value": 154883.0,
+          "step": 568.0,
+          "cell": "G20"
+        }
+      ],
+      "total_raised": [
+        {
+          "label": "January",
+          "value": 4123.38,
+          "step": 4123.38,
+          "cell": "M18"
+        },
+        {
+          "label": "February",
+          "value": 101065.48000000001,
+          "step": 96942.1,
+          "cell": "M19"
+        },
+        {
+          "label": "March",
+          "value": 209182.32,
+          "step": 108116.84,
+          "cell": "M20"
+        }
+      ]
+    }
+  },
+  "channels": [
+    "Facebook",
+    "Fixed CPA",
+    "SMS P2P"
+  ],
+  "objectives": [
+    "Donations",
+    "Donations SMS",
+    "Sign Ups"
+  ]
+}

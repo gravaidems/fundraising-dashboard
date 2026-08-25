@@ -1,0 +1,2019 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Digital Fundraising Report</title>
+<style>
+:root{
+  --bg:#f6f7f9; --surface:#ffffff; --surface-2:#f0f2f5; --border:#e2e5ea;
+  --text:#15181d; --muted:#5f6673; --faint:#8b929f;
+  --goal:#9aa4b2; --goal-bar:#7fb0ad; --actual:#2f6fed; --actual-soft:#dbe6fd;
+  --good:#1f9254; --warn:#b7791f; --bad:#c1392b;
+  --ch1:#2f6fed; --ch2:#e08a3c; --ch3:#3f9e8c; --ch4:#8b5cd6; --ch5:#c94f7c; --ch6:#5a7a99;
+  --shadow:0 1px 2px rgba(16,20,28,.06),0 4px 16px rgba(16,20,28,.05);
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f1216; --surface:#171b21; --surface-2:#1e232b; --border:#2a3038;
+    --text:#e8ebf0; --muted:#9aa3b1; --faint:#6b7280;
+    --goal:#4d5663; --goal-bar:#3d6b68; --actual:#5b8cf5; --actual-soft:#1e2c4d;
+    --good:#3fbf7f; --warn:#d9a441; --bad:#e0685c;
+    --ch1:#5b8cf5; --ch2:#eaa05c; --ch3:#54b8a3; --ch4:#a37ce6; --ch5:#e0708f; --ch6:#7b9bba;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 16px rgba(0,0,0,.3);
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--text); font-family:var(--sans);
+  font-size:15px; line-height:1.5; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1180px;margin:0 auto;padding:28px 20px 72px}
+
+/* ---------- header ---------- */
+header.page{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-end;justify-content:space-between;margin-bottom:22px}
+.page h1{font-size:25px;line-height:1.2;margin:0 0 6px;letter-spacing:-.02em}
+.page .sub{color:var(--muted);font-size:13.5px}
+.metagrid{display:flex;flex-wrap:wrap;gap:0 26px}
+.metagrid div{font-size:13px}
+.metagrid dt{color:var(--faint);font-size:11px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px}
+.metagrid dd{margin:0;font-weight:600}
+
+/* ---------- tabs ---------- */
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-bottom:26px}
+.tab{
+  appearance:none;background:none;border:0;border-bottom:2px solid transparent;
+  padding:9px 15px;font:inherit;font-size:14px;font-weight:550;color:var(--muted);
+  cursor:pointer;margin-bottom:-1px;border-radius:6px 6px 0 0;
+}
+.tab:hover{color:var(--text);background:var(--surface-2)}
+.tab[aria-selected="true"]{color:var(--actual);border-bottom-color:var(--actual)}
+.tab[disabled]{opacity:.45;cursor:default}
+.tab[disabled]:hover{background:none;color:var(--muted)}
+.panel[hidden]{display:none}
+
+/* ---------- sections ---------- */
+section{margin-bottom:34px}
+.sechead{display:flex;align-items:baseline;gap:9px;margin:0 0 4px}
+.sechead h2{font-size:16.5px;margin:0;letter-spacing:-.01em}
+.sechead .note{color:var(--faint);font-size:12.5px;margin:0 0 14px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow)}
+.card.pad{padding:18px 20px 20px}
+
+/* ---------- hero stats ---------- */
+.heroes{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:14px}
+.hero{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:15px 16px 16px;box-shadow:var(--shadow);position:relative}
+.hero .lbl{display:flex;align-items:center;gap:5px;color:var(--muted);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.hero .big{font-size:27px;font-weight:680;letter-spacing:-.025em;margin:7px 0 2px;font-variant-numeric:tabular-nums}
+.hero .of{color:var(--faint);font-size:12.5px;font-variant-numeric:tabular-nums}
+.hero .bar{height:6px;border-radius:99px;background:var(--surface-2);margin-top:11px;overflow:hidden}
+.hero .bar i{display:block;height:100%;border-radius:99px;background:var(--actual)}
+.hero .pct{font-size:12.5px;font-weight:650;margin-top:6px;font-variant-numeric:tabular-nums}
+
+/* ---------- info bubbles ---------- */
+.info{
+  appearance:none;border:1px solid var(--border);background:var(--surface-2);color:var(--muted);
+  width:16px;height:16px;min-width:16px;border-radius:99px;font:inherit;font-size:10.5px;font-weight:700;
+  line-height:1;cursor:pointer;padding:0;display:inline-flex;align-items:center;justify-content:center;
+  vertical-align:middle;
+}
+.info:hover,.info[aria-expanded="true"]{background:var(--actual);border-color:var(--actual);color:#fff}
+.pop{
+  position:absolute;z-index:40;width:min(390px,calc(100vw - 32px));
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  box-shadow:0 8px 30px rgba(10,14,22,.22);padding:13px 15px;font-size:12.5px;line-height:1.55;
+  color:var(--text);
+}
+.pop h4{margin:0 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--faint)}
+.pop dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:5px 10px}
+.pop dt{color:var(--muted);font-weight:600;white-space:nowrap}
+.pop dd{margin:0}
+.pop code,.cell{font-family:var(--mono);font-size:11.5px;background:var(--surface-2);border:1px solid var(--border);border-radius:4px;padding:.5px 4px}
+.pop .calc{font-family:var(--mono);font-size:11.5px;word-break:break-word}
+.pop .caveat{margin-top:9px;padding-top:9px;border-top:1px solid var(--border);color:var(--warn)}
+.pop .src{margin-top:9px;padding-top:9px;border-top:1px solid var(--border);color:var(--faint);font-size:11.5px}
+
+/* ---------- charts ---------- */
+.chartwrap{position:relative;overflow-x:auto}
+svg{display:block;max-width:100%;height:auto;font-family:var(--sans)}
+svg text{fill:var(--text)}
+.ax{stroke:var(--border);stroke-width:1}
+.grid{stroke:var(--border);stroke-width:1;stroke-dasharray:2 4}
+.tick{font-size:11px;fill:var(--muted)}
+.axlbl{font-size:11px;fill:var(--faint)}
+.vlbl{font-size:10.5px;fill:var(--muted);font-variant-numeric:tabular-nums}
+.legend{display:flex;flex-wrap:wrap;gap:16px;margin:2px 0 14px;font-size:12.5px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:13px;height:9px;border-radius:2px;display:inline-block}
+
+/* hover tooltips */
+.tip{
+  position:fixed;z-index:60;pointer-events:none;display:none;
+  background:var(--surface);border:1px solid var(--border);border-radius:9px;
+  box-shadow:0 6px 24px rgba(10,14,22,.22);padding:9px 11px;font-size:12px;line-height:1.45;
+  min-width:172px;max-width:290px;color:var(--text);
+}
+.tip .th{font-weight:680;font-size:12.5px;margin-bottom:5px}
+.tip dl{margin:0;display:grid;grid-template-columns:auto auto;gap:3px 14px}
+.tip dt{color:var(--muted);white-space:nowrap}
+.tip dd{margin:0;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap}
+.tip .tf{margin-top:7px;padding-top:6px;border-top:1px solid var(--border);color:var(--faint);
+  font-family:var(--mono);font-size:10.5px;line-height:1.4}
+.hit{fill:var(--text);fill-opacity:0;cursor:pointer}
+.hit:hover{fill-opacity:.05}
+.cbar{cursor:pointer;border-radius:6px}
+.cbar:hover{background:var(--surface-2)}
+
+/* channel bars */
+.cbars{display:grid;gap:9px}
+.cbar{display:grid;grid-template-columns:118px 1fr 128px;gap:12px;align-items:center}
+.cbar .nm{font-size:13px;font-weight:600;display:flex;align-items:center;gap:5px;min-width:0}
+.cbar .nm span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cbar .track{position:relative;height:22px;background:var(--surface-2);border-radius:5px;overflow:hidden}
+.cbar .fill{position:absolute;inset:0 auto 0 0;background:var(--actual);border-radius:5px}
+.cbar .fig{font-size:12px;text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
+.cbar .fig b{color:var(--text)}
+.cbar.dormant{opacity:.5}
+.cbar.dormant .fig{font-style:italic}
+
+/* small multiples */
+.smgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.sm{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:15px 17px 10px;box-shadow:var(--shadow);position:relative}
+.sm h3{font-size:14.5px;margin:0 0 2px;display:flex;align-items:center;gap:5px}
+.sm .cap{font-size:12.5px;color:var(--faint);margin:0 0 8px;font-variant-numeric:tabular-nums}
+
+/* paid media: scope banner, subheads, two-up grid */
+.scope{
+  display:flex;gap:9px;align-items:flex-start;background:var(--surface-2);
+  border:1px solid var(--border);border-left:3px solid var(--warn);border-radius:8px;
+  padding:10px 13px;margin:0 0 24px;font-size:12.5px;color:var(--muted);line-height:1.5;
+}
+.scope b{color:var(--text)}
+.subhead{font-size:12.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--faint);
+  margin:18px 0 9px;font-weight:650}
+.subhead:first-of-type{margin-top:4px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.sechead.sub{margin-bottom:2px}
+.sechead.sub h3{font-size:14px;margin:0;letter-spacing:-.01em}
+
+/* filter chips */
+.filters{display:flex;flex-wrap:wrap;gap:16px}
+.fgroup{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+.fgroup .flabel{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--faint);
+  font-weight:650;margin-right:2px}
+.chip{
+  appearance:none;font:inherit;font-size:12px;font-weight:550;cursor:pointer;
+  background:var(--surface-2);color:var(--muted);border:1px solid var(--border);
+  border-radius:99px;padding:3.5px 11px;display:inline-flex;align-items:center;gap:5px;
+}
+.chip:hover{color:var(--text);border-color:var(--muted)}
+.chip[aria-pressed="true"]{background:var(--actual);border-color:var(--actual);color:#fff}
+.chip i.dot{width:8px;height:8px;border-radius:99px;display:inline-block}
+.fstat{margin-top:11px;padding-top:10px;border-top:1px solid var(--border);
+  font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.fstat b{color:var(--text)}
+.empty{padding:22px 4px;color:var(--faint);font-size:13px;font-style:italic;text-align:center}
+
+/* leaderboard */
+.lb{width:100%;border-collapse:collapse;font-size:12.5px}
+.lb th{cursor:pointer;user-select:none;white-space:nowrap}
+.lb th:hover{color:var(--text)}
+.lb th[aria-sort] {color:var(--actual)}
+.lb th .arrow{font-size:9px;margin-left:3px}
+.lb td.lbl{text-align:left}
+.lb .minibar{position:relative;height:16px;background:var(--surface-2);border-radius:3px;min-width:52px}
+.lb .minibar i{position:absolute;inset:0 auto 0 0;border-radius:3px;background:var(--actual);opacity:.85}
+.lb .minibar span{position:relative;z-index:1;display:block;padding:0 5px;line-height:16px;
+  font-size:11px;text-align:right;font-variant-numeric:tabular-nums}
+.lb td.cellwrap{padding:4px 9px}
+.chdot{width:8px;height:8px;border-radius:99px;display:inline-block;margin-right:6px;vertical-align:1px}
+
+/* tables */
+details.data{margin-top:14px;border-top:1px solid var(--border);padding-top:10px}
+details.data summary{cursor:pointer;font-size:12.5px;color:var(--muted);font-weight:600}
+details.data summary:hover{color:var(--text)}
+table{border-collapse:collapse;width:100%;margin-top:11px;font-size:12.5px}
+th,td{text-align:right;padding:5px 9px;border-bottom:1px solid var(--border);font-variant-numeric:tabular-nums}
+th{color:var(--faint);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+tbody tr:hover{background:var(--surface-2)}
+tfoot td{font-weight:650;border-top:2px solid var(--border);border-bottom:0}
+td.ref{font-family:var(--mono);font-size:11px;color:var(--faint);text-align:left}
+.pend{color:var(--faint);font-style:italic}
+
+footer.page{margin-top:40px;padding-top:16px;border-top:1px solid var(--border);color:var(--faint);font-size:12px}
+footer.page code{font-family:var(--mono)}
+
+@media print{
+  body{background:#fff}
+  .tabs,details.data summary{display:none}
+  details.data[open],details.data{display:block}
+  .card,.hero,.sm{box-shadow:none;break-inside:avoid}
+  section{break-inside:avoid}
+}
+@media (max-width:760px){
+  .smgrid,.duo{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:560px){
+  .cbar{grid-template-columns:1fr;gap:4px}
+  .cbar .fig{text-align:left}
+  .hero .big{font-size:23px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="page">
+    <div>
+      <h1 id="pgTitle">Digital Fundraising Toplines</h1>
+      <div class="sub" id="pgSub"></div>
+    </div>
+    <dl class="metagrid" id="pgMeta"></dl>
+  </header>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" aria-controls="p-overview" id="t-overview">Overview</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="p-paid" id="t-paid">Paid Media</button>
+  </div>
+
+  <div class="panel" role="tabpanel" id="p-overview" aria-labelledby="t-overview">
+    <section id="s-hero">
+      <div class="sechead"><h2>Quarterly toplines</h2></div>
+      <p class="note" id="heroNote"></p>
+      <div class="heroes" id="heroes"></div>
+    </section>
+
+    <section id="s-month">
+      <div class="sechead"><h2>Goal vs. actual by month</h2></div>
+      <p class="note">All channels combined, per month of the quarter. Hover a month for exact figures.</p>
+      <div class="card pad">
+        <div class="legend" id="lgMonth"></div>
+        <div class="chartwrap" id="chMonth"></div>
+        <details class="data"><summary>Show the numbers behind this chart</summary><div id="tbMonth"></div></details>
+      </div>
+    </section>
+
+    <section id="s-channel">
+      <div class="sechead"><h2>Goal vs. actual by channel</h2></div>
+      <p class="note">Quarter to date, sorted by percent to goal. Every goal bar is the same length, so the fill compares progress rather than size. Hover a channel for exact figures.</p>
+      <div class="card pad">
+        <div class="legend" id="lgChannel"></div>
+        <div class="cbars" id="chChannel"></div>
+        <details class="data"><summary>Show the numbers behind this chart</summary><div id="tbChannel"></div></details>
+      </div>
+    </section>
+
+    <section id="s-accum">
+      <div class="sechead"><h2>Accumulation by month</h2></div>
+      <p class="note">Running total per channel across the quarter. Solid = cumulative actual, dashed = cumulative goal. Hover any month for exact figures.</p>
+      <div class="smgrid" id="chAccum"></div>
+      <div class="card pad" style="margin-top:14px">
+        <details class="data" style="border-top:0;padding-top:0"><summary>Show the numbers behind these charts</summary><div id="tbAccum"></div></details>
+      </div>
+    </section>
+  </div>
+
+  <div class="panel" role="tabpanel" id="p-paid" aria-labelledby="t-paid" hidden>
+    <div class="scope" id="pmScope"></div>
+
+    <section id="pm-hero">
+      <div class="sechead"><h2>Year-to-date toplines</h2></div>
+      <p class="note" id="pmHeroNote"></p>
+      <div class="heroes" id="pmHeroes"></div>
+    </section>
+
+    <section id="pm-quarter">
+      <div class="sechead"><h2>Quarterly toplines</h2></div>
+      <p class="note">Each quarter in the workbook's quarterly table. Hover a quarter for exact figures.</p>
+      <div class="duo">
+        <div class="card pad">
+          <div class="legend" id="pmLgQSpend"></div>
+          <div class="chartwrap" id="pmChQSpend"></div>
+        </div>
+        <div class="card pad">
+          <div class="legend" id="pmLgQNtl"></div>
+          <div class="chartwrap" id="pmChQNtl"></div>
+        </div>
+      </div>
+      <div class="card pad" style="margin-top:14px">
+        <details class="data" style="border-top:0;padding-top:0"><summary>Show the numbers behind these charts</summary><div id="pmTbQ"></div></details>
+      </div>
+    </section>
+
+    <section id="pm-month">
+      <div class="sechead"><h2>Monthly toplines</h2></div>
+      <p class="note" id="pmMonthNote"></p>
+      <div class="duo">
+        <div class="card pad">
+          <div class="legend" id="pmLgMSpend"></div>
+          <div class="chartwrap" id="pmChMSpend"></div>
+        </div>
+        <div class="card pad">
+          <div class="legend" id="pmLgMNtl"></div>
+          <div class="chartwrap" id="pmChMNtl"></div>
+        </div>
+      </div>
+      <div class="card pad" style="margin-top:14px">
+        <details class="data" style="border-top:0;padding-top:0"><summary>Show the numbers behind these charts</summary><div id="pmTbM"></div></details>
+      </div>
+    </section>
+
+    <section id="pm-accum">
+      <div class="sechead"><h2>Accumulation over time</h2></div>
+      <p class="note">Running totals of Gross Spend, NTL, and Total Raised — by quarter across the year, and by month within the quarter. Hover any point for exact figures.</p>
+      <h3 class="subhead" id="pmAccQHead">By quarter</h3>
+      <div class="smgrid" id="pmAccumQ"></div>
+      <h3 class="subhead" id="pmAccMHead">By month</h3>
+      <div class="smgrid" id="pmAccumM"></div>
+      <div class="card pad" style="margin-top:14px">
+        <details class="data" style="border-top:0;padding-top:0"><summary>Show the numbers behind these charts</summary><div id="pmTbAcc"></div></details>
+      </div>
+    </section>
+
+    <section id="pm-detail">
+      <div class="sechead"><h2>Placement breakdown</h2></div>
+      <p class="note" id="pmDetailNote"></p>
+      <div class="card pad">
+        <div class="filters" id="pmFilters"></div>
+        <div class="fstat" id="pmFilterStat"></div>
+      </div>
+
+      <div class="duo" style="margin-top:14px">
+        <div class="card pad">
+          <div class="sechead sub"><h3>Spend by channel</h3></div>
+          <div class="chartwrap" id="pmChStackSpend"></div>
+        </div>
+        <div class="card pad">
+          <div class="sechead sub"><h3>Total Raised by channel</h3></div>
+          <div class="chartwrap" id="pmChStackRaised"></div>
+        </div>
+      </div>
+
+      <div class="card pad" style="margin-top:14px">
+        <div class="sechead sub"><h3>Efficiency: cost per name vs. return on spend</h3></div>
+        <p class="note">Each bubble is one placement-month, sized by gross spend. Cost per name uses a log scale because placements span three orders of magnitude.</p>
+        <div class="chartwrap" id="pmChScatter"></div>
+      </div>
+
+      <div class="card pad" style="margin-top:14px">
+        <div class="sechead sub"><h3>Placement leaderboard</h3></div>
+        <p class="note">Click any column heading to re-sort. Bars are scaled within each column.</p>
+        <div class="chartwrap" id="pmLeader"></div>
+      </div>
+    </section>
+  </div>
+
+  <footer class="page" id="pgFoot"></footer>
+</div>
+
+<script>
+const DATA = {"meta":{"title":"Digital Fundraising Toplines","client":{"value":"Cory Booker","cell":"C6"},"email_lead":{"value":"Amanda Powell","cell":"C7"},"year":{"value":2026.0,"cell":"C9"},"quarter":{"value":3.0,"cell":"C10"},"dynamic_goals":{"july":{"value":false,"cell":"O9"},"august":{"value":false,"cell":"O10"},"label":"Display Dynamic Goals:"},"source_workbook":"EXTERNAL_ CAB Digital Report.xlsx","extracted_at":"2026-08-25T14:25:45","sheet":"Digital Report"},"channels":[{"name":"Email","name_cell":"B14","row":14,"periods":{"quarter":{"label":"Quarter","goal":400000.0,"goal_cell":"C14","actual":83568.6,"actual_cell":"D14","pct":0.2089215,"pct_cell":"E14","pct_raw":0.2089215,"goal_formula":"=SUM(Q14:S14)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"TRANSPOSE(QUERY(IMPORTRANGE(\"\"https://docs.google.com/spreadsheets/d/1BtcJvMe8of-zuMB48bULVYsLVLrzOcJtgbdPjPbL36s/\"\", \"\"Quarterly Fundraising Toplines!A:Q\"\"),\"\"Select Col3,Col4,Col5,Col6,Col7,Col8,Col9,Col10 WHERE Col2 contains '\"\"&C10&\"\"' and Col1 contai\"&\"ns '\"\"&C9&\"\"'\"\",0))\"),83568.59999999999)","pct_formula":"=IFERROR(D14/C14,\"-\")"},"july":{"label":"July","goal":50000.0,"goal_cell":"G14","actual":36077.5,"actual_cell":"H14","pct":0.72155,"pct_cell":"I14","pct_raw":0.72155,"goal_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"QUERY(TRANSPOSE(QUERY(IMPORTRANGE(\"\"https://docs.google.com/spreadsheets/d/1BtcJvMe8of-zuMB48bULVYsLVLrzOcJtgbdPjPbL36s/\"\",\"\"Import - Monthly Goals!A:L\"\"),\"\"Select Col5,Col6,Col7,Col8,Col9,Col10,Col11,Col12 WHERE Col2 contains '\"\"&C10&\"\"' and Col1 contain\"&\"s '\"\"&C9&\"\"'\"\",0)),\"\"Select Col1\"\",0)\"),50000.0)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"QUERY(TRANSPOSE(QUERY(IMPORTRANGE(\"\"https://docs.google.com/spreadsheets/d/1BtcJvMe8of-zuMB48bULVYsLVLrzOcJtgbdPjPbL36s/\"\",\"\"Monthly Fundraising Toplines!A:T\"\"),\"\"Select Col6,Col7,Col8,Col9,Col10,Col11,Col12,Col13 WHERE Col3 contains '\"\"&C10&\"\"' and Col2 \"&\"contains '\"\"&C9&\"\"'\"\",0)),\"\"Select Col1\"\")\"),36077.49999999993)","pct_formula":"=IFERROR(H14/G14,\"-\")"},"august":{"label":"August","goal":100000.0,"goal_cell":"J14","actual":47491.1,"actual_cell":"K14","pct":0.474911,"pct_cell":"L14","pct_raw":0.474911,"goal_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"QUERY(TRANSPOSE(QUERY(IMPORTRANGE(\"\"https://docs.google.com/spreadsheets/d/1BtcJvMe8of-zuMB48bULVYsLVLrzOcJtgbdPjPbL36s/\"\",\"\"Import - Monthly Goals!A:L\"\"),\"\"Select Col5,Col6,Col7,Col8,Col9,Col10,Col11,Col12 WHERE Col2 contains '\"\"&C10&\"\"' and Col1 contain\"&\"s '\"\"&C9&\"\"'\"\",0)),\"\"Select Col2\"\",0)\"),100000.0)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"QUERY(TRANSPOSE(QUERY(IMPORTRANGE(\"\"https://docs.google.com/spreadsheets/d/1BtcJvMe8of-zuMB48bULVYsLVLrzOcJtgbdPjPbL36s/\"\",\"\"Monthly Fundraising Toplines!A:T\"\"),\"\"Select Col6,Col7,Col8,Col9,Col10,Col11,Col12,Col13 WHERE Col3 contains '\"\"&C10&\"\"' and Col2 \"&\"contains '\"\"&C9&\"\"'\"\",0)),\"\"Select Col2\"\")\"),47491.100000000064)","pct_formula":"=IFERROR(K14/J14,\"-\")"},"september":{"label":"September","goal":250000.0,"goal_cell":"M14","actual":null,"actual_cell":"N14","pct":0.0,"pct_cell":"O14","pct_raw":0,"goal_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"QUERY(TRANSPOSE(QUERY(IMPORTRANGE(\"\"https://docs.google.com/spreadsheets/d/1BtcJvMe8of-zuMB48bULVYsLVLrzOcJtgbdPjPbL36s/\"\",\"\"Import - Monthly Goals!A:L\"\"),\"\"Select Col5,Col6,Col7,Col8,Col9,Col10,Col11,Col12 WHERE Col2 contains '\"\"&C10&\"\"' and Col1 contain\"&\"s '\"\"&C9&\"\"'\"\",0)),\"\"Select Col3\"\",0)\"),250000.0)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"QUERY(TRANSPOSE(QUERY(IMPORTRANGE(\"\"https://docs.google.com/spreadsheets/d/1BtcJvMe8of-zuMB48bULVYsLVLrzOcJtgbdPjPbL36s/\"\",\"\"Monthly Fundraising Toplines!A:T\"\"),\"\"Select Col6,Col7,Col8,Col9,Col10,Col11,Col12,Col13 WHERE Col3 contains '\"\"&C10&\"\"' and Col2 \"&\"contains '\"\"&C9&\"\"'\"\",0)),\"\"Select Col3\"\")\"),\"\")","pct_formula":"=IFERROR(N14/M14,\"-\")"}},"helpers":{"july":{"value":50000.0,"cell":"Q14","formula":"=IF($O$9,H14,G14)"},"august":{"value":100000.0,"cell":"R14","formula":"=IF($O$10,K14,J14)"},"september":{"value":250000.0,"cell":"S14","formula":"=M14"}},"dormant":false},{"name":"Recurring","name_cell":"B15","row":15,"periods":{"quarter":{"label":"Quarter","goal":390507.6,"goal_cell":"C15","actual":138105.76,"actual_cell":"D15","pct":0.3536570351,"pct_cell":"E15","pct_raw":0.3536570351,"goal_formula":"=SUM(Q15:S15)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),138105.76)","pct_formula":"=IFERROR(D15/C15,\"-\")"},"july":{"label":"July","goal":114183.51,"goal_cell":"G15","actual":76532.24,"actual_cell":"H15","pct":0.670256502,"pct_cell":"I15","pct_raw":0.670256502,"goal_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),114183.51)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),76532.24)","pct_formula":"=IFERROR(H15/G15,\"-\")"},"august":{"label":"August","goal":125601.86,"goal_cell":"J15","actual":61573.52,"actual_cell":"K15","pct":0.4902277721,"pct_cell":"L15","pct_raw":0.4902277721,"goal_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),125601.86)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),61573.520000000004)","pct_formula":"=IFERROR(K15/J15,\"-\")"},"september":{"label":"September","goal":150722.23,"goal_cell":"M15","actual":null,"actual_cell":"N15","pct":0.0,"pct_cell":"O15","pct_raw":0,"goal_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),150722.23)","actual_formula":null,"pct_formula":"=IFERROR(N15/M15,\"-\")"}},"helpers":{"july":{"value":114183.51,"cell":"Q15","formula":"=IF($O$9,H15,G15)"},"august":{"value":125601.86,"cell":"R15","formula":"=IF($O$10,K15,J15)"},"september":{"value":150722.23,"cell":"S15","formula":"=M15"}},"dormant":false},{"name":"Ads","name_cell":"B16","row":16,"periods":{"quarter":{"label":"Quarter","goal":312000.0,"goal_cell":"C16","actual":100902.75,"actual_cell":"D16","pct":0.32340625,"pct_cell":"E16","pct_raw":0.32340625,"goal_formula":"=SUM(Q16:S16)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),100902.75)","pct_formula":"=IFERROR(D16/C16,\"-\")"},"july":{"label":"July","goal":72000.0,"goal_cell":"G16","actual":57835.76,"actual_cell":"H16","pct":0.8032744444,"pct_cell":"I16","pct_raw":0.8032744444,"goal_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),72000.0)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),57835.76)","pct_formula":"=IFERROR(H16/G16,\"-\")"},"august":{"label":"August","goal":90000.0,"goal_cell":"J16","actual":43066.99,"actual_cell":"K16","pct":0.4785221111,"pct_cell":"L16","pct_raw":0.4785221111,"goal_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),90000.0)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),43066.990000000005)","pct_formula":"=IFERROR(K16/J16,\"-\")"},"september":{"label":"September","goal":150000.0,"goal_cell":"M16","actual":null,"actual_cell":"N16","pct":0.0,"pct_cell":"O16","pct_raw":0,"goal_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),150000.0)","actual_formula":null,"pct_formula":"=IFERROR(N16/M16,\"-\")"}},"helpers":{"july":{"value":72000.0,"cell":"Q16","formula":"=IF($O$9,H16,G16)"},"august":{"value":90000.0,"cell":"R16","formula":"=IF($O$10,K16,J16)"},"september":{"value":150000.0,"cell":"S16","formula":"=M16"}},"dormant":false},{"name":"Website","name_cell":"B17","row":17,"periods":{"quarter":{"label":"Quarter","goal":220846.6,"goal_cell":"C17","actual":54696.36,"actual_cell":"D17","pct":0.2476667515,"pct_cell":"E17","pct_raw":0.2476667515,"goal_formula":"=SUM(Q17:S17)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),54696.36)","pct_formula":"=IFERROR(D17/C17,\"-\")"},"july":{"label":"July","goal":46494.02,"goal_cell":"G17","actual":25754.3,"actual_cell":"H17","pct":0.5539271502,"pct_cell":"I17","pct_raw":0.5539271502,"goal_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),46494.02)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),25754.300000000003)","pct_formula":"=IFERROR(H17/G17,\"-\")"},"august":{"label":"August","goal":69741.03,"goal_cell":"J17","actual":28942.06,"actual_cell":"K17","pct":0.4149932973,"pct_cell":"L17","pct_raw":0.4149932973,"goal_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),69741.03)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),28942.059999999998)","pct_formula":"=IFERROR(K17/J17,\"-\")"},"september":{"label":"September","goal":104611.55,"goal_cell":"M17","actual":null,"actual_cell":"N17","pct":0.0,"pct_cell":"O17","pct_raw":0,"goal_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),104611.55)","actual_formula":null,"pct_formula":"=IFERROR(N17/M17,\"-\")"}},"helpers":{"july":{"value":46494.02,"cell":"Q17","formula":"=IF($O$9,H17,G17)"},"august":{"value":69741.03,"cell":"R17","formula":"=IF($O$10,K17,J17)"},"september":{"value":104611.55,"cell":"S17","formula":"=M17"}},"dormant":false},{"name":"Tandem","name_cell":"B18","row":18,"periods":{"quarter":{"label":"Quarter","goal":1279.71,"goal_cell":"C18","actual":1515.36,"actual_cell":"D18","pct":1.184143282,"pct_cell":"E18","pct_raw":1.184143282,"goal_formula":"=SUM(Q18:S18)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1515.3600000000001)","pct_formula":"=IFERROR(D18/C18,\"-\")"},"july":{"label":"July","goal":269.41,"goal_cell":"G18","actual":888.61,"actual_cell":"H18","pct":3.298355666,"pct_cell":"I18","pct_raw":3.298355666,"goal_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),269.41)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),888.61)","pct_formula":"=IFERROR(H18/G18,\"-\")"},"august":{"label":"August","goal":404.12,"goal_cell":"J18","actual":626.75,"actual_cell":"K18","pct":1.550900723,"pct_cell":"L18","pct_raw":1.550900723,"goal_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),404.12)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),626.75)","pct_formula":"=IFERROR(K18/J18,\"-\")"},"september":{"label":"September","goal":606.18,"goal_cell":"M18","actual":null,"actual_cell":"N18","pct":0.0,"pct_cell":"O18","pct_raw":0,"goal_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),606.18)","actual_formula":null,"pct_formula":"=IFERROR(N18/M18,\"-\")"}},"helpers":{"july":{"value":269.41,"cell":"Q18","formula":"=IF($O$9,H18,G18)"},"august":{"value":404.12,"cell":"R18","formula":"=IF($O$10,K18,J18)"},"september":{"value":606.18,"cell":"S18","formula":"=M18"}},"dormant":false},{"name":"SMS Broadcast","name_cell":"B19","row":19,"periods":{"quarter":{"label":"Quarter","goal":0.0,"goal_cell":"C19","actual":0.0,"actual_cell":"D19","pct":null,"pct_cell":"E19","pct_raw":"-","goal_formula":"=SUM(Q19:S19)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)","pct_formula":"=IFERROR(D19/C19,\"-\")"},"july":{"label":"July","goal":null,"goal_cell":"G19","actual":0.0,"actual_cell":"H19","pct":null,"pct_cell":"I19","pct_raw":"-","goal_formula":null,"actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)","pct_formula":"=IFERROR(H19/G19,\"-\")"},"august":{"label":"August","goal":null,"goal_cell":"J19","actual":0.0,"actual_cell":"K19","pct":null,"pct_cell":"L19","pct_raw":"-","goal_formula":null,"actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)","pct_formula":"=IFERROR(K19/J19,\"-\")"},"september":{"label":"September","goal":null,"goal_cell":"M19","actual":null,"actual_cell":"N19","pct":null,"pct_cell":"O19","pct_raw":"-","goal_formula":null,"actual_formula":null,"pct_formula":"=IFERROR(N19/M19,\"-\")"}},"helpers":{"july":{"value":null,"cell":"Q19","formula":"=IF($O$9,H19,G19)"},"august":{"value":null,"cell":"R19","formula":"=IF($O$10,K19,J19)"},"september":{"value":null,"cell":"S19","formula":"=M19"}},"dormant":true},{"name":"SMS P2P","name_cell":"B20","row":20,"periods":{"quarter":{"label":"Quarter","goal":27000.0,"goal_cell":"C20","actual":13540.47,"actual_cell":"D20","pct":0.5014988889,"pct_cell":"E20","pct_raw":0.5014988889,"goal_formula":"=SUM(Q20:S20)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),13540.47)","pct_formula":"=IFERROR(D20/C20,\"-\")"},"july":{"label":"July","goal":6000.0,"goal_cell":"G20","actual":5118.26,"actual_cell":"H20","pct":0.8530433333,"pct_cell":"I20","pct_raw":0.8530433333,"goal_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),6000.0)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),5118.26)","pct_formula":"=IFERROR(H20/G20,\"-\")"},"august":{"label":"August","goal":9000.0,"goal_cell":"J20","actual":8422.21,"actual_cell":"K20","pct":0.9358011111,"pct_cell":"L20","pct_raw":0.9358011111,"goal_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),9000.0)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),8422.21)","pct_formula":"=IFERROR(K20/J20,\"-\")"},"september":{"label":"September","goal":12000.0,"goal_cell":"M20","actual":null,"actual_cell":"N20","pct":0.0,"pct_cell":"O20","pct_raw":0,"goal_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),12000.0)","actual_formula":null,"pct_formula":"=IFERROR(N20/M20,\"-\")"}},"helpers":{"july":{"value":6000.0,"cell":"Q20","formula":"=IF($O$9,H20,G20)"},"august":{"value":9000.0,"cell":"R20","formula":"=IF($O$10,K20,J20)"},"september":{"value":12000.0,"cell":"S20","formula":"=M20"}},"dormant":false},{"name":"Social","name_cell":"B21","row":21,"periods":{"quarter":{"label":"Quarter","goal":0.0,"goal_cell":"C21","actual":0.0,"actual_cell":"D21","pct":null,"pct_cell":"E21","pct_raw":"-","goal_formula":"=SUM(Q21:S21)","actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)","pct_formula":"=IFERROR(D21/C21,\"-\")"},"july":{"label":"July","goal":null,"goal_cell":"G21","actual":0.0,"actual_cell":"H21","pct":null,"pct_cell":"I21","pct_raw":"-","goal_formula":null,"actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)","pct_formula":"=IFERROR(H21/G21,\"-\")"},"august":{"label":"August","goal":null,"goal_cell":"J21","actual":0.0,"actual_cell":"K21","pct":null,"pct_cell":"L21","pct_raw":"-","goal_formula":null,"actual_formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)","pct_formula":"=IFERROR(K21/J21,\"-\")"},"september":{"label":"September","goal":null,"goal_cell":"M21","actual":null,"actual_cell":"N21","pct":null,"pct_cell":"O21","pct_raw":"-","goal_formula":null,"actual_formula":null,"pct_formula":"=IFERROR(N21/M21,\"-\")"}},"helpers":{"july":{"value":null,"cell":"Q21","formula":"=IF($O$9,H21,G21)"},"august":{"value":null,"cell":"R21","formula":"=IF($O$10,K21,J21)"},"september":{"value":null,"cell":"S21","formula":"=M21"}},"dormant":true}],"overall":{"total_raised":{"label":"Total Raised","label_cell":"B23","row":23,"periods":{"quarter":{"label":"Quarter","goal":1351633.91,"goal_cell":"C23","actual":392329.3,"actual_cell":"D23","pct":0.2902629899,"pct_cell":"E23"},"july":{"label":"July","goal":288946.94,"goal_cell":"G23","actual":202206.67,"actual_cell":"H23","pct":0.6998055422,"pct_cell":"I23"},"august":{"label":"August","goal":394747.01,"goal_cell":"J23","actual":190122.63,"actual_cell":"K23","pct":0.4816315898,"pct_cell":"L23"},"september":{"label":"September","goal":667939.96,"goal_cell":"M23","actual":0.0,"actual_cell":"N23","pct":0.0,"pct_cell":"O23"}}},"total_donations":{"label":"Total Donations","label_cell":"B24","row":24,"periods":{"quarter":{"label":"Quarter","goal":null,"goal_cell":"C24","actual":22618.0,"actual_cell":"D24","pct":null,"pct_cell":"E24"},"july":{"label":"July","goal":null,"goal_cell":"G24","actual":12330.0,"actual_cell":"H24","pct":null,"pct_cell":"I24"},"august":{"label":"August","goal":null,"goal_cell":"J24","actual":10288.0,"actual_cell":"K24","pct":null,"pct_cell":"L24"},"september":{"label":"September","goal":null,"goal_cell":"M24","actual":null,"actual_cell":"N24","pct":null,"pct_cell":"O24"}}},"average_donation":{"label":"Average Donation","label_cell":"B25","row":25,"periods":{"quarter":{"label":"Quarter","goal":null,"goal_cell":"C25","actual":17.34588823,"actual_cell":"D25","pct":null,"pct_cell":"E25"},"july":{"label":"July","goal":null,"goal_cell":"G25","actual":16.39956772,"actual_cell":"H25","pct":null,"pct_cell":"I25"},"august":{"label":"August","goal":null,"goal_cell":"J25","actual":18.48003791,"actual_cell":"K25","pct":null,"pct_cell":"L25"},"september":{"label":"September","goal":null,"goal_cell":"M25","actual":null,"actual_cell":"N25","pct":null,"pct_cell":"O25"}}},"total_finance":{"label":"Total Finance","label_cell":"B26","row":26,"periods":{"quarter":{"label":"Quarter","goal":null,"goal_cell":"C26","actual":4850.43,"actual_cell":"D26","pct":null,"pct_cell":"E26"},"july":{"label":"July","goal":null,"goal_cell":"G26","actual":606.05,"actual_cell":"H26","pct":null,"pct_cell":"I26"},"august":{"label":"August","goal":null,"goal_cell":"J26","actual":4244.38,"actual_cell":"K26","pct":null,"pct_cell":"L26"},"september":{"label":"September","goal":null,"goal_cell":"M26","actual":null,"actual_cell":"N26","pct":null,"pct_cell":"O26"}}}},"cumulative":{"Email":{"actual":[{"month":"July","value":36077.5,"pending":false,"cells":["H14"]},{"month":"August","value":83568.6,"pending":false,"cells":["H14","K14"]},{"month":"September","value":null,"pending":true}],"goal":[{"month":"July","value":50000.0,"cells":["G14"]},{"month":"August","value":150000.0,"cells":["G14","J14"]},{"month":"September","value":400000.0,"cells":["G14","J14","M14"]}]},"Recurring":{"actual":[{"month":"July","value":76532.24,"pending":false,"cells":["H15"]},{"month":"August","value":138105.76,"pending":false,"cells":["H15","K15"]},{"month":"September","value":null,"pending":true}],"goal":[{"month":"July","value":114183.51,"cells":["G15"]},{"month":"August","value":239785.37,"cells":["G15","J15"]},{"month":"September","value":390507.6,"cells":["G15","J15","M15"]}]},"Ads":{"actual":[{"month":"July","value":57835.76,"pending":false,"cells":["H16"]},{"month":"August","value":100902.75,"pending":false,"cells":["H16","K16"]},{"month":"September","value":null,"pending":true}],"goal":[{"month":"July","value":72000.0,"cells":["G16"]},{"month":"August","value":162000.0,"cells":["G16","J16"]},{"month":"September","value":312000.0,"cells":["G16","J16","M16"]}]},"Website":{"actual":[{"month":"July","value":25754.3,"pending":false,"cells":["H17"]},{"month":"August","value":54696.36,"pending":false,"cells":["H17","K17"]},{"month":"September","value":null,"pending":true}],"goal":[{"month":"July","value":46494.02,"cells":["G17"]},{"month":"August","value":116235.04999999999,"cells":["G17","J17"]},{"month":"September","value":220846.59999999998,"cells":["G17","J17","M17"]}]},"Tandem":{"actual":[{"month":"July","value":888.61,"pending":false,"cells":["H18"]},{"month":"August","value":1515.3600000000001,"pending":false,"cells":["H18","K18"]},{"month":"September","value":null,"pending":true}],"goal":[{"month":"July","value":269.41,"cells":["G18"]},{"month":"August","value":673.53,"cells":["G18","J18"]},{"month":"September","value":1279.71,"cells":["G18","J18","M18"]}]},"SMS Broadcast":{"actual":[{"month":"July","value":0.0,"pending":false,"cells":["H19"]},{"month":"August","value":0.0,"pending":false,"cells":["H19","K19"]},{"month":"September","value":null,"pending":true}],"goal":[{"month":"July","value":0.0,"cells":["G19"]},{"month":"August","value":0.0,"cells":["G19","J19"]},{"month":"September","value":0.0,"cells":["G19","J19","M19"]}]},"SMS P2P":{"actual":[{"month":"July","value":5118.26,"pending":false,"cells":["H20"]},{"month":"August","value":13540.47,"pending":false,"cells":["H20","K20"]},{"month":"September","value":null,"pending":true}],"goal":[{"month":"July","value":6000.0,"cells":["G20"]},{"month":"August","value":15000.0,"cells":["G20","J20"]},{"month":"September","value":27000.0,"cells":["G20","J20","M20"]}]},"Social":{"actual":[{"month":"July","value":0.0,"pending":false,"cells":["H21"]},{"month":"August","value":0.0,"pending":false,"cells":["H21","K21"]},{"month":"September","value":null,"pending":true}],"goal":[{"month":"July","value":0.0,"cells":["G21"]},{"month":"August","value":0.0,"cells":["G21","J21"]},{"month":"September","value":0.0,"cells":["G21","J21","M21"]}]}},"month_keys":["july","august","september"],"sources":{"quarter_actual":"Quarterly Fundraising Toplines","july_goal":"Import - Monthly Goals","july_actual":"Monthly Fundraising Toplines","august_goal":"Import - Monthly Goals","august_actual":"Monthly Fundraising Toplines","september_goal":"Import - Monthly Goals","september_actual":"Monthly Fundraising Toplines"},"pending_months":["september"]};
+</script>
+<script>
+/* ==================== formatting helpers ==================== */
+const MONTHS = DATA.month_keys;
+const PENDING = new Set(DATA.pending_months || []);
+const SRC = DATA.sources || {};
+
+const usd = (n, cents) => n == null ? "—" : (n < 0 ? "-" : "") + "$" +
+  Math.abs(n).toLocaleString("en-US", {minimumFractionDigits: cents ? 2 : 0, maximumFractionDigits: cents ? 2 : 0});
+const usdc = n => usd(n, true);
+const int = n => n == null ? "—" : Math.round(n).toLocaleString("en-US");
+const pct = (n, d) => n == null ? "—" : (n * 100).toFixed(d == null ? 1 : d) + "%";
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c =>
+  ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[c]));
+const cell = r => '<code>' + esc(r) + '</code>';
+const cells = a => a.map(cell).join(" + ");
+const pctClass = p => p == null ? "" : p >= 1 ? "good" : p >= 0.7 ? "warn" : "bad";
+const pctColor = p => p == null ? "var(--muted)" : p >= 1 ? "var(--good)" : p >= 0.7 ? "var(--warn)" : "var(--bad)";
+
+const byName = {};
+DATA.channels.forEach(c => byName[c.name] = c);
+const active = DATA.channels.filter(c => !c.dormant);
+const dormant = DATA.channels.filter(c => c.dormant);
+
+/* Sum a field across all channels for one period — used where the workbook's
+   Overall row is blank or shows a computed zero for an unreported month. */
+function chSum(period, field) {
+  let t = 0, any = false;
+  DATA.channels.forEach(c => {
+    const v = c.periods[period][field];
+    if (v != null) { t += v; any = true; }
+  });
+  return any ? t : null;
+}
+
+/* ==================== info bubbles ==================== */
+let openPop = null;
+function closePop() {
+  if (openPop) {
+    openPop.pop.remove();
+    openPop.btn.setAttribute("aria-expanded", "false");
+    openPop = null;
+  }
+}
+document.addEventListener("click", e => {
+  if (openPop && !e.target.closest(".pop") && !e.target.closest(".info")) closePop();
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape") closePop(); });
+
+/* spec: {title, rows:[[label, html]], calc, formula, source, caveat} */
+function infoBubble(spec) {
+  const btn = document.createElement("button");
+  btn.className = "info";
+  btn.type = "button";
+  btn.setAttribute("aria-expanded", "false");
+  btn.setAttribute("aria-label", "How " + (spec.title || "this") + " was calculated");
+  btn.textContent = "i";
+  btn.addEventListener("click", ev => {
+    ev.stopPropagation();
+    hideTip();  // don't stack a hover tooltip under the provenance popover
+    const wasMine = openPop && openPop.btn === btn;
+    closePop();
+    if (wasMine) return;
+    const pop = document.createElement("div");
+    pop.className = "pop";
+    let h = "<h4>" + esc(spec.title || "Source & calculation") + "</h4><dl>";
+    (spec.rows || []).forEach(r => {
+      h += "<dt>" + esc(r[0]) + "</dt><dd>" + r[1] + "</dd>";
+    });
+    h += "</dl>";
+    if (spec.calc) h += '<dl style="margin-top:5px"><dt>Calculation</dt><dd class="calc">' + spec.calc + "</dd></dl>";
+    if (spec.formula) h += '<dl style="margin-top:5px"><dt>Workbook</dt><dd class="calc">' + esc(spec.formula) + "</dd></dl>";
+    if (spec.caveat) h += '<div class="caveat">' + spec.caveat + "</div>";
+    if (spec.source) h += '<div class="src">' + spec.source + "</div>";
+    pop.innerHTML = h;
+    document.body.appendChild(pop);
+    const r = btn.getBoundingClientRect();
+    const pw = pop.offsetWidth, ph = pop.offsetHeight;
+    let left = r.left + window.scrollX - pw / 2 + r.width / 2;
+    left = Math.max(12, Math.min(left, window.innerWidth - pw - 12));
+    let top = r.bottom + window.scrollY + 8;
+    if (r.bottom + ph + 16 > window.innerHeight && r.top - ph - 8 > 0) top = r.top + window.scrollY - ph - 8;
+    pop.style.left = left + "px";
+    pop.style.top = top + "px";
+    btn.setAttribute("aria-expanded", "true");
+    openPop = {btn, pop};
+  });
+  return btn;
+}
+/* ==================== hover tooltips ==================== */
+/* Tooltip bodies are registered in a JS array and referenced from the DOM by
+   index, so chart markup built as SVG strings never has to escape HTML. */
+const TIPS = [];
+let tipEl = null;
+
+function registerTip(spec) { TIPS.push(spec); return TIPS.length - 1; }
+
+function tipMarkup(spec) {
+  let h = '<div class="th">' + esc(spec.title) + "</div><dl>";
+  (spec.rows || []).forEach(r => {
+    if (r == null) return;
+    const style = r[2] ? ' style="color:' + r[2] + '"' : "";
+    h += "<dt>" + esc(r[0]) + "</dt><dd" + style + ">" + esc(r[1]) + "</dd>";
+  });
+  h += "</dl>";
+  if (spec.foot) h += '<div class="tf">' + esc(spec.foot) + "</div>";
+  return h;
+}
+
+function showTip(spec, x, y) {
+  if (!tipEl) {
+    tipEl = document.createElement("div");
+    tipEl.className = "tip";
+    document.body.appendChild(tipEl);
+  }
+  tipEl.innerHTML = tipMarkup(spec);
+  tipEl.style.display = "block";
+  moveTip(x, y);
+}
+function moveTip(x, y) {
+  if (!tipEl) return;
+  const w = tipEl.offsetWidth, h = tipEl.offsetHeight, pad = 14;
+  let left = x + pad, top = y + pad;
+  if (left + w + 8 > window.innerWidth) left = x - w - pad;
+  if (top + h + 8 > window.innerHeight) top = Math.max(8, y - h - pad);
+  tipEl.style.left = Math.max(8, left) + "px";
+  tipEl.style.top = top + "px";
+}
+function hideTip() { if (tipEl) tipEl.style.display = "none"; }
+
+/* Wire every [data-tip-id] descendant of root for hover (and tap on touch). */
+function bindTips(root) {
+  root.querySelectorAll("[data-tip-id]").forEach(el => {
+    const spec = TIPS[+el.getAttribute("data-tip-id")];
+    if (!spec) return;
+    el.addEventListener("mouseenter", e => showTip(spec, e.clientX, e.clientY));
+    el.addEventListener("mousemove", e => moveTip(e.clientX, e.clientY));
+    el.addEventListener("mouseleave", hideTip);
+    el.addEventListener("click", e => {
+      // touch devices get a tap-to-show; also keeps keyboard/AT users covered
+      e.stopPropagation();
+      showTip(spec, e.clientX || 20, e.clientY || 20);
+    });
+  });
+}
+document.addEventListener("click", e => {
+  if (!e.target.closest("[data-tip-id]")) hideTip();
+});
+window.addEventListener("scroll", hideTip, {passive: true});
+
+/* Signed gap helper used across tooltips: actual minus goal. */
+function gapRow(actual, goal) {
+  if (actual == null || !goal) return null;
+  const d = actual - goal;
+  return ["Gap to goal", (d >= 0 ? "+" : "-") + usdc(Math.abs(d)).replace("-", ""),
+          d >= 0 ? "var(--good)" : "var(--bad)"];
+}
+
+const SHEET_NOTE = 'Tab <code>' + esc(DATA.meta.sheet) + '</code> of <code>' + esc(DATA.meta.source_workbook) + '</code>.';
+function srcNote(key) {
+  const t = SRC[key];
+  return SHEET_NOTE + (t ? ' Imported from the CAB Google Sheet, <code>' + esc(t) + '</code>, via IMPORTRANGE.' : "");
+}
+const PENDING_CAVEAT = 'September actuals are not yet reported (<code>N14:N21</code> are empty), so the month is shown as pending rather than as $0.';
+</script>
+<script>
+/* ==================== header ==================== */
+(function header() {
+  const m = DATA.meta;
+  document.getElementById("pgTitle").textContent = m.title || "Digital Fundraising Toplines";
+  document.getElementById("pgSub").textContent =
+    "Q" + (m.quarter.value || "") + " " + (m.year.value || "") + " · digital fundraising performance";
+  document.title = (m.client.value ? m.client.value + " — " : "") + "Q" + m.quarter.value + " " + m.year.value + " Digital Report";
+  const rows = [
+    ["Client", m.client.value, m.client.cell],
+    ["Email lead", m.email_lead.value, m.email_lead.cell],
+    ["Quarter", "Q" + m.quarter.value + " " + m.year.value, m.quarter.cell + " / " + m.year.cell]
+  ];
+  document.getElementById("pgMeta").innerHTML = rows.map(r =>
+    "<div><dt>" + esc(r[0]) + "</dt><dd>" + esc(r[1]) + "</dd></div>").join("");
+
+  const reported = MONTHS.filter(k => !PENDING.has(k)).map(k => byName[DATA.channels[0].name].periods[k].label);
+  const pend = MONTHS.filter(k => PENDING.has(k)).map(k => DATA.channels[0].periods[k].label);
+  let note = reported.length ? reported.join(" and ") + " reported" : "No months reported yet";
+  if (pend.length) note += "; " + pend.join(" and ") + " not yet reported";
+  document.getElementById("heroNote").textContent = note + ".";
+
+  document.getElementById("pgFoot").innerHTML =
+    "Generated from <code>" + esc(m.source_workbook) + "</code>, tab <code>" + esc(m.sheet) +
+    "</code>, extracted " + esc((m.extracted_at || "").replace("T", " ")) +
+    ". Every figure on this page traces to a cell in that tab — click any <b>i</b> to see which. " +
+    "Values in the workbook are cached IMPORTRANGE results from the upstream CAB Google Sheet.";
+})();
+
+/* ==================== hero stats ==================== */
+(function heroes() {
+  const o = DATA.overall;
+  const q = k => o[k].periods.quarter;
+  const defs = [
+    {
+      key: "total_raised", label: "Total raised", fmt: usd, showGoal: true,
+      info: () => {
+        const p = q("total_raised");
+        return {
+          title: "Total raised, quarter to date",
+          rows: [
+            ["Actual", cell(p.actual_cell) + " = " + usdc(p.actual)],
+            ["Goal", cell(p.goal_cell) + " = " + usdc(p.goal)],
+            ["% to goal", cell(p.pct_cell) + " = " + pct(p.pct, 2)]
+          ],
+          calc: pct(p.pct, 2) + " = " + usdc(p.actual) + " ÷ " + usdc(p.goal),
+          formula: '=IFERROR(D23/C23,"-")',
+          caveat: "Sums all eight channel rows <code>B14:B21</code>. " + PENDING_CAVEAT,
+          source: srcNote("quarter_actual")
+        };
+      }
+    },
+    {
+      key: "total_donations", label: "Total donations", fmt: int, showGoal: false,
+      info: () => {
+        const p = q("total_donations");
+        return {
+          title: "Total donations, quarter to date",
+          rows: [["Value", cell(p.actual_cell) + " = " + int(p.actual) + " donations"]],
+          calc: "July " + cell(o.total_donations.periods.july.actual_cell) + " " +
+                int(o.total_donations.periods.july.actual) + " + August " +
+                cell(o.total_donations.periods.august.actual_cell) + " " +
+                int(o.total_donations.periods.august.actual) + " = " + int(p.actual),
+          caveat: "The workbook sets no goal for donation count, so no percent to goal is shown.",
+          source: srcNote("quarter_actual")
+        };
+      }
+    },
+    {
+      key: "average_donation", label: "Average donation", fmt: usdc, showGoal: false,
+      info: () => {
+        const p = q("average_donation"), r = q("total_raised"), c = q("total_donations");
+        return {
+          title: "Average donation, quarter to date",
+          rows: [
+            ["Value", cell(p.actual_cell) + " = " + usdc(p.actual)],
+            ["Inputs", cell(r.actual_cell) + " ÷ " + cell(c.actual_cell)]
+          ],
+          calc: usdc(r.actual) + " ÷ " + int(c.actual) + " = $" + p.actual.toFixed(8),
+          caveat: "Verified against the stored value to eight decimal places.",
+          source: srcNote("quarter_actual")
+        };
+      }
+    },
+    {
+      key: "total_finance", label: "Total finance", fmt: usdc, showGoal: false,
+      info: () => {
+        const p = q("total_finance");
+        return {
+          title: "Total finance, quarter to date",
+          rows: [
+            ["Value", cell(p.actual_cell) + " = " + usdc(p.actual)],
+            ["July", cell(o.total_finance.periods.july.actual_cell) + " = " + usdc(o.total_finance.periods.july.actual)],
+            ["August", cell(o.total_finance.periods.august.actual_cell) + " = " + usdc(o.total_finance.periods.august.actual)]
+          ],
+          calc: usdc(o.total_finance.periods.july.actual) + " + " + usdc(o.total_finance.periods.august.actual) +
+                " = " + usdc(p.actual),
+          caveat: "Reported separately from the channel grid; it is not part of Total raised.",
+          source: SHEET_NOTE
+        };
+      }
+    }
+  ];
+
+  const host = document.getElementById("heroes");
+  defs.forEach(d => {
+    const p = q(d.key);
+    const el = document.createElement("div");
+    el.className = "hero";
+    const lbl = document.createElement("div");
+    lbl.className = "lbl";
+    lbl.appendChild(document.createTextNode(d.label));
+    lbl.appendChild(infoBubble(d.info()));
+    el.appendChild(lbl);
+    const big = document.createElement("div");
+    big.className = "big";
+    big.textContent = d.fmt(p.actual);
+    el.appendChild(big);
+    if (d.showGoal && p.goal) {
+      const of = document.createElement("div");
+      of.className = "of";
+      of.textContent = "of " + usd(p.goal) + " goal";
+      el.appendChild(of);
+      const bar = document.createElement("div");
+      bar.className = "bar";
+      const i = document.createElement("i");
+      i.style.width = Math.max(0, Math.min(100, (p.pct || 0) * 100)) + "%";
+      i.style.background = pctColor(p.pct);
+      bar.appendChild(i);
+      el.appendChild(bar);
+      const pc = document.createElement("div");
+      pc.className = "pct";
+      pc.style.color = pctColor(p.pct);
+      pc.textContent = pct(p.pct, 1) + " to goal";
+      el.appendChild(pc);
+    }
+    host.appendChild(el);
+  });
+})();
+</script>
+<script>
+/* ==================== chart 1: goal vs actual by month ==================== */
+(function monthChart() {
+  const rows = MONTHS.map(k => {
+    const ref = DATA.channels[0].periods[k];
+    const pending = PENDING.has(k);
+    return {
+      key: k, label: ref.label, pending: pending,
+      goal: chSum(k, "goal"),
+      actual: pending ? null : chSum(k, "actual"),
+      goalCells: DATA.channels.map(c => c.periods[k].goal_cell),
+      actualCells: DATA.channels.map(c => c.periods[k].actual_cell)
+    };
+  });
+  rows.forEach(r => r.pct = (r.actual != null && r.goal) ? r.actual / r.goal : null);
+
+  document.getElementById("lgMonth").innerHTML =
+    '<span><i class="sw" style="background:var(--goal-bar)"></i>Goal</span>' +
+    '<span><i class="sw" style="background:var(--actual)"></i>Actual</span>' +
+    '<span><i class="sw" style="background:repeating-linear-gradient(45deg,var(--border),var(--border) 3px,transparent 3px,transparent 6px);border:1px solid var(--border)"></i>Not yet reported</span>';
+
+  const W = 760, H = 320, ML = 66, MR = 14, MT = 12, MB = 52;
+  const iw = W - ML - MR, ih = H - MT - MB;
+  const max = Math.max(...rows.map(r => Math.max(r.goal || 0, r.actual || 0))) * 1.12 || 1;
+  const y = v => MT + ih - (v / max) * ih;
+  const gw = iw / rows.length, bw = Math.min(74, gw * 0.3), gap = 12;
+
+  let s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Goal versus actual by month">';
+  s += '<defs><pattern id="hatch" width="6" height="6" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">' +
+       '<line x1="0" y1="0" x2="0" y2="6" stroke="var(--goal)" stroke-width="2.5" opacity=".55"/></pattern></defs>';
+  const ticks = 5;
+  for (let i = 0; i <= ticks; i++) {
+    const v = max * i / ticks, yy = y(v);
+    s += '<line class="grid" x1="' + ML + '" y1="' + yy + '" x2="' + (W - MR) + '" y2="' + yy + '"/>';
+    s += '<text class="tick" x="' + (ML - 8) + '" y="' + (yy + 3.5) + '" text-anchor="end">$' +
+         Math.round(v / 1000) + 'k</text>';
+  }
+  s += '<line class="ax" x1="' + ML + '" y1="' + (MT + ih) + '" x2="' + (W - MR) + '" y2="' + (MT + ih) + '"/>';
+
+  rows.forEach((r, i) => {
+    const cx = ML + gw * i + gw / 2;
+    const gx = cx - bw - gap / 2, ax = cx + gap / 2;
+    // goal bar
+    s += '<rect x="' + gx + '" y="' + y(r.goal) + '" width="' + bw + '" height="' + (MT + ih - y(r.goal)) +
+         '" rx="3" fill="var(--goal-bar)"/>';
+    s += '<text class="vlbl" x="' + (gx + bw / 2) + '" y="' + (y(r.goal) - 6) + '" text-anchor="middle">' + usd(r.goal) + '</text>';
+    // actual bar
+    if (r.actual == null) {
+      s += '<rect x="' + ax + '" y="' + y(r.goal) + '" width="' + bw + '" height="' + (MT + ih - y(r.goal)) +
+           '" rx="3" fill="url(#hatch)" stroke="var(--border)" stroke-dasharray="3 3"/>';
+      s += '<text class="vlbl" x="' + (ax + bw / 2) + '" y="' + (MT + ih - 8) + '" text-anchor="middle" ' +
+           'style="font-style:italic">pending</text>';
+    } else {
+      s += '<rect x="' + ax + '" y="' + y(r.actual) + '" width="' + bw + '" height="' + (MT + ih - y(r.actual)) +
+           '" rx="3" fill="var(--actual)"/>';
+      s += '<text class="vlbl" x="' + (ax + bw / 2) + '" y="' + (y(r.actual) - 6) + '" text-anchor="middle">' + usd(r.actual) + '</text>';
+    }
+    s += '<text x="' + cx + '" y="' + (MT + ih + 20) + '" text-anchor="middle" style="font-size:13px;font-weight:600">' +
+         esc(r.label) + '</text>';
+    s += '<text x="' + cx + '" y="' + (MT + ih + 38) + '" text-anchor="middle" style="font-size:11.5px;fill:' +
+         pctColor(r.pct) + '">' + (r.pct == null ? "not yet reported" : pct(r.pct, 1) + " to goal") + '</text>';
+
+    // transparent hover band over the whole month group
+    const gcRange = r.goalCells[0].replace(/\d+$/, "14") + ":" + r.goalCells[0].replace(/\d+$/, "21");
+    const acRange = r.actualCells[0].replace(/\d+$/, "14") + ":" + r.actualCells[0].replace(/\d+$/, "21");
+    const tid = registerTip({
+      title: r.label + " " + DATA.meta.year.value,
+      rows: [
+        ["Goal", usdc(r.goal)],
+        ["Actual", r.actual == null ? "not yet reported" : usdc(r.actual)],
+        r.pct == null ? null : ["% to goal", pct(r.pct, 1), pctColor(r.pct)],
+        gapRow(r.actual, r.goal)
+      ],
+      foot: "goal " + gcRange + "  ·  actual " + acRange
+    });
+    s += '<rect class="hit" data-tip-id="' + tid + '" x="' + (ML + gw * i) + '" y="' + MT +
+         '" width="' + gw + '" height="' + ih + '" rx="4"/>';
+  });
+  s += "</svg>";
+
+  const wrap = document.getElementById("chMonth");
+  wrap.innerHTML = s;
+  bindTips(wrap);
+
+  // info bubble for the chart, placed in the section heading
+  document.querySelector("#s-month .sechead").appendChild(infoBubble({
+    title: "Goal vs. actual by month",
+    rows: rows.map(r => [r.label, "goal " + cell(r.goalCells[0].replace(/\d+$/, "14")) + ":" +
+      cell(r.goalCells[0].replace(/\d+$/, "21")) + " = " + usdc(r.goal) +
+      (r.actual == null ? "; actual not reported" : ", actual = " + usdc(r.actual))]),
+    calc: "Each bar sums the eight channel rows <code>14</code>–<code>21</code> for that month's column. " +
+          "Percent to goal = actual ÷ goal.",
+    caveat: PENDING_CAVEAT + " Column sums were checked against the workbook's own Overall row " +
+            "<code>G23</code>/<code>H23</code>, <code>J23</code>/<code>K23</code>, <code>M23</code>.",
+    source: srcNote("july_actual")
+  }));
+
+  // data table
+  let t = "<table><thead><tr><th>Month</th><th>Goal</th><th>Actual</th><th>% to goal</th><th>Cells (goal / actual)</th></tr></thead><tbody>";
+  rows.forEach(r => {
+    const gc = r.goalCells[0].replace(/\d+$/, "14") + ":" + r.goalCells[0].replace(/\d+$/, "21");
+    const ac = r.actualCells[0].replace(/\d+$/, "14") + ":" + r.actualCells[0].replace(/\d+$/, "21");
+    t += "<tr><td>" + esc(r.label) + "</td><td>" + usdc(r.goal) + "</td><td>" +
+      (r.actual == null ? '<span class="pend">not reported</span>' : usdc(r.actual)) + "</td><td>" +
+      (r.pct == null ? '<span class="pend">—</span>' : pct(r.pct, 2)) + '</td><td class="ref">' + gc + " / " + ac + "</td></tr>";
+  });
+  const qg = DATA.overall.total_raised.periods.quarter;
+  t += "</tbody><tfoot><tr><td>Quarter</td><td>" + usdc(qg.goal) + "</td><td>" + usdc(qg.actual) +
+    "</td><td>" + pct(qg.pct, 2) + '</td><td class="ref">C23 / D23</td></tr></tfoot></table>';
+  document.getElementById("tbMonth").innerHTML = t;
+})();
+</script>
+<script>
+/* ==================== chart 2: goal vs actual by channel ==================== */
+(function channelChart() {
+  const list = DATA.channels.slice().sort((a, b) => {
+    if (a.dormant !== b.dormant) return a.dormant ? 1 : -1;
+    const pa = a.periods.quarter.pct, pb = b.periods.quarter.pct;
+    return (pb == null ? -1 : pb) - (pa == null ? -1 : pa);
+  });
+  const maxV = Math.max(...DATA.channels.map(c =>
+    Math.max(c.periods.quarter.goal || 0, c.periods.quarter.actual || 0))) || 1;
+
+  document.getElementById("lgChannel").innerHTML =
+    '<span><i class="sw" style="background:var(--surface-2);border:1px solid var(--border)"></i>Goal (full bar)</span>' +
+    '<span><i class="sw" style="background:var(--actual)"></i>Actual (fill = % to goal)</span>';
+
+  const host = document.getElementById("chChannel");
+  list.forEach(c => {
+    const q = c.periods.quarter;
+    const row = document.createElement("div");
+    row.className = "cbar" + (c.dormant ? " dormant" : "");
+
+    const nm = document.createElement("div");
+    nm.className = "nm";
+    const sp = document.createElement("span");
+    sp.textContent = c.name;
+    nm.appendChild(sp);
+    nm.appendChild(infoBubble({
+      title: c.name + " — quarter to date",
+      rows: [
+        ["Goal", cell(q.goal_cell) + " = " + usdc(q.goal)],
+        ["Actual", cell(q.actual_cell) + " = " + usdc(q.actual)],
+        ["% to goal", cell(q.pct_cell) + " = " + (q.pct == null ? "“-”" : pct(q.pct, 2))],
+        ["Monthly goals", MONTHS.map(m => cell(c.periods[m].goal_cell)).join(", ")],
+        ["Monthly actuals", MONTHS.map(m => cell(c.periods[m].actual_cell)).join(", ")]
+      ],
+      calc: q.goal
+        ? pct(q.pct, 2) + " = " + usdc(q.actual) + " ÷ " + usdc(q.goal) + "<br>" +
+          "Goal " + usdc(q.goal) + " = SUM(" + MONTHS.map(m => cell(c.helpers[m].cell)).join(", ") + ") = " +
+          MONTHS.map(m => usdc(c.helpers[m].value)).join(" + ")
+        : "No goal set, so the workbook stores “-” for percent to goal.",
+      formula: q.goal ? "=SUM(" + c.helpers.july.cell + ":" + c.helpers.september.cell + ")   ·   " +
+        "=IFERROR(" + q.actual_cell + "/" + q.goal_cell + ',"-")' : null,
+      caveat: c.dormant
+        ? "This channel has no goal and no activity this quarter, so it is greyed out rather than shown at 0%."
+        : "Helper cells <code>" + c.helpers.july.cell + ":" + c.helpers.september.cell + "</code> are hidden in the " +
+          "workbook; each is <code>=IF($O$9,actual,goal)</code>-style, and both dynamic-goal toggles " +
+          "(<code>O9</code>, <code>O10</code>) are FALSE, so they equal the monthly goals.",
+      source: srcNote("quarter_actual")
+    }));
+    row.appendChild(nm);
+
+    const track = document.createElement("div");
+    track.className = "track";
+    // Every goal bar is the same length; the fill alone carries % to goal, so
+    // channels are compared on progress rather than on absolute size.
+    track.style.width = "100%";
+    if (q.goal) {
+      const fill = document.createElement("div");
+      fill.className = "fill";
+      fill.style.width = Math.max(0, Math.min(100, ((q.actual || 0) / q.goal) * 100)) + "%";
+      fill.style.background = pctColor(q.pct);
+      track.appendChild(fill);
+    }
+    row.appendChild(track);
+
+    const fig = document.createElement("div");
+    fig.className = "fig";
+    fig.innerHTML = c.dormant
+      ? "no activity this quarter"
+      : "<b>" + usd(q.actual) + "</b> / " + usd(q.goal) +
+        ' <span style="color:' + pctColor(q.pct) + ';font-weight:650">' + pct(q.pct, 0) + "</span>";
+    row.appendChild(fig);
+
+    // hover tooltip for the row, including the monthly breakdown
+    const monthRows = MONTHS.map(m => {
+      const p = c.periods[m];
+      return [p.label, p.actual == null ? "not reported" : usdc(p.actual) +
+        (p.goal ? " / " + usdc(p.goal) : "")];
+    });
+    row.setAttribute("data-tip-id", String(registerTip({
+      title: c.name + " — Q" + DATA.meta.quarter.value + " " + DATA.meta.year.value,
+      rows: [
+        ["Goal", usdc(q.goal)],
+        ["Actual", usdc(q.actual)],
+        q.pct == null ? null : ["% to goal", pct(q.pct, 1), pctColor(q.pct)],
+        gapRow(q.actual, q.goal)
+      ].concat([["", ""]]).concat(monthRows),
+      foot: q.goal_cell + " / " + q.actual_cell + " / " + q.pct_cell +
+            "  ·  months " + MONTHS.map(m => c.periods[m].actual_cell).join(",")
+    })));
+    host.appendChild(row);
+  });
+  bindTips(host);
+
+  document.querySelector("#s-channel .sechead").appendChild(infoBubble({
+    title: "Goal vs. actual by channel",
+    rows: [
+      ["Goals", cell("C14") + ":" + cell("C21") + " (each = SUM of " + cell("Q") + ":" + cell("S") + " on its row)"],
+      ["Actuals", cell("D14") + ":" + cell("D21")],
+      ["% to goal", cell("E14") + ":" + cell("E21") + " = D ÷ C"],
+      ["Bar length", "identical for every channel — it represents that channel's own goal, not its size"],
+      ["Fill", "actual ÷ goal, capped at 100% of the bar"],
+      ["Largest goal", "for reference, " + usdc(maxV) + " (" +
+        cell(DATA.channels.reduce((a, b) =>
+          (b.periods.quarter.goal || 0) > (a.periods.quarter.goal || 0) ? b : a).periods.quarter.goal_cell) + ")"]
+    ],
+    calc: "Channel rows sum to the workbook's Overall row: " + cell("C23") + " = " + usdc(DATA.overall.total_raised.periods.quarter.goal) +
+          " and " + cell("D23") + " = " + usdc(DATA.overall.total_raised.periods.quarter.actual) + " — both verified.",
+    caveat: dormant.length
+      ? dormant.map(c => c.name).join(" and ") + " have zero goal and zero actual, so the workbook stores “-” " +
+        "for percent to goal. They are greyed rather than shown at 0%."
+      : null,
+    source: srcNote("quarter_actual")
+  }));
+
+  let t = "<table><thead><tr><th>Channel</th><th>Goal</th><th>Actual</th><th>% to goal</th><th>Row</th></tr></thead><tbody>";
+  list.forEach(c => {
+    const q = c.periods.quarter;
+    t += "<tr><td>" + esc(c.name) + "</td><td>" + usdc(q.goal) + "</td><td>" + usdc(q.actual) + "</td><td>" +
+      (q.pct == null ? '<span class="pend">—</span>' : pct(q.pct, 2)) + '</td><td class="ref">' +
+      q.goal_cell + " / " + q.actual_cell + " / " + q.pct_cell + "</td></tr>";
+  });
+  const qq = DATA.overall.total_raised.periods.quarter;
+  t += "</tbody><tfoot><tr><td>Total raised</td><td>" + usdc(qq.goal) + "</td><td>" + usdc(qq.actual) + "</td><td>" +
+    pct(qq.pct, 2) + '</td><td class="ref">C23 / D23 / E23</td></tr></tfoot></table>';
+  document.getElementById("tbChannel").innerHTML = t;
+})();
+</script>
+<script>
+/* ==================== chart 3: accumulation small multiples ==================== */
+(function accumCharts() {
+  const host = document.getElementById("chAccum");
+  const series = active.map(c => ({channel: c, cum: DATA.cumulative[c.name]}));
+  const gmax = Math.max(...series.map(s =>
+    Math.max(...s.cum.goal.map(p => p.value), ...s.cum.actual.map(p => p.value || 0)))) || 1;
+
+  series.forEach(s => {
+    const c = s.channel, cum = s.cum;
+    const W = 520, H = 210, ML = 56, MR = 16, MT = 14, MB = 30;
+    const iw = W - ML - MR, ih = H - MT - MB;
+    const localMax = Math.max(...cum.goal.map(p => p.value),
+                              ...cum.actual.map(p => p.value || 0)) * 1.1 || 1;
+    const x = i => ML + (iw / (MONTHS.length - 1)) * i;
+    const y = v => MT + ih - (v / localMax) * ih;
+
+    const gpts = cum.goal.map((p, i) => [x(i), y(p.value)]);
+    const apts = [];
+    cum.actual.forEach((p, i) => { if (p.value != null) apts.push([x(i), y(p.value)]); });
+
+    let sv = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Cumulative actual versus goal for ' + esc(c.name) + '">';
+    // horizontal gridlines with dollar ticks, now that there is room for them
+    const nT = 3;
+    for (let t = 0; t <= nT; t++) {
+      const v = localMax * t / nT, yy = y(v);
+      sv += '<line class="grid" x1="' + ML + '" y1="' + yy + '" x2="' + (W - MR) + '" y2="' + yy + '"/>';
+      sv += '<text class="tick" x="' + (ML - 8) + '" y="' + (yy + 3.5) + '" text-anchor="end">' +
+            (v >= 1000 ? "$" + Math.round(v / 1000) + "k" : "$" + Math.round(v)) + '</text>';
+    }
+    sv += '<line class="ax" x1="' + ML + '" y1="' + (MT + ih) + '" x2="' + (W - MR) + '" y2="' + (MT + ih) + '"/>';
+    cum.goal.forEach((p, i) => {
+      sv += '<line class="grid" x1="' + x(i) + '" y1="' + MT + '" x2="' + x(i) + '" y2="' + (MT + ih) + '"/>';
+      sv += '<text class="tick" x="' + x(i) + '" y="' + (MT + ih + 18) + '" text-anchor="' +
+            (i === 0 ? "start" : i === MONTHS.length - 1 ? "end" : "middle") + '" style="font-size:12px">' +
+            esc(p.month) + '</text>';
+    });
+    // cumulative goal (dashed)
+    sv += '<polyline fill="none" stroke="var(--goal)" stroke-width="1.75" stroke-dasharray="4 3" points="' +
+          gpts.map(p => p.join(",")).join(" ") + '"/>';
+    gpts.forEach(p => sv += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="2.4" fill="var(--goal)"/>');
+    // cumulative actual (solid, area + line)
+    if (apts.length) {
+      const col = pctColor(c.periods.quarter.pct);
+      sv += '<polygon fill="' + col + '" opacity=".1" points="' +
+            (ML + "," + (MT + ih) + " " + apts.map(p => p.join(",")).join(" ") + " " + apts[apts.length - 1][0] + "," + (MT + ih)) + '"/>';
+      sv += '<polyline fill="none" stroke="' + col + '" stroke-width="2.25" stroke-linejoin="round" points="' +
+            apts.map(p => p.join(",")).join(" ") + '"/>';
+      apts.forEach(p => sv += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="3" fill="' + col + '"/>');
+      // dotted lead-out to show the unreported remainder
+      const last = apts[apts.length - 1];
+      if (apts.length < MONTHS.length) {
+        sv += '<line x1="' + last[0] + '" y1="' + last[1] + '" x2="' + x(MONTHS.length - 1) + '" y2="' + last[1] +
+              '" stroke="' + col + '" stroke-width="1.25" stroke-dasharray="2 3" opacity=".5"/>';
+      }
+    }
+
+    // per-month hover columns
+    const colW = iw / (MONTHS.length - 1);
+    MONTHS.forEach((m, i) => {
+      const ca = cum.actual[i], cg = cum.goal[i], mp = c.periods[m];
+      const paceHere = (ca.value != null && cg.value) ? ca.value / cg.value : null;
+      const tid = registerTip({
+        title: c.name + " — through " + mp.label,
+        rows: [
+          ["Cumulative actual", ca.value == null ? "not yet reported" : usdc(ca.value)],
+          ["Cumulative goal", usdc(cg.value)],
+          paceHere == null ? null : ["Pace to date", pct(paceHere, 1), pctColor(paceHere)],
+          gapRow(ca.value, cg.value),
+          ["", ""],
+          [mp.label + " alone", mp.actual == null ? "not reported" : usdc(mp.actual) +
+            (mp.goal ? " / " + usdc(mp.goal) : "")]
+        ],
+        foot: "actual " + MONTHS.slice(0, i + 1).map(k => c.periods[k].actual_cell).join("+") +
+              "  ·  goal " + MONTHS.slice(0, i + 1).map(k => c.periods[k].goal_cell).join("+")
+      });
+      sv += '<rect class="hit" data-tip-id="' + tid + '" x="' + Math.max(ML, x(i) - colW / 2) +
+            '" y="' + MT + '" width="' + (i === 0 || i === MONTHS.length - 1 ? colW / 2 : colW) +
+            '" height="' + ih + '" rx="3"/>';
+    });
+    sv += "</svg>";
+
+    const box = document.createElement("div");
+    box.className = "sm";
+    const h3 = document.createElement("h3");
+    const sp = document.createElement("span");
+    sp.textContent = c.name;
+    h3.appendChild(sp);
+
+    const lastA = cum.actual.filter(p => p.value != null).pop();
+    const lastG = cum.goal[cum.goal.length - 1];
+    const paceIdx = cum.actual.filter(p => p.value != null).length - 1;
+    const paceGoal = paceIdx >= 0 ? cum.goal[paceIdx].value : null;
+    const pace = (lastA && paceGoal) ? lastA.value / paceGoal : null;
+
+    h3.appendChild(infoBubble({
+      title: c.name + " — accumulation",
+      rows: [
+        ["Cumulative actual", MONTHS.map((m, i) => {
+          const p = cum.actual[i];
+          return p.value == null
+            ? c.periods[m].label + ": not reported"
+            : c.periods[m].label + ": " + usdc(p.value) + " (" + cells(MONTHS.slice(0, i + 1).map(k => c.periods[k].actual_cell)) + ")";
+        }).join("<br>")],
+        ["Cumulative goal", MONTHS.map((m, i) =>
+          c.periods[m].label + ": " + usdc(cum.goal[i].value) + " (" +
+          cells(MONTHS.slice(0, i + 1).map(k => c.periods[k].goal_cell)) + ")").join("<br>")]
+      ],
+      calc: "Each point is the running sum of the monthly cells listed above — computed on this page, not read " +
+            "from the workbook. The final cumulative goal " + usdc(lastG.value) + " equals the quarterly goal " +
+            cell(c.periods.quarter.goal_cell) + ".",
+      caveat: (paceIdx >= 0
+                ? "The solid line stops at " + c.periods[MONTHS[paceIdx]].label +
+                  " because later actuals are not yet reported; the dashed goal line continues so the remaining gap stays visible. "
+                : "No actuals reported yet. ") +
+              (pace != null ? "Pace through that month: " + pct(pace, 1) + " of the cumulative goal to date." : ""),
+      source: srcNote("july_actual")
+    }));
+    box.appendChild(h3);
+
+    const cap = document.createElement("p");
+    cap.className = "cap";
+    cap.innerHTML = lastA
+      ? usd(lastA.value) + " of " + usd(lastG.value) +
+        ' · <span style="color:' + pctColor(c.periods.quarter.pct) + ';font-weight:650">' +
+        pct(c.periods.quarter.pct, 0) + "</span> of quarter goal"
+      : "no actuals reported";
+    box.appendChild(cap);
+
+    const cw = document.createElement("div");
+    cw.className = "chartwrap";
+    cw.innerHTML = sv;
+    bindTips(cw);
+    box.appendChild(cw);
+    host.appendChild(box);
+  });
+
+  document.querySelector("#s-accum .sechead").appendChild(infoBubble({
+    title: "Accumulation by month",
+    rows: [
+      ["Cumulative actual", "running sum of " + cell("H") + ", " + cell("K") + ", " + cell("N") + " per channel row"],
+      ["Cumulative goal", "running sum of " + cell("G") + ", " + cell("J") + ", " + cell("M") + " per channel row"],
+      ["Charts shown", active.length + " active channel(s); " + (dormant.length ? dormant.map(c => c.name).join(", ") + " omitted (no goal, no activity)" : "none omitted")]
+    ],
+    calc: "These running totals are computed on this page from the monthly cells. As a check, each channel's " +
+          "final cumulative goal equals its quarterly goal in column <code>C</code>, and the cumulative actual " +
+          "through August equals " + cell("H") + " + " + cell("K") + ".",
+    caveat: PENDING_CAVEAT + " Solid lines therefore stop at August, while dashed goal lines run the full quarter.",
+    source: srcNote("july_actual")
+  }));
+
+  // combined table
+  let t = "<table><thead><tr><th>Channel</th>" +
+    MONTHS.map(m => "<th>" + esc(DATA.channels[0].periods[m].label) + " cum. actual</th>").join("") +
+    MONTHS.map(m => "<th>" + esc(DATA.channels[0].periods[m].label) + " cum. goal</th>").join("") +
+    "</tr></thead><tbody>";
+  active.forEach(c => {
+    const cum = DATA.cumulative[c.name];
+    t += "<tr><td>" + esc(c.name) + "</td>" +
+      cum.actual.map(p => "<td>" + (p.value == null ? '<span class="pend">—</span>' : usdc(p.value)) + "</td>").join("") +
+      cum.goal.map(p => "<td>" + usdc(p.value) + "</td>").join("") + "</tr>";
+  });
+  t += "</tbody><tfoot><tr><td>All channels</td>" +
+    MONTHS.map((m, i) => {
+      let v = 0, any = false;
+      MONTHS.slice(0, i + 1).forEach(k => { const s = chSum(k, "actual"); if (s != null && !PENDING.has(k)) { v += s; any = true; } });
+      const stillPending = PENDING.has(m);
+      return "<td>" + (stillPending ? '<span class="pend">—</span>' : (any ? usdc(v) : "—")) + "</td>";
+    }).join("") +
+    MONTHS.map((m, i) => {
+      let v = 0;
+      MONTHS.slice(0, i + 1).forEach(k => { v += chSum(k, "goal") || 0; });
+      return "<td>" + usdc(v) + "</td>";
+    }).join("") + "</tr></tfoot></table>";
+  document.getElementById("tbAccum").innerHTML = t;
+})();
+
+/* ============================================================
+   PAID MEDIA TAB
+   Same conventions as the Overview tab: an info bubble on every stat and
+   chart naming its source cells, hover tooltips with exact figures, and a
+   collapsible table of underlying numbers beneath each chart group.
+   ============================================================ */
+const PM = {"meta":{"title":"Paid Media Report","sheet":"Paid Media Report","source_workbook":"EXTERNAL_ CAB Digital Report.xlsx","extracted_at":"2026-08-25T14:25:46","year":{"value":2026.0,"cell":"C4"},"quarter":{"value":1.0,"cell":"C5"},"client":{"value":"Cory Booker","cell":"C7"},"lead":{"value":null,"cell":"C8"}},"metric_order":["gross_spend","ntl","gross_cpa","immediate_raised","immediate_roas","lifetime_raised","lifetime_roas","total_raised","total_roas"],"metric_labels":{"gross_spend":"Gross Spend","ntl":"NTL","gross_cpa":"Gross CPA","immediate_raised":"Immediate Raised","immediate_roas":"Immediate ROAS","lifetime_raised":"Lifetime Raised","lifetime_roas":"Lifetime ROAS","total_raised":"Total Raised","total_roas":"Total ROAS"},"metric_kinds":{"gross_spend":"usd","ntl":"count","gross_cpa":"usd2","immediate_raised":"usd","immediate_roas":"roas","lifetime_raised":"usd","lifetime_roas":"roas","total_raised":"usd","total_roas":"roas"},"metric_columns":{"gross_spend":"F","ntl":"G","gross_cpa":"H","immediate_raised":"I","immediate_roas":"J","lifetime_raised":"K","lifetime_roas":"L","total_raised":"M","total_roas":"N"},"additive":["gross_spend","ntl","immediate_raised","lifetime_raised","total_raised"],"accum_keys":["gross_spend","ntl","total_raised"],"definitions":[{"term":"NTL","text":"Count of \"new-to-list\" names","term_cell":"F4","text_cell":"G4"},{"term":"CPA","text":"\"Cost per acquisition,\" i.e., cost per name added to email list","term_cell":"F5","text_cell":"G5"},{"term":"ROAS","text":"Return on ad spend","term_cell":"F6","text_cell":"G6"},{"term":"Immediate Raised","text":"Amount raised in direct response to an ad or campaign (from everyone)","term_cell":"F7","text_cell":"G7"},{"term":"Lifetime Raised","text":"Amount raised over time from NTL names only (all digital platforms)","term_cell":"F8","text_cell":"G8"},{"term":"Total Raised","text":"Amount raised from both immediate and lifetime (removing immediate from NTL so as to not count twice)","term_cell":"F9","text_cell":"G9"}],"quarters":[{"quarter":1,"label":"Q1","label_cell":"E12","row":12,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":195366.372,"cell":"F12","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),195366.37202804303)"},"ntl":{"label":"NTL","kind":"count","value":154883.0,"cell":"G12","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),154883.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":1.261380345,"cell":"H12","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.2613803453448282)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":185929.03,"cell":"I12","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),185929.03)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":0.9516941328,"cell":"J12","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.9516941327717936)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":46830.73,"cell":"K12","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),46830.729999999996)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.2397072204,"cell":"L12","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.23970722040780837)"},"total_raised":{"label":"Total Raised","kind":"usd","value":209182.32,"cell":"M12","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),209182.32)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.070718148,"cell":"N12","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.070718147798608)"}}},{"quarter":2,"label":"Q2","label_cell":"E13","row":13,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":176504.8982,"cell":"F13","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),176504.89823429543)"},"ntl":{"label":"NTL","kind":"count","value":1800.0,"cell":"G13","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1800.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":98.0582768,"cell":"H13","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),98.0582767968308)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":227476.01,"cell":"I13","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),227476.00999999998)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.288780154,"cell":"J13","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.2887801544070732)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":54223.5,"cell":"K13","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),54223.5)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.3072067718,"cell":"L13","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.3072067718371354)"},"total_raised":{"label":"Total Raised","kind":"usd","value":245477.59,"cell":"M13","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),245477.58999999997)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.390769279,"cell":"N13","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.3907692786754795)"}}},{"quarter":3,"label":"Q3","label_cell":"E14","row":14,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":82242.79348,"cell":"F14","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),82242.79348455915)"},"ntl":{"label":"NTL","kind":"count","value":36616.0,"cell":"G14","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),36616.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":2.246088963,"cell":"H14","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),2.246088963419247)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":115383.99,"cell":"I14","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),115383.99000000002)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.402967787,"cell":"J14","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.402967787343739)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":28179.27,"cell":"K14","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),28179.27)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.3426351271,"cell":"L14","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.34263512711652455)"},"total_raised":{"label":"Total Raised","kind":"usd","value":119725.27,"cell":"M14","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),119725.27000000003)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.455753932,"cell":"N14","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.4557539320752535)"}}}],"months":[{"label":"January","label_cell":"E18","row":18,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":3067.614839,"cell":"F18","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),3067.6148387096778)"},"ntl":{"label":"NTL","kind":"count","value":24.0,"cell":"G18","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),24.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":127.8172849,"cell":"H18","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),127.81728494623657)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":3866.37,"cell":"I18","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),3866.37)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.260383133,"cell":"J18","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.2603831325924542)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":623.57,"cell":"K18","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),623.5699999999999)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.2032751935,"cell":"L18","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.20327519352536788)"},"total_raised":{"label":"Total Raised","kind":"usd","value":4123.38,"cell":"M18","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),4123.38)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.344164837,"cell":"N18","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.3441648371131252)"}}},{"label":"February","label_cell":"E19","row":19,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":118393.3095,"cell":"F19","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),118393.30950116129)"},"ntl":{"label":"NTL","kind":"count","value":154291.0,"cell":"G19","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),154291.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":0.7673377546,"cell":"H19","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.7673377546400068)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":82850.42,"cell":"I19","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),82850.42)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":0.6997897124,"cell":"J19","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.6997897123501505)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":27141.56,"cell":"K19","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),27141.559999999998)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.229249103,"cell":"L19","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.22924910296332052)"},"total_raised":{"label":"Total Raised","kind":"usd","value":96942.1,"cell":"M19","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),96942.09999999999)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":0.8188140057,"cell":"N19","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.81881400569387)"}}},{"label":"March","label_cell":"E20","row":20,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":73905.44769,"cell":"F20","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),73905.447688172)"},"ntl":{"label":"NTL","kind":"count","value":568.0,"cell":"G20","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),568.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":130.1152248,"cell":"H20","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),130.11522480311973)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":99212.24,"cell":"I20","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),99212.24)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.342421203,"cell":"J20","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.3424212030837634)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":19065.6,"cell":"K20","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),19065.6)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.2579728639,"cell":"L20","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.2579728639280173)"},"total_raised":{"label":"Total Raised","kind":"usd","value":108116.84,"cell":"M20","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),108116.84)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.462907585,"cell":"N20","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.4629075850561861)"}}}],"detail":[{"month":"January","month_cell":"B23","channel":"SMS P2P","channel_cell":"C23","placement":"Grassroots Analytics P2P","placement_cell":"D23","objective":"Donations SMS","objective_cell":"E23","row":23,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":1250.31,"cell":"F23","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1250.31)"},"ntl":{"label":"NTL","kind":"count","value":16.0,"cell":"G23","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),16.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":78.144375,"cell":"H23","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),78.144375)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":1525.37,"cell":"I23","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1525.37)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.219993442,"cell":"J23","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.2199934416264766)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":436.57,"cell":"K23","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),436.57)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.349169406,"cell":"L23","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.34916940598731516)"},"total_raised":{"label":"Total Raised","kind":"usd","value":1747.38,"cell":"M23","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1747.3799999999999)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.397557406,"cell":"N23","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.3975574057633706)"}}},{"month":"January","month_cell":"B24","channel":"SMS P2P","channel_cell":"C24","placement":"Leverage P2P","placement_cell":"D24","objective":"Donations SMS","objective_cell":"E24","row":24,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":246.0,"cell":"F24","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),246.0)"},"ntl":{"label":"NTL","kind":"count","value":3.0,"cell":"G24","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),3.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":82.0,"cell":"H24","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),82.0)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":246.0,"cell":"I24","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),246.0)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.0,"cell":"J24","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.0)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":32.0,"cell":"K24","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),32.0)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.1300813008,"cell":"L24","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.13008130081300814)"},"total_raised":{"label":"Total Raised","kind":"usd","value":246.0,"cell":"M24","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),246.0)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.0,"cell":"N24","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.0)"}}},{"month":"January","month_cell":"B25","channel":"SMS P2P","channel_cell":"C25","placement":"Scale to Win","placement_cell":"D25","objective":"Donations SMS","objective_cell":"E25","row":25,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":1376.274839,"cell":"F25","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1376.2748387096774)"},"ntl":{"label":"NTL","kind":"count","value":1.0,"cell":"G25","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":1376.274839,"cell":"H25","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1376.2748387096774)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":1865.0,"cell":"I25","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1865.0)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.355107241,"cell":"J25","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.3551072413330796)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":35.0,"cell":"K25","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),35.0)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.025430967,"cell":"L25","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.025430966995526962)"},"total_raised":{"label":"Total Raised","kind":"usd","value":1890.0,"cell":"M25","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1890.0)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.373272218,"cell":"N25","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.373272217758456)"}}},{"month":"January","month_cell":"B26","channel":"SMS P2P","channel_cell":"C26","placement":"Textify P2P","placement_cell":"D26","objective":"Donations SMS","objective_cell":"E26","row":26,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":195.03,"cell":"F26","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),195.03)"},"ntl":{"label":"NTL","kind":"count","value":4.0,"cell":"G26","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),4.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":48.7575,"cell":"H26","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),48.7575)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":230.0,"cell":"I26","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),230.0)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.179305748,"cell":"J26","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.1793057478336666)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":120.0,"cell":"K26","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),120.0)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.6152899554,"cell":"L26","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.6152899553914782)"},"total_raised":{"label":"Total Raised","kind":"usd","value":240.0,"cell":"M26","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),240.0)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.230579911,"cell":"N26","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.2305799107829565)"}}},{"month":"February","month_cell":"B27","channel":"Facebook","channel_cell":"C27","placement":"Meta","placement_cell":"D27","objective":"Donations","objective_cell":"E27","row":27,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":278.28,"cell":"F27","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),278.28)"},"ntl":{"label":"NTL","kind":"count","value":5.0,"cell":"G27","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),5.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":55.656,"cell":"H27","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),55.65599999999999)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":345.0,"cell":"I27","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),345.0)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.239758517,"cell":"J27","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.2397585166019838)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":185.0,"cell":"K27","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),185.0)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.6647980451,"cell":"L27","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.6647980451343971)"},"total_raised":{"label":"Total Raised","kind":"usd","value":385.0,"cell":"M27","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),385.0)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.383498634,"cell":"N27","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.3834986344688804)"}}},{"month":"February","month_cell":"B28","channel":"Fixed CPA","channel_cell":"C28","placement":"Blue Action","placement_cell":"D28","objective":"Sign Ups","objective_cell":"E28","row":28,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":10026.08554,"cell":"F28","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),10026.085544)"},"ntl":{"label":"NTL","kind":"count","value":40518.0,"cell":"G28","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),40518.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":0.247447691,"cell":"H28","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.24744769100153016)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":0.0,"cell":"I28","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":0.0,"cell":"J28","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":3314.28,"cell":"K28","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),3314.2799999999997)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.3305657014,"cell":"L28","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.3305657013851626)"},"total_raised":{"label":"Total Raised","kind":"usd","value":3314.28,"cell":"M28","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),3314.2799999999997)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":0.3305657014,"cell":"N28","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.3305657013851626)"}}},{"month":"February","month_cell":"B29","channel":"Fixed CPA","channel_cell":"C29","placement":"True Blue Analytics","placement_cell":"D29","objective":"Sign Ups","objective_cell":"E29","row":29,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":40183.25331,"cell":"F29","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),40183.253312)"},"ntl":{"label":"NTL","kind":"count","value":112931.0,"cell":"G29","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),112931.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":0.355821283,"cell":"H29","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.35582128301352156)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":0.0,"cell":"I29","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":0.0,"cell":"J29","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":2422.76,"cell":"K29","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),2422.76)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.06029277872,"cell":"L29","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0602927787152686)"},"total_raised":{"label":"Total Raised","kind":"usd","value":2422.76,"cell":"M29","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),2422.76)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":0.06029277872,"cell":"N29","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0602927787152686)"}}},{"month":"February","month_cell":"B30","channel":"SMS P2P","channel_cell":"C30","placement":"Grassroots Analytics P2P","placement_cell":"D30","objective":"Donations SMS","objective_cell":"E30","row":30,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":8624.27,"cell":"F30","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),8624.27)"},"ntl":{"label":"NTL","kind":"count","value":198.0,"cell":"G30","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),198.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":43.55691919,"cell":"H30","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),43.55691919191919)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":10456.12,"cell":"I30","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),10456.12)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.212406383,"cell":"J30","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.2124063833808543)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":4758.0,"cell":"K30","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),4758.0)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.5516988684,"cell":"L30","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.5516988684259653)"},"total_raised":{"label":"Total Raised","kind":"usd","value":12323.12,"cell":"M30","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),12323.12)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.428888474,"cell":"N30","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.4288884740389622)"}}},{"month":"February","month_cell":"B31","channel":"SMS P2P","channel_cell":"C31","placement":"Leverage P2P","placement_cell":"D31","objective":"Donations SMS","objective_cell":"E31","row":31,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":5650.0,"cell":"F31","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),5650.0)"},"ntl":{"label":"NTL","kind":"count","value":93.0,"cell":"G31","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),93.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":60.75268817,"cell":"H31","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),60.75268817204301)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":7261.0,"cell":"I31","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),7261.0)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.285132743,"cell":"J31","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.285132743362832)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":2462.0,"cell":"K31","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),2462.0)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.4357522124,"cell":"L31","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.43575221238938056)"},"total_raised":{"label":"Total Raised","kind":"usd","value":7967.0,"cell":"M31","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),7967.0)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.410088496,"cell":"N31","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.4100884955752213)"}}},{"month":"February","month_cell":"B32","channel":"SMS P2P","channel_cell":"C32","placement":"Scale to Win","placement_cell":"D32","objective":"Donations SMS","objective_cell":"E32","row":32,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":1374.540645,"cell":"F32","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1374.5406451612903)"},"ntl":{"label":"NTL","kind":"count","value":0.0,"cell":"G32","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":null,"cell":"H32","formula":null},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":1881.97,"cell":"I32","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1881.97)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.369162859,"cell":"J32","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.3691628593341214)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":0.0,"cell":"K32","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.0,"cell":"L32","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.0)"},"total_raised":{"label":"Total Raised","kind":"usd","value":1881.97,"cell":"M32","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1881.97)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.369162859,"cell":"N32","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.3691628593341214)"}}},{"month":"February","month_cell":"B33","channel":"SMS P2P","channel_cell":"C33","placement":"Textify P2P","placement_cell":"D33","objective":"Donations SMS","objective_cell":"E33","row":33,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":4333.56,"cell":"F33","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),4333.56)"},"ntl":{"label":"NTL","kind":"count","value":107.0,"cell":"G33","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),107.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":40.50056075,"cell":"H33","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),40.500560747663556)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":5854.22,"cell":"I33","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),5854.22)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.350903184,"cell":"J33","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.3509031835257848)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":2699.0,"cell":"K33","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),2699.0)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.6228135759,"cell":"L33","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.6228135759052603)"},"total_raised":{"label":"Total Raised","kind":"usd","value":6874.22,"cell":"M33","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),6874.220000000001)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.586275487,"cell":"N33","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.5862754871283657)"}}},{"month":"February","month_cell":"B34","channel":"SMS P2P","channel_cell":"C34","placement":"True Blue Analytics P2P","placement_cell":"D34","objective":"Donations SMS","objective_cell":"E34","row":34,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":47923.32,"cell":"F34","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),47923.32)"},"ntl":{"label":"NTL","kind":"count","value":439.0,"cell":"G34","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),439.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":109.164738,"cell":"H34","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),109.16473804100228)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":57052.11,"cell":"I34","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),57052.11)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.190487429,"cell":"J34","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.190487428667296)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":11300.52,"cell":"K34","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),11300.52)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.2358041972,"cell":"L34","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.23580419720503507)"},"total_raised":{"label":"Total Raised","kind":"usd","value":61773.75,"cell":"M34","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),61773.75000000001)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.289012322,"cell":"N34","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.2890123221846903)"}}},{"month":"March","month_cell":"B35","channel":"Facebook","channel_cell":"C35","placement":"Meta","placement_cell":"D35","objective":"Donations","objective_cell":"E35","row":35,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":3971.72,"cell":"F35","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),3971.72)"},"ntl":{"label":"NTL","kind":"count","value":39.0,"cell":"G35","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),39.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":101.8389744,"cell":"H35","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),101.83897435897435)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":5643.0,"cell":"I35","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),5643.0)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.420795021,"cell":"J35","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.420795020797035)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":3213.0,"cell":"K35","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),3213.0)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.8089694138,"cell":"L35","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.8089694137552497)"},"total_raised":{"label":"Total Raised","kind":"usd","value":7418.0,"cell":"M35","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),7418.0)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.867704672,"cell":"N35","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.8677046720312611)"}}},{"month":"March","month_cell":"B36","channel":"SMS P2P","channel_cell":"C36","placement":"Grassroots Analytics P2P","placement_cell":"D36","objective":"Donations SMS","objective_cell":"E36","row":36,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":14442.93,"cell":"F36","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),14442.930000000004)"},"ntl":{"label":"NTL","kind":"count","value":127.0,"cell":"G36","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),127.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":113.7238583,"cell":"H36","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),113.72385826771657)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":17647.52,"cell":"I36","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),17647.52)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.221879494,"cell":"J36","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.2218794939807918)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":5281.0,"cell":"K36","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),5281.0)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.3656460289,"cell":"L36","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.3656460288874902)"},"total_raised":{"label":"Total Raised","kind":"usd","value":20269.52,"cell":"M36","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),20269.52)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.403421605,"cell":"N36","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.4034216048959591)"}}},{"month":"March","month_cell":"B37","channel":"SMS P2P","channel_cell":"C37","placement":"Leverage P2P","placement_cell":"D37","objective":"Donations SMS","objective_cell":"E37","row":37,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":639.0,"cell":"F37","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),639.0)"},"ntl":{"label":"NTL","kind":"count","value":11.0,"cell":"G37","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),11.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":58.09090909,"cell":"H37","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),58.09090909090909)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":694.0,"cell":"I37","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),694.0)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.086071987,"cell":"J37","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.086071987480438)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":414.5,"cell":"K37","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),414.5)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.6486697966,"cell":"L37","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.6486697965571205)"},"total_raised":{"label":"Total Raised","kind":"usd","value":801.5,"cell":"M37","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),801.5)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.254303599,"cell":"N37","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.254303599374022)"}}},{"month":"March","month_cell":"B38","channel":"SMS P2P","channel_cell":"C38","placement":"Scale to Win","placement_cell":"D38","objective":"Donations SMS","objective_cell":"E38","row":38,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":21392.29935,"cell":"F38","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),21392.299354838713)"},"ntl":{"label":"NTL","kind":"count","value":26.0,"cell":"G38","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),26.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":822.7807444,"cell":"H38","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),822.7807444168736)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":34348.77,"cell":"I38","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),34348.770000000004)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.605660496,"cell":"J38","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.605660496342609)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":418.0,"cell":"K38","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),418.0)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.01953974152,"cell":"L38","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.019539741524113106)"},"total_raised":{"label":"Total Raised","kind":"usd","value":34347.77,"cell":"M38","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),34347.770000000004)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.605613751,"cell":"N38","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.6056137505494892)"}}},{"month":"March","month_cell":"B39","channel":"SMS P2P","channel_cell":"C39","placement":"Textify P2P","placement_cell":"D39","objective":"Donations SMS","objective_cell":"E39","row":39,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":6035.64,"cell":"F39","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),6035.64)"},"ntl":{"label":"NTL","kind":"count","value":115.0,"cell":"G39","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),115.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":52.48382609,"cell":"H39","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),52.483826086956526)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":7780.32,"cell":"I39","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),7780.32)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.289062966,"cell":"J39","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.2890629659820665)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":2869.0,"cell":"K39","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),2869.0)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.4753431285,"cell":"L39","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.4753431284834748)"},"total_raised":{"label":"Total Raised","kind":"usd","value":9080.32,"cell":"M39","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),9080.32)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.504450232,"cell":"N39","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.5044502322868825)"}}},{"month":"March","month_cell":"B40","channel":"SMS P2P","channel_cell":"C40","placement":"True Blue Analytics P2P","placement_cell":"D40","objective":"Donations SMS","objective_cell":"E40","row":40,"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":27423.85833,"cell":"F40","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),27423.8583333333)"},"ntl":{"label":"NTL","kind":"count","value":250.0,"cell":"G40","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),250.0)"},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":109.6954333,"cell":"H40","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),109.6954333333332)"},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":33098.63,"cell":"I40","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),33098.630000000005)"},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.206928274,"cell":"J40","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.2069282738296931)"},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":6870.1,"cell":"K40","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),6870.1)"},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.2505154423,"cell":"L40","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),0.2505154423019132)"},"total_raised":{"label":"Total Raised","kind":"usd","value":36199.73,"cell":"M40","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),36199.73)"},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.320008642,"cell":"N40","formula":"=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1.3200086421099892)"}}}],"ytd":{"quarters":["Q1","Q2","Q3"],"metrics":{"gross_spend":{"label":"Gross Spend","kind":"usd","value":454114.06368,"cells":["F12","F13","F14"],"computed":true},"ntl":{"label":"NTL","kind":"count","value":193299.0,"cells":["G12","G13","G14"],"computed":true},"immediate_raised":{"label":"Immediate Raised","kind":"usd","value":528789.03,"cells":["I12","I13","I14"],"computed":true},"lifetime_raised":{"label":"Lifetime Raised","kind":"usd","value":129233.50000000001,"cells":["K12","K13","K14"],"computed":true},"total_raised":{"label":"Total Raised","kind":"usd","value":574385.18,"cells":["M12","M13","M14"],"computed":true},"gross_cpa":{"label":"Gross CPA","kind":"usd2","value":2.3492830468859127,"computed":true,"numerator":"gross_spend","denominator":"ntl","cells":["F12","F13","F14","G12","G13","G14"]},"immediate_roas":{"label":"Immediate ROAS","kind":"roas","value":1.1644409902544246,"computed":true,"numerator":"immediate_raised","denominator":"gross_spend","cells":["I12","I13","I14","F12","F13","F14"]},"lifetime_roas":{"label":"Lifetime ROAS","kind":"roas","value":0.2845837870616287,"computed":true,"numerator":"lifetime_raised","denominator":"gross_spend","cells":["K12","K13","K14","F12","F13","F14"]},"total_roas":{"label":"Total ROAS","kind":"roas","value":1.2648478123433573,"computed":true,"numerator":"total_raised","denominator":"gross_spend","cells":["M12","M13","M14","F12","F13","F14"]}}},"cumulative":{"quarterly":{"gross_spend":[{"label":"Q1","value":195366.372,"step":195366.372,"cell":"F12"},{"label":"Q2","value":371871.2702,"step":176504.8982,"cell":"F13"},{"label":"Q3","value":454114.06368,"step":82242.79348,"cell":"F14"}],"ntl":[{"label":"Q1","value":154883.0,"step":154883.0,"cell":"G12"},{"label":"Q2","value":156683.0,"step":1800.0,"cell":"G13"},{"label":"Q3","value":193299.0,"step":36616.0,"cell":"G14"}],"total_raised":[{"label":"Q1","value":209182.32,"step":209182.32,"cell":"M12"},{"label":"Q2","value":454659.91000000003,"step":245477.59,"cell":"M13"},{"label":"Q3","value":574385.18,"step":119725.27,"cell":"M14"}]},"monthly":{"gross_spend":[{"label":"January","value":3067.614839,"step":3067.614839,"cell":"F18"},{"label":"February","value":121460.924339,"step":118393.3095,"cell":"F19"},{"label":"March","value":195366.37202900002,"step":73905.44769,"cell":"F20"}],"ntl":[{"label":"January","value":24.0,"step":24.0,"cell":"G18"},{"label":"February","value":154315.0,"step":154291.0,"cell":"G19"},{"label":"March","value":154883.0,"step":568.0,"cell":"G20"}],"total_raised":[{"label":"January","value":4123.38,"step":4123.38,"cell":"M18"},{"label":"February","value":101065.48000000001,"step":96942.1,"cell":"M19"},{"label":"March","value":209182.32,"step":108116.84,"cell":"M20"}]}},"channels":["Facebook","Fixed CPA","SMS P2P"],"objectives":["Donations","Donations SMS","Sign Ups"]};
+
+if (!PM) {
+  const tb = document.getElementById("t-paid");
+  if (tb) tb.remove();
+  const pn = document.getElementById("p-paid");
+  if (pn) pn.remove();
+} else (function paidMedia() {
+
+  /* ---------- formatting by metric kind ---------- */
+  const KIND = PM.metric_kinds, LABEL = PM.metric_labels, COL = PM.metric_columns;
+  const roas = n => n == null ? "—" : n.toFixed(2) + "×";
+  function fmtKind(kind, v) {
+    if (v == null) return "—";
+    if (kind === "usd") return usd(v);
+    if (kind === "usd2") return usdc(v);
+    if (kind === "count") return int(v);
+    if (kind === "roas") return roas(v);
+    return String(v);
+  }
+  const fmtM = (key, v) => fmtKind(KIND[key], v);
+  function compact(kind, v) {
+    if (v == null) return "—";
+    const a = Math.abs(v), pre = (kind === "usd" || kind === "usd2") ? "$" : "";
+    if (kind === "roas") return v.toFixed(1) + "×";
+    if (a >= 1e6) return pre + (v / 1e6).toFixed(1) + "M";
+    if (a >= 1000) return pre + Math.round(v / 1000) + "k";
+    if (kind === "usd2" && a < 100) return pre + v.toFixed(2);
+    return pre + Math.round(v);
+  }
+  const trim = (s, n) => (s && s.length > n) ? s.slice(0, n - 1) + "…" : (s || "");
+
+  /* ---------- definitions key, reused across info bubbles ---------- */
+  const DEF = {};
+  PM.definitions.forEach(d => DEF[d.term.toLowerCase()] = d);
+  function defNote(terms) {
+    const hits = terms.map(t => DEF[t.toLowerCase()]).filter(Boolean);
+    if (!hits.length) return null;
+    return hits.map(d => "<b>" + esc(d.term) + "</b> (" + cell(d.text_cell) + "): " + esc(d.text)).join("<br>");
+  }
+  const PM_SHEET = 'Tab <code>' + esc(PM.meta.sheet) + '</code> of <code>' + esc(PM.meta.source_workbook) + '</code>.';
+  const QSEL = PM.meta.quarter.value;
+  const PM_YEAR = PM.meta.year.value;
+
+  /* ---------- cell-range helpers, so bubbles cite real ranges not bare columns ---------- */
+  const DR = col => col + PM.detail[0].row + ":" + col + PM.detail[PM.detail.length - 1].row;
+  const MR = col => col + PM.months[0].row + ":" + col + PM.months[PM.months.length - 1].row;
+  const QR = col => col + PM.quarters[0].row + ":" + col + PM.quarters[PM.quarters.length - 1].row;
+
+  /* ---------- channel colors ---------- */
+  const CH_COLOR = {};
+  PM.channels.forEach((c, i) => CH_COLOR[c] = "var(--ch" + ((i % 6) + 1) + ")");
+
+  /* ---------- scope banner ---------- */
+  document.getElementById("pmScope").innerHTML =
+    "<div>&#9432;</div><div><b>Two different periods on this tab.</b> The year-to-date " +
+    "toplines below cover <b>" + PM.ytd.quarters.join(", ") + " " + PM_YEAR + "</b>, summed from the " +
+    "workbook's quarterly table. The monthly toplines and placement breakdown cover only " +
+    "<b>Q" + QSEL + "</b> (" + PM.months.map(m => m.label).join(", ") + "), which is the quarter this " +
+    "tab is set to in " + cell(PM.meta.quarter.cell) + ". The Overview tab reports Q" +
+    DATA.meta.quarter.value + ", a different quarter again.</div>";
+
+  /* ---------- shared chart primitives ---------- */
+
+  // Grouped vertical bars with value labels and an optional sub-label per group.
+  function barChart(host, cfg) {
+    const rows = cfg.rows, ns = cfg.series.length;
+    const W = cfg.width || 480, H = cfg.height || 300;
+    const ML = 58, MR = 12, MT = 14, MB = cfg.sub ? 54 : 36;
+    const iw = W - ML - MR, ih = H - MT - MB;
+    let max = 0;
+    rows.forEach(r => r.values.forEach(v => { if (v != null && v > max) max = v; }));
+    max = max * 1.16 || 1;
+    const y = v => MT + ih - (v / max) * ih;
+    const gw = iw / rows.length;
+    const bw = Math.min(52, (gw * 0.62) / ns), gap = 6;
+    const groupW = bw * ns + gap * (ns - 1);
+
+    let s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(cfg.aria || "") + '">';
+    const nT = 4;
+    for (let t = 0; t <= nT; t++) {
+      const v = max * t / nT, yy = y(v);
+      s += '<line class="grid" x1="' + ML + '" y1="' + yy + '" x2="' + (W - MR) + '" y2="' + yy + '"/>';
+      s += '<text class="tick" x="' + (ML - 8) + '" y="' + (yy + 3.5) + '" text-anchor="end">' +
+           esc(compact(cfg.kind, v)) + '</text>';
+    }
+    s += '<line class="ax" x1="' + ML + '" y1="' + (MT + ih) + '" x2="' + (W - MR) + '" y2="' + (MT + ih) + '"/>';
+
+    rows.forEach((r, i) => {
+      const cx = ML + gw * i + gw / 2, x0 = cx - groupW / 2;
+      r.values.forEach((v, k) => {
+        const bx = x0 + k * (bw + gap);
+        if (v == null) {
+          s += '<text class="vlbl" x="' + (bx + bw / 2) + '" y="' + (MT + ih - 6) +
+               '" text-anchor="middle" style="font-style:italic">n/a</text>';
+          return;
+        }
+        s += '<rect x="' + bx + '" y="' + y(v) + '" width="' + bw + '" height="' + (MT + ih - y(v)) +
+             '" rx="3" fill="' + cfg.series[k].color + '"/>';
+        s += '<text class="vlbl" x="' + (bx + bw / 2) + '" y="' + (y(v) - 5) + '" text-anchor="middle">' +
+             esc(compact(cfg.kind, v)) + '</text>';
+      });
+      s += '<text x="' + cx + '" y="' + (MT + ih + 19) + '" text-anchor="middle" ' +
+           'style="font-size:12.5px;font-weight:600">' + esc(r.label) + '</text>';
+      if (r.sub) {
+        s += '<text x="' + cx + '" y="' + (MT + ih + 37) + '" text-anchor="middle" style="font-size:11.5px;fill:' +
+             (r.subColor || "var(--muted)") + '">' + esc(r.sub) + '</text>';
+      }
+      if (r.tip) {
+        s += '<rect class="hit" data-tip-id="' + registerTip(r.tip) + '" x="' + (ML + gw * i) +
+             '" y="' + MT + '" width="' + gw + '" height="' + ih + '" rx="4"/>';
+      }
+    });
+    s += "</svg>";
+    host.innerHTML = s;
+    bindTips(host);
+    if (cfg.legend) {
+      cfg.legend.innerHTML = cfg.series.map(sr =>
+        '<span><i class="sw" style="background:' + sr.color + '"></i>' + esc(sr.label) + "</span>").join("");
+    }
+  }
+
+  // Single cumulative line with area fill and per-point hover columns.
+  function lineChart(host, cfg) {
+    const pts = cfg.points;
+    const W = 520, H = 210, ML = 62, MR = 16, MT = 14, MB = 30;
+    const iw = W - ML - MR, ih = H - MT - MB;
+    const max = Math.max(...pts.map(p => p.value || 0)) * 1.12 || 1;
+    const x = i => ML + (pts.length === 1 ? iw / 2 : (iw / (pts.length - 1)) * i);
+    const y = v => MT + ih - (v / max) * ih;
+    const col = cfg.color;
+
+    let s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(cfg.aria || "") + '">';
+    const nT = 3;
+    for (let t = 0; t <= nT; t++) {
+      const v = max * t / nT, yy = y(v);
+      s += '<line class="grid" x1="' + ML + '" y1="' + yy + '" x2="' + (W - MR) + '" y2="' + yy + '"/>';
+      s += '<text class="tick" x="' + (ML - 8) + '" y="' + (yy + 3.5) + '" text-anchor="end">' +
+           esc(compact(cfg.kind, v)) + '</text>';
+    }
+    s += '<line class="ax" x1="' + ML + '" y1="' + (MT + ih) + '" x2="' + (W - MR) + '" y2="' + (MT + ih) + '"/>';
+    pts.forEach((p, i) => {
+      s += '<line class="grid" x1="' + x(i) + '" y1="' + MT + '" x2="' + x(i) + '" y2="' + (MT + ih) + '"/>';
+      s += '<text class="tick" x="' + x(i) + '" y="' + (MT + ih + 18) + '" text-anchor="' +
+           (i === 0 ? "start" : i === pts.length - 1 ? "end" : "middle") + '" style="font-size:12px">' +
+           esc(p.label) + '</text>';
+    });
+    const xy = pts.map((p, i) => [x(i), y(p.value || 0)]);
+    s += '<polygon fill="' + col + '" opacity=".1" points="' + ML + "," + (MT + ih) + " " +
+         xy.map(p => p.join(",")).join(" ") + " " + xy[xy.length - 1][0] + "," + (MT + ih) + '"/>';
+    s += '<polyline fill="none" stroke="' + col + '" stroke-width="2.25" stroke-linejoin="round" points="' +
+         xy.map(p => p.join(",")).join(" ") + '"/>';
+    xy.forEach(p => s += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="3.2" fill="' + col + '"/>');
+    const colW = pts.length > 1 ? iw / (pts.length - 1) : iw;
+    pts.forEach((p, i) => {
+      if (!p.tip) return;
+      const edge = (i === 0 || i === pts.length - 1);
+      s += '<rect class="hit" data-tip-id="' + registerTip(p.tip) + '" x="' +
+           Math.max(ML, x(i) - colW / 2) + '" y="' + MT + '" width="' + (edge ? colW / 2 : colW) +
+           '" height="' + ih + '" rx="3"/>';
+    });
+    s += "</svg>";
+    host.innerHTML = s;
+    bindTips(host);
+  }
+
+  // Stacked vertical bars, one stack per group, one segment per channel.
+  function stackedChart(host, cfg) {
+    const groups = cfg.groups, keys = cfg.keys;
+    const W = 480, H = 300, ML = 58, MR = 12, MT = 14, MB = 36;
+    const iw = W - ML - MR, ih = H - MT - MB;
+    let max = 0;
+    groups.forEach(g => {
+      const tot = keys.reduce((a, k) => a + (g.parts[k] || 0), 0);
+      if (tot > max) max = tot;
+    });
+    max = max * 1.14 || 1;
+    const y = v => MT + ih - (v / max) * ih;
+    const gw = iw / groups.length, bw = Math.min(74, gw * 0.5);
+
+    let s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(cfg.aria || "") + '">';
+    const nT = 4;
+    for (let t = 0; t <= nT; t++) {
+      const v = max * t / nT, yy = y(v);
+      s += '<line class="grid" x1="' + ML + '" y1="' + yy + '" x2="' + (W - MR) + '" y2="' + yy + '"/>';
+      s += '<text class="tick" x="' + (ML - 8) + '" y="' + (yy + 3.5) + '" text-anchor="end">' +
+           esc(compact(cfg.kind, v)) + '</text>';
+    }
+    s += '<line class="ax" x1="' + ML + '" y1="' + (MT + ih) + '" x2="' + (W - MR) + '" y2="' + (MT + ih) + '"/>';
+
+    groups.forEach((g, i) => {
+      const cx = ML + gw * i + gw / 2, bx = cx - bw / 2;
+      let acc = 0, tot = keys.reduce((a, k) => a + (g.parts[k] || 0), 0);
+      keys.forEach(k => {
+        const v = g.parts[k] || 0;
+        if (v <= 0) return;
+        const yTop = y(acc + v), hgt = y(acc) - y(acc + v);
+        s += '<rect x="' + bx + '" y="' + yTop + '" width="' + bw + '" height="' + Math.max(1, hgt) +
+             '" fill="' + CH_COLOR[k] + '" stroke="var(--surface)" stroke-width=".75"/>';
+        acc += v;
+      });
+      s += '<text class="vlbl" x="' + cx + '" y="' + (y(tot) - 5) + '" text-anchor="middle">' +
+           esc(compact(cfg.kind, tot)) + '</text>';
+      s += '<text x="' + cx + '" y="' + (MT + ih + 19) + '" text-anchor="middle" ' +
+           'style="font-size:12.5px;font-weight:600">' + esc(g.label) + '</text>';
+      if (g.tip) {
+        s += '<rect class="hit" data-tip-id="' + registerTip(g.tip) + '" x="' + (ML + gw * i) +
+             '" y="' + MT + '" width="' + gw + '" height="' + ih + '" rx="4"/>';
+      }
+    });
+    s += "</svg>";
+    host.innerHTML = s;
+    bindTips(host);
+  }
+
+  // Bubble scatter with a log-scaled x axis.
+  function scatterChart(host, cfg) {
+    const pts = cfg.points;
+    const W = 1060, H = 380, ML = 62, MR = 18, MT = 16, MB = 46;
+    const iw = W - ML - MR, ih = H - MT - MB;
+    if (!pts.length) { host.innerHTML = '<div class="empty">No placements match the current filters.</div>'; return; }
+    const xs = pts.map(p => p.x), ys = pts.map(p => p.y);
+    const lx = v => Math.log10(Math.max(v, 1e-3));
+    const x0 = lx(Math.min(...xs)) - 0.25, x1 = lx(Math.max(...xs)) + 0.25;
+    const ymax = Math.max(...ys, 1) * 1.15;
+    const X = v => ML + ((lx(v) - x0) / (x1 - x0 || 1)) * iw;
+    const Y = v => MT + ih - (v / ymax) * ih;
+    const maxR = Math.max(...pts.map(p => p.size));
+    const R = v => 5 + 16 * Math.sqrt(Math.max(v, 0) / (maxR || 1));
+
+    let s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(cfg.aria || "") + '">';
+    // y gridlines (ROAS)
+    for (let t = 0; t <= 4; t++) {
+      const v = ymax * t / 4, yy = Y(v);
+      s += '<line class="grid" x1="' + ML + '" y1="' + yy + '" x2="' + (W - MR) + '" y2="' + yy + '"/>';
+      s += '<text class="tick" x="' + (ML - 8) + '" y="' + (yy + 3.5) + '" text-anchor="end">' + v.toFixed(1) + '×</text>';
+    }
+    // x gridlines at each power of ten in range
+    for (let e = Math.ceil(x0); e <= Math.floor(x1); e++) {
+      const v = Math.pow(10, e), xx = X(v);
+      s += '<line class="grid" x1="' + xx + '" y1="' + MT + '" x2="' + xx + '" y2="' + (MT + ih) + '"/>';
+      s += '<text class="tick" x="' + xx + '" y="' + (MT + ih + 17) + '" text-anchor="middle">' +
+           (v < 1 ? "$" + v.toFixed(2) : "$" + int(v)) + '</text>';
+    }
+    // break-even reference line at ROAS = 1
+    if (ymax > 1) {
+      s += '<line x1="' + ML + '" y1="' + Y(1) + '" x2="' + (W - MR) + '" y2="' + Y(1) +
+           '" stroke="var(--warn)" stroke-width="1.25" stroke-dasharray="5 4" opacity=".8"/>';
+      s += '<text class="axlbl" x="' + (W - MR - 4) + '" y="' + (Y(1) - 6) + '" text-anchor="end" ' +
+           'style="fill:var(--warn)">break even (1.00×)</text>';
+    }
+    s += '<line class="ax" x1="' + ML + '" y1="' + (MT + ih) + '" x2="' + (W - MR) + '" y2="' + (MT + ih) + '"/>';
+    s += '<text class="axlbl" x="' + (ML + iw / 2) + '" y="' + (H - 8) + '" text-anchor="middle">' +
+         'Gross CPA — cost per name added (log scale)</text>';
+    s += '<text class="axlbl" transform="translate(14,' + (MT + ih / 2) + ') rotate(-90)" text-anchor="middle">' +
+         'Total ROAS</text>';
+    // largest bubbles first so small ones stay clickable on top
+    pts.slice().sort((a, b) => b.size - a.size).forEach(p => {
+      s += '<circle cx="' + X(p.x) + '" cy="' + Y(p.y) + '" r="' + R(p.size) + '" fill="' + p.color +
+           '" fill-opacity=".55" stroke="' + p.color + '" stroke-width="1.5" class="hit" style="fill-opacity:.55" ' +
+           'data-tip-id="' + registerTip(p.tip) + '"/>';
+    });
+    s += "</svg>";
+    host.innerHTML = s;
+    // the .hit class zeroes fill-opacity; circles need their own hover handling
+    host.querySelectorAll("circle.hit").forEach(c => {
+      c.setAttribute("class", "");
+      c.style.cursor = "pointer";
+    });
+    bindTips(host);
+  }
+
+  /* ---------- 1. year-to-date hero stats ---------- */
+  (function pmHeroes() {
+    const Y = PM.ytd.metrics;
+    document.getElementById("pmHeroNote").textContent =
+      "Summed across " + PM.ytd.quarters.join(", ") + " " + PM_YEAR +
+      ". Cost and return ratios are recomputed from the summed totals, not averaged across quarters.";
+
+    // Each Raised card carries its own ROAS as the secondary line, the way the
+    // Overview tab's cards carry percent to goal.
+    const cards = [
+      {key: "gross_spend", label: "Gross spend"},
+      {key: "ntl", label: "NTL added"},
+      {key: "gross_cpa", label: "Gross CPA", subKey: null, subText: "per name added to the list"},
+      {key: "immediate_raised", label: "Immediate raised", subKey: "immediate_roas"},
+      {key: "lifetime_raised", label: "Lifetime raised", subKey: "lifetime_roas"},
+      {key: "total_raised", label: "Total raised", subKey: "total_roas"}
+    ];
+    const host = document.getElementById("pmHeroes");
+
+    cards.forEach(cd => {
+      const m = Y[cd.key];
+      const el = document.createElement("div");
+      el.className = "hero";
+      const lbl = document.createElement("div");
+      lbl.className = "lbl";
+      lbl.appendChild(document.createTextNode(cd.label));
+
+      // provenance: which quarterly cells were summed, and how ratios were derived
+      const qCells = PM.quarters.map(q => q.metrics[cd.key] && q.metrics[cd.key].cell);
+      const isRatio = KIND[cd.key] === "roas" || cd.key === "gross_cpa";
+      const rows = [];
+      if (!isRatio) {
+        PM.quarters.forEach(q => rows.push([q.label + " " + PM_YEAR,
+          cell(q.metrics[cd.key].cell) + " = " + fmtM(cd.key, q.metrics[cd.key].value)]));
+        rows.push(["Year to date", "<b>" + fmtM(cd.key, m.value) + "</b>"]);
+      } else {
+        const nk = cd.key === "gross_cpa" ? "gross_spend" : m.numerator;
+        const dk = cd.key === "gross_cpa" ? "ntl" : "gross_spend";
+        rows.push(["Numerator", LABEL[nk] + " = " + fmtM(nk, Y[nk].value)]);
+        rows.push(["Denominator", LABEL[dk] + " = " + fmtM(dk, Y[dk].value)]);
+        rows.push(["Result", "<b>" + fmtM(cd.key, m.value) + "</b>"]);
+        PM.quarters.forEach(q => rows.push([q.label + " as reported",
+          cell(q.metrics[cd.key].cell) + " = " + fmtM(cd.key, q.metrics[cd.key].value)]));
+      }
+
+      const defTerms = {
+        ntl: ["NTL"], gross_cpa: ["CPA"], immediate_raised: ["Immediate Raised"],
+        lifetime_raised: ["Lifetime Raised"], total_raised: ["Total Raised"]
+      }[cd.key] || [];
+      const dn = defNote(defTerms.concat(cd.subKey ? ["ROAS"] : []));
+
+      lbl.appendChild(infoBubble({
+        title: cd.label + " — year to date",
+        rows: rows,
+        calc: isRatio
+          ? fmtM(cd.key, m.value) + " = " + fmtM(cd.key === "gross_cpa" ? "gross_spend" : m.numerator,
+              Y[cd.key === "gross_cpa" ? "gross_spend" : m.numerator].value) + " ÷ " +
+              fmtM(cd.key === "gross_cpa" ? "ntl" : "gross_spend",
+              Y[cd.key === "gross_cpa" ? "ntl" : "gross_spend"].value) +
+              " — computed on this page from the summed components. Averaging the per-quarter " +
+              "ratios would give a different, incorrect answer."
+          : "SUM(" + qCells.map(c => cell(c)).join(", ") + ") = " +
+              PM.quarters.map(q => fmtM(cd.key, q.metrics[cd.key].value)).join(" + ") + " = " +
+              fmtM(cd.key, m.value),
+        caveat: "No workbook cell holds this year-to-date figure; it is computed on this page from " +
+                "the quarterly rows " + cell(PM.quarters[0].metrics[cd.key].cell) + "–" +
+                cell(PM.quarters[PM.quarters.length - 1].metrics[cd.key].cell) + ". " +
+                "The monthly and placement sections below cover Q" + QSEL + " only." +
+                (cd.key === "total_raised"
+                  ? " Total Raised is not Immediate + Lifetime: per " + cell("G9") +
+                    ", immediate is removed from NTL so it is not counted twice."
+                  : ""),
+        source: PM_SHEET + (dn ? "<br>" + dn : "")
+      }));
+      el.appendChild(lbl);
+
+      const big = document.createElement("div");
+      big.className = "big";
+      big.textContent = fmtM(cd.key, m.value);
+      el.appendChild(big);
+
+      const of = document.createElement("div");
+      of.className = "of";
+      if (cd.subKey) {
+        const rv = Y[cd.subKey].value;
+        of.innerHTML = '<span style="color:' + (rv >= 1 ? "var(--good)" : "var(--muted)") +
+          ';font-weight:650">' + roas(rv) + "</span> " + LABEL[cd.subKey].replace(" ROAS", "") + " ROAS";
+      } else if (cd.subText) {
+        of.textContent = cd.subText;
+      } else if (cd.key === "gross_spend") {
+        of.textContent = "across " + PM.ytd.quarters.join(", ");
+      } else if (cd.key === "ntl") {
+        of.textContent = "new-to-list names";
+      }
+      el.appendChild(of);
+      host.appendChild(el);
+    });
+  })();
+
+  /* ---------- 2 & 3. quarterly and monthly topline bars ---------- */
+  function toplineSection(rowsSrc, ids, grainLabel) {
+    // money chart: spend vs total raised, with Total ROAS as the sub-label
+    const moneyRows = rowsSrc.map(r => {
+      const M = r.metrics;
+      return {
+        label: r.label.trim(),
+        values: [M.gross_spend.value, M.total_raised.value],
+        sub: roas(M.total_roas.value) + " total ROAS",
+        subColor: (M.total_roas.value != null && M.total_roas.value >= 1) ? "var(--good)" : "var(--bad)",
+        tip: {
+          title: r.label.trim() + " " + PM_YEAR,
+          rows: [
+            ["Gross spend", fmtM("gross_spend", M.gross_spend.value)],
+            ["Immediate raised", fmtM("immediate_raised", M.immediate_raised.value)],
+            ["Lifetime raised", fmtM("lifetime_raised", M.lifetime_raised.value)],
+            ["Total raised", fmtM("total_raised", M.total_raised.value)],
+            ["", ""],
+            ["Immediate ROAS", roas(M.immediate_roas.value)],
+            ["Lifetime ROAS", roas(M.lifetime_roas.value)],
+            ["Total ROAS", roas(M.total_roas.value),
+              M.total_roas.value >= 1 ? "var(--good)" : "var(--bad)"]
+          ],
+          foot: "row " + r.row + ": " + M.gross_spend.cell + ", " + M.immediate_raised.cell + ", " +
+                M.lifetime_raised.cell + ", " + M.total_raised.cell + ", " + M.total_roas.cell
+        }
+      };
+    });
+    barChart(document.getElementById(ids.money), {
+      rows: moneyRows, kind: "usd",
+      series: [{label: "Gross spend", color: "var(--goal-bar)"},
+               {label: "Total raised", color: "var(--actual)"}],
+      legend: document.getElementById(ids.moneyLg),
+      sub: true, aria: "Gross spend versus total raised by " + grainLabel
+    });
+
+    // names chart: NTL, with Gross CPA as the sub-label
+    const ntlRows = rowsSrc.map(r => {
+      const M = r.metrics;
+      return {
+        label: r.label.trim(),
+        values: [M.ntl.value],
+        sub: M.gross_cpa.value == null ? "no CPA (0 names)" : fmtM("gross_cpa", M.gross_cpa.value) + " per name",
+        subColor: "var(--muted)",
+        tip: {
+          title: r.label.trim() + " " + PM_YEAR,
+          rows: [
+            ["NTL added", fmtM("ntl", M.ntl.value)],
+            ["Gross spend", fmtM("gross_spend", M.gross_spend.value)],
+            ["Gross CPA", fmtM("gross_cpa", M.gross_cpa.value)]
+          ],
+          foot: M.ntl.cell + " · " + M.gross_spend.cell + " ÷ " + M.ntl.cell + " = " + M.gross_cpa.cell
+        }
+      };
+    });
+    barChart(document.getElementById(ids.ntl), {
+      rows: ntlRows, kind: "count",
+      series: [{label: "NTL added", color: "var(--ch3)"}],
+      legend: document.getElementById(ids.ntlLg),
+      sub: true, aria: "New-to-list names by " + grainLabel
+    });
+
+    // shared data table
+    const keys = PM.metric_order;
+    let t = "<table><thead><tr><th>" + esc(grainLabel === "quarter" ? "Quarter" : "Month") + "</th>" +
+      keys.map(k => "<th>" + esc(LABEL[k]) + "</th>").join("") + "<th>Cells</th></tr></thead><tbody>";
+    rowsSrc.forEach(r => {
+      t += "<tr><td>" + esc(r.label.trim()) + "</td>" +
+        keys.map(k => "<td>" + (r.metrics[k].value == null
+          ? '<span class="pend">—</span>' : esc(fmtM(k, r.metrics[k].value))) + "</td>").join("") +
+        '<td class="ref">F' + r.row + ":N" + r.row + "</td></tr>";
+    });
+    t += "</tbody></table>";
+    document.getElementById(ids.table).innerHTML = t;
+  }
+
+  toplineSection(PM.quarters, {
+    money: "pmChQSpend", moneyLg: "pmLgQSpend",
+    ntl: "pmChQNtl", ntlLg: "pmLgQNtl", table: "pmTbQ"
+  }, "quarter");
+
+  document.getElementById("pmMonthNote").textContent =
+    "Q" + QSEL + " " + PM_YEAR + " only — " + PM.months.map(m => m.label.trim()).join(", ") +
+    ". Hover a month for exact figures.";
+  toplineSection(PM.months, {
+    money: "pmChMSpend", moneyLg: "pmLgMSpend",
+    ntl: "pmChMNtl", ntlLg: "pmLgMNtl", table: "pmTbM"
+  }, "month");
+
+  // section-level info bubbles
+  document.querySelector("#pm-quarter .sechead").appendChild(infoBubble({
+    title: "Quarterly toplines",
+    rows: PM.quarters.map(q => [q.label,
+      "row " + q.row + " — spend " + cell(q.metrics.gross_spend.cell) + ", raised " +
+      cell(q.metrics.total_raised.cell) + ", ROAS " + cell(q.metrics.total_roas.cell)]),
+    calc: "Bars read the quarterly table directly; nothing is recomputed. Total ROAS = Total Raised ÷ " +
+          "Gross Spend, and Gross CPA = Gross Spend ÷ NTL — both verified against the stored cells.",
+    caveat: "Q" + QSEL + " is the quarter this tab is set to (" + cell(PM.meta.quarter.cell) +
+            "); the other quarters appear here for context only, and the monthly and placement " +
+            "sections do not cover them.",
+    source: PM_SHEET + "<br>" + defNote(["NTL", "CPA", "ROAS"])
+  }));
+  document.querySelector("#pm-month .sechead").appendChild(infoBubble({
+    title: "Monthly toplines",
+    rows: PM.months.map(m => [m.label.trim(),
+      "row " + m.row + " — spend " + cell(m.metrics.gross_spend.cell) + ", raised " +
+      cell(m.metrics.total_raised.cell) + ", ROAS " + cell(m.metrics.total_roas.cell)]),
+    calc: "These three months sum exactly to the Q" + QSEL + " quarterly row: spend " +
+          fmtM("gross_spend", PM.months.reduce((a, m) => a + m.metrics.gross_spend.value, 0)) +
+          " against " + cell((PM.quarters.find(q => q.quarter === QSEL) || PM.quarters[0]).metrics.gross_spend.cell) +
+          " — verified.",
+    caveat: "Covers Q" + QSEL + " only, while the hero stats above are year to date.",
+    source: PM_SHEET + "<br>" + defNote(["NTL", "CPA", "ROAS"])
+  }));
+
+  /* ---------- 4. accumulation lines ---------- */
+  function accumSection(hostId, grain, rowsSrc, grainWord) {
+    const host = document.getElementById(hostId);
+    const colors = {gross_spend: "var(--goal-bar)", ntl: "var(--ch3)", total_raised: "var(--actual)"};
+    PM.accum_keys.forEach(key => {
+      const series = PM.cumulative[grain][key];
+      const box = document.createElement("div");
+      box.className = "sm";
+      const h3 = document.createElement("h3");
+      const sp = document.createElement("span");
+      sp.textContent = LABEL[key];
+      h3.appendChild(sp);
+      h3.appendChild(infoBubble({
+        title: LABEL[key] + " — cumulative by " + grainWord,
+        rows: series.map((p, i) => [p.label.trim(),
+          fmtM(key, p.value) + " (" + cells(series.slice(0, i + 1).map(q => q.cell)) + ")"]),
+        calc: "Each point is the running sum of the " + grainWord + "ly cells listed above — computed " +
+              "on this page, not read from a workbook cell. Final value " +
+              fmtM(key, series[series.length - 1].value) + ".",
+        caveat: grain === "monthly"
+          ? "Q" + QSEL + " only. The final point equals the Q" + QSEL + " quarterly figure in " +
+            cell((PM.quarters.find(q => q.quarter === QSEL) || PM.quarters[0]).metrics[key].cell) + "."
+          : "Runs across " + PM.quarters.map(q => q.label).join(", ") + ". The final point equals the " +
+            "year-to-date hero stat above.",
+        source: PM_SHEET + (defNote(key === "ntl" ? ["NTL"] : key === "total_raised" ? ["Total Raised"] : []) || "")
+      }));
+      box.appendChild(h3);
+
+      const cap = document.createElement("p");
+      cap.className = "cap";
+      cap.textContent = fmtM(key, series[series.length - 1].value) + " cumulative by " +
+        series[series.length - 1].label.trim();
+      box.appendChild(cap);
+
+      const cw = document.createElement("div");
+      cw.className = "chartwrap";
+      box.appendChild(cw);
+      host.appendChild(box);
+
+      lineChart(cw, {
+        kind: KIND[key], color: colors[key],
+        aria: "Cumulative " + LABEL[key] + " by " + grainWord,
+        points: series.map((p, i) => ({
+          label: p.label.trim(), value: p.value,
+          tip: {
+            title: LABEL[key] + " — through " + p.label.trim(),
+            rows: [
+              ["Cumulative", fmtM(key, p.value)],
+              [p.label.trim() + " alone", fmtM(key, p.step)],
+              ["", ""],
+              ["Share of final", pct(p.value / series[series.length - 1].value, 1)]
+            ],
+            foot: "sum of " + series.slice(0, i + 1).map(q => q.cell).join(" + ")
+          }
+        }))
+      });
+    });
+  }
+  accumSection("pmAccumQ", "quarterly", PM.quarters, "quarter");
+  accumSection("pmAccumM", "monthly", PM.months, "month");
+  document.getElementById("pmAccQHead").textContent =
+    "By quarter — " + PM.quarters.map(q => q.label).join(", ") + " " + PM_YEAR;
+  document.getElementById("pmAccMHead").textContent =
+    "By month — Q" + QSEL + " " + PM_YEAR;
+
+  document.querySelector("#pm-accum .sechead").appendChild(infoBubble({
+    title: "Accumulation over time",
+    rows: PM.accum_keys.map(k => [LABEL[k],
+      "quarterly " + cell(COL[k] + PM.quarters[0].row + ":" + COL[k] + PM.quarters[PM.quarters.length - 1].row) +
+      ", monthly " + cell(COL[k] + PM.months[0].row + ":" + COL[k] + PM.months[PM.months.length - 1].row)]),
+    calc: "Running sums computed on this page. Only additive metrics are accumulated — CPA and ROAS " +
+          "are ratios and cannot be summed, so they are not shown here.",
+    caveat: "The quarterly and monthly series cover different spans: quarterly runs " +
+            PM.quarters.map(q => q.label).join("→") + " across the year, monthly runs within Q" + QSEL + ".",
+    source: PM_SHEET
+  }));
+
+  // accumulation data table
+  (function accTable() {
+    let t = "";
+    [["Quarterly", "quarterly", PM.quarters], ["Monthly (Q" + QSEL + ")", "monthly", PM.months]].forEach(g => {
+      t += "<table><thead><tr><th>" + esc(g[0]) + "</th>" +
+        PM.cumulative[g[1]][PM.accum_keys[0]].map(p => "<th>" + esc(p.label.trim()) + "</th>").join("") +
+        "</tr></thead><tbody>";
+      PM.accum_keys.forEach(k => {
+        t += "<tr><td>" + esc(LABEL[k]) + " (cum.)</td>" +
+          PM.cumulative[g[1]][k].map(p => "<td>" + esc(fmtM(k, p.value)) + "</td>").join("") + "</tr>";
+      });
+      t += "</tbody></table>";
+    });
+    document.getElementById("pmTbAcc").innerHTML = t;
+  })();
+
+  /* ---------- 5. placement breakdown: three linked views ---------- */
+  const MONTH_LABELS = PM.months.map(m => m.label.trim());
+  const state = {month: "all", channel: "all", sort: "total_raised", dir: -1};
+
+  document.getElementById("pmDetailNote").innerHTML =
+    "Every placement-month in Q" + QSEL + " " + PM_YEAR + " — " + PM.detail.length +
+    " rows across " + PM.channels.length + " channels, from <code>B" + PM.detail[0].row +
+    "</code>:<code>N" + PM.detail[PM.detail.length - 1].row + "</code>. " +
+    "The three views below share the filters; changing a filter updates all of them.";
+
+  function filtered() {
+    return PM.detail.filter(d =>
+      (state.month === "all" || d.month.trim() === state.month) &&
+      (state.channel === "all" || d.channel === state.channel));
+  }
+  function sumOf(rows, key) {
+    let t = 0, any = false;
+    rows.forEach(r => { const v = r.metrics[key].value; if (v != null) { t += v; any = true; } });
+    return any ? t : null;
+  }
+
+  /* filter chips */
+  (function buildFilters() {
+    const host = document.getElementById("pmFilters");
+    function group(labelText, values, key, colorFor) {
+      const g = document.createElement("div");
+      g.className = "fgroup";
+      const l = document.createElement("span");
+      l.className = "flabel";
+      l.textContent = labelText;
+      g.appendChild(l);
+      [["all", "All"]].concat(values.map(v => [v, v])).forEach(([val, text]) => {
+        const b = document.createElement("button");
+        b.className = "chip";
+        b.type = "button";
+        b.setAttribute("data-filter", key);
+        b.setAttribute("data-value", val);
+        b.setAttribute("aria-pressed", String(state[key] === val));
+        if (colorFor && val !== "all") {
+          const dot = document.createElement("i");
+          dot.className = "dot";
+          dot.style.background = colorFor(val);
+          b.appendChild(dot);
+        }
+        b.appendChild(document.createTextNode(text));
+        b.addEventListener("click", () => {
+          state[key] = val;
+          host.querySelectorAll('[data-filter="' + key + '"]').forEach(o =>
+            o.setAttribute("aria-pressed", String(o.getAttribute("data-value") === val)));
+          renderDetail();
+        });
+        g.appendChild(b);
+      });
+      host.appendChild(g);
+    }
+    group("Month", MONTH_LABELS, "month", null);
+    group("Channel", PM.channels, "channel", c => CH_COLOR[c]);
+  })();
+
+  document.querySelector("#pm-detail .sechead").appendChild(infoBubble({
+    title: "Placement breakdown",
+    rows: [
+      ["Rows", cell("B" + PM.detail[0].row) + ":" + cell("N" + PM.detail[PM.detail.length - 1].row) +
+        " — " + PM.detail.length + " placement-months"],
+      ["Dimensions", "Month " + cell(DR("B")) + ", Channel " + cell(DR("C")) + ", Placement " +
+        cell(DR("D")) + ", Objective " + cell(DR("E"))],
+      ["Metrics", cell(DR("F")) + " through " + cell(DR("N")) + ", the same nine as the topline tables"],
+      ["Channels", PM.channels.join(", ")],
+      ["Objectives", PM.objectives.join(", ")]
+    ],
+    calc: "Detail rows sum exactly to their month's topline row, and the months sum to the Q" + QSEL +
+          " quarterly row — both verified for spend, NTL, and all three Raised figures.",
+    caveat: "Column " + cell("E") + " is headed “Goal” in the workbook but holds categories " +
+            "(" + PM.objectives.join(", ") + "), so it is labelled <b>Objective</b> here rather than " +
+            "shown as a numeric target.",
+    source: PM_SHEET + "<br>" + defNote(["NTL", "CPA", "ROAS", "Immediate Raised", "Lifetime Raised", "Total Raised"])
+  }));
+
+  /* the three views, re-rendered together whenever a filter changes */
+  function renderDetail() {
+    const rows = filtered();
+    const chans = PM.channels.filter(c => rows.some(r => r.channel === c));
+
+    /* filter summary line */
+    const fs = document.getElementById("pmFilterStat");
+    if (!rows.length) {
+      fs.innerHTML = "<b>No rows</b> match the current filters.";
+    } else {
+      const sp = sumOf(rows, "gross_spend"), nt = sumOf(rows, "ntl"), tr = sumOf(rows, "total_raised");
+      fs.innerHTML = "<b>" + rows.length + "</b> of " + PM.detail.length + " placement-months · " +
+        "spend <b>" + usd(sp) + "</b> · NTL <b>" + int(nt) + "</b> · total raised <b>" + usd(tr) + "</b> · " +
+        "CPA <b>" + (nt ? usdc(sp / nt) : "—") + "</b> · ROAS <b>" + (sp ? roas(tr / sp) : "—") + "</b>" +
+        '<span class="pend"> — totals computed on this page from the filtered rows</span>';
+    }
+
+    /* view A: stacked bars by channel, per month */
+    const monthsShown = MONTH_LABELS.filter(m => state.month === "all" || m === state.month);
+    function stackFor(hostId, key, kind) {
+      const host = document.getElementById(hostId);
+      if (!rows.length) { host.innerHTML = '<div class="empty">No rows match the current filters.</div>'; return; }
+      const groups = monthsShown.map(mLabel => {
+        const kids = rows.filter(r => r.month.trim() === mLabel);
+        const parts = {};
+        chans.forEach(c => {
+          parts[c] = kids.filter(r => r.channel === c)
+                         .reduce((a, r) => a + (r.metrics[key].value || 0), 0);
+        });
+        const tot = chans.reduce((a, c) => a + parts[c], 0);
+        return {
+          label: mLabel, parts: parts,
+          tip: {
+            title: mLabel + " — " + LABEL[key],
+            rows: chans.filter(c => parts[c] > 0).map(c => [c, fmtKind(kind, parts[c])])
+              .concat([["", ""], ["Total", fmtKind(kind, tot)]]),
+            foot: kids.length + " row(s): " + kids.map(r => r.metrics[key].cell).join(", ")
+          }
+        };
+      });
+      stackedChart(host, {groups: groups, keys: chans, kind: kind,
+        aria: LABEL[key] + " by channel per month"});
+    }
+    stackFor("pmChStackSpend", "gross_spend", "usd");
+    stackFor("pmChStackRaised", "total_raised", "usd");
+
+    /* view B: CPA vs ROAS scatter */
+    const scatterRows = rows.filter(r =>
+      r.metrics.gross_cpa.value != null && r.metrics.total_roas.value != null &&
+      r.metrics.gross_cpa.value > 0);
+    const excluded = rows.length - scatterRows.length;
+    scatterChart(document.getElementById("pmChScatter"), {
+      aria: "Gross CPA versus total ROAS by placement",
+      points: scatterRows.map(r => {
+        const M = r.metrics;
+        return {
+          x: M.gross_cpa.value, y: M.total_roas.value, size: M.gross_spend.value || 0,
+          color: CH_COLOR[r.channel],
+          tip: {
+            title: r.placement + " — " + r.month.trim(),
+            rows: [
+              ["Channel", r.channel], ["Objective", r.objective], ["", ""],
+              ["Gross spend", fmtM("gross_spend", M.gross_spend.value)],
+              ["NTL", fmtM("ntl", M.ntl.value)],
+              ["Gross CPA", fmtM("gross_cpa", M.gross_cpa.value)],
+              ["Total raised", fmtM("total_raised", M.total_raised.value)],
+              ["Total ROAS", roas(M.total_roas.value),
+                M.total_roas.value >= 1 ? "var(--good)" : "var(--bad)"]
+            ],
+            foot: "row " + r.row + ": " + M.gross_cpa.cell + " (CPA), " + M.total_roas.cell +
+                  " (ROAS), " + M.gross_spend.cell + " (size)"
+          }
+        };
+      })
+    });
+    // refresh the scatter's own note about excluded rows
+    const scNote = document.getElementById("pmChScatter").parentNode.querySelector(".note");
+    if (scNote) {
+      scNote.innerHTML = "Each bubble is one placement-month, sized by gross spend. Cost per name uses " +
+        "a log scale because placements span three orders of magnitude." +
+        (excluded ? ' <span class="pend">' + excluded + " row(s) hidden: no CPA, because NTL is zero.</span>" : "");
+    }
+
+    /* view C: sortable placement leaderboard */
+    renderLeaderboard(rows);
+  }
+
+  const LB_COLS = [
+    {key: "placement", label: "Placement", type: "text"},
+    {key: "month", label: "Month", type: "text"},
+    {key: "objective", label: "Objective", type: "text"},
+    {key: "gross_spend", label: "Gross Spend", type: "metric", bar: true},
+    {key: "ntl", label: "NTL", type: "metric", bar: true},
+    {key: "gross_cpa", label: "Gross CPA", type: "metric"},
+    {key: "immediate_raised", label: "Immediate", type: "metric"},
+    {key: "lifetime_raised", label: "Lifetime", type: "metric"},
+    {key: "total_raised", label: "Total Raised", type: "metric", bar: true},
+    {key: "total_roas", label: "Total ROAS", type: "metric"}
+  ];
+
+  function renderLeaderboard(rows) {
+    const host = document.getElementById("pmLeader");
+    if (!rows.length) { host.innerHTML = '<div class="empty">No rows match the current filters.</div>'; return; }
+    const col = LB_COLS.find(c => c.key === state.sort) || LB_COLS[8];
+    const getv = (r, c) => c.type === "text"
+      ? (c.key === "month" ? r.month.trim() : r[c.key])
+      : r.metrics[c.key].value;
+    const sorted = rows.slice().sort((a, b) => {
+      const va = getv(a, col), vb = getv(b, col);
+      if (va == null && vb == null) return 0;
+      if (va == null) return 1;   // nulls always last
+      if (vb == null) return -1;
+      if (col.type === "text") return String(va).localeCompare(String(vb)) * state.dir;
+      return (va - vb) * state.dir;
+    });
+    const maxOf = {};
+    LB_COLS.filter(c => c.bar).forEach(c =>
+      maxOf[c.key] = Math.max(...rows.map(r => r.metrics[c.key].value || 0)) || 1);
+
+    let t = '<table class="lb"><thead><tr>';
+    LB_COLS.forEach(c => {
+      const isSort = c.key === state.sort;
+      t += "<th" + (isSort ? ' aria-sort="' + (state.dir < 0 ? "descending" : "ascending") + '"' : "") +
+        ' data-sort="' + c.key + '" title="Sort by ' + esc(c.label) + '">' + esc(c.label) +
+        (isSort ? '<span class="arrow">' + (state.dir < 0 ? "▼" : "▲") + "</span>" : "") + "</th>";
+    });
+    t += "</tr></thead><tbody>";
+    sorted.forEach(r => {
+      const M = r.metrics;
+      t += '<tr data-tip-id="' + registerTip({
+        title: r.placement + " — " + r.month.trim(),
+        rows: [["Channel", r.channel], ["Objective", r.objective], ["", ""]].concat(
+          PM.metric_order.map(k => [LABEL[k], fmtM(k, M[k].value)])),
+        foot: "row " + r.row + ": " + M.gross_spend.cell + ":" + M.total_roas.cell
+      }) + '">';
+      LB_COLS.forEach(c => {
+        if (c.type === "text") {
+          const v = c.key === "month" ? r.month.trim() : r[c.key];
+          t += '<td class="lbl">' + (c.key === "placement"
+            ? '<i class="chdot" style="background:' + CH_COLOR[r.channel] + '" title="' + esc(r.channel) + '"></i>' +
+              '<b>' + esc(trim(v, 26)) + "</b>"
+            : esc(trim(v, 18))) + "</td>";
+        } else if (c.bar) {
+          const v = M[c.key].value || 0;
+          t += '<td class="cellwrap"><div class="minibar"><i style="width:' +
+            Math.max(1, (v / maxOf[c.key]) * 100) + "%;background:" + CH_COLOR[r.channel] +
+            '"></i><span>' + esc(fmtM(c.key, M[c.key].value)) + "</span></div></td>";
+        } else {
+          const v = M[c.key].value;
+          const style = c.key === "total_roas" && v != null
+            ? ' style="color:' + (v >= 1 ? "var(--good)" : "var(--bad)") + ';font-weight:650"' : "";
+          t += "<td" + style + ">" + (v == null ? '<span class="pend">—</span>' : esc(fmtM(c.key, v))) + "</td>";
+        }
+      });
+      t += "</tr>";
+    });
+    // totals row: additive columns summed, ratios recomputed
+    const sp = sumOf(rows, "gross_spend"), nt = sumOf(rows, "ntl"), tr = sumOf(rows, "total_raised");
+    t += "</tbody><tfoot><tr>";
+    LB_COLS.forEach((c, i) => {
+      if (i === 0) { t += '<td class="lbl">' + rows.length + " placement-months</td>"; return; }
+      if (c.type === "text") { t += "<td></td>"; return; }
+      let v = null;
+      if (c.key === "gross_cpa") v = nt ? sp / nt : null;
+      else if (c.key === "total_roas") v = sp ? tr / sp : null;
+      else if (PM.additive.indexOf(c.key) >= 0) v = sumOf(rows, c.key);
+      t += "<td>" + (v == null ? "—" : esc(fmtM(c.key, v))) + "</td>";
+    });
+    t += "</tr></tfoot></table>";
+    host.innerHTML = t;
+
+    host.querySelectorAll("th[data-sort]").forEach(th => {
+      th.addEventListener("click", () => {
+        const k = th.getAttribute("data-sort");
+        if (state.sort === k) state.dir = -state.dir;
+        else { state.sort = k; state.dir = LB_COLS.find(c => c.key === k).type === "text" ? 1 : -1; }
+        renderLeaderboard(filtered());
+      });
+    });
+    bindTips(host);
+  }
+
+  renderDetail();
+
+  // info bubbles on the three detail views
+  const viewInfo = [
+    ["pmChStackSpend", {
+      title: "Spend by channel",
+      rows: [["Source", cell(DR("F")) + ", grouped by " + cell(DR("B")) +
+        " (month) and " + cell(DR("C")) + " (channel)"]],
+      calc: "Each stack is the sum of that month's detail rows for each channel. Stack totals equal " +
+            "the monthly topline spend in " + cell(MR("F")) + " when no filter is applied — verified.",
+      caveat: "Respects the filters above, so stack totals match the monthly toplines only when both " +
+              "filters are set to All.",
+      source: PM_SHEET
+    }],
+    ["pmChStackRaised", {
+      title: "Total Raised by channel",
+      rows: [["Source", cell(DR("M")) + ", grouped by month " + cell(DR("B")) +
+        " and channel " + cell(DR("C"))]],
+      calc: "Sum of Total Raised per channel per month.",
+      caveat: "Total Raised is not Immediate + Lifetime — per " + cell("G9") + ", immediate is removed " +
+              "from NTL so it is not double counted. Summing the stacks will therefore not equal " +
+              "Immediate plus Lifetime.",
+      source: PM_SHEET + "<br>" + defNote(["Total Raised", "Immediate Raised", "Lifetime Raised"])
+    }],
+    ["pmChScatter", {
+      title: "Cost per name vs. return on spend",
+      rows: [
+        ["X axis", "Gross CPA " + cell(DR("H")) + " — log scale"],
+        ["Y axis", "Total ROAS " + cell(DR("N"))],
+        ["Bubble size", "Gross Spend " + cell(DR("F")) + ", scaled by square root of spend"],
+        ["Color", "channel " + cell(DR("C"))]
+      ],
+      calc: "Nothing is recomputed — all three values are read from the detail row. The dashed line " +
+            "marks ROAS = 1.00×, where money raised equals money spent.",
+      caveat: "Rows with zero NTL have no CPA (division by zero) and cannot be placed on a log axis, " +
+              "so they are excluded; the count is stated under the chart. The two visible clusters are " +
+              "real: fixed-CPA placements buy names cheaply with little immediate revenue, while P2P " +
+              "placements cost far more per name but return above break-even.",
+      source: PM_SHEET + "<br>" + defNote(["CPA", "ROAS", "NTL"])
+    }],
+    ["pmLeader", {
+      title: "Placement leaderboard",
+      rows: [
+        ["Rows", "one per placement-month, " + cell("B" + PM.detail[0].row) + ":" +
+          cell("N" + PM.detail[PM.detail.length - 1].row)],
+        ["Bars", "Gross Spend " + cell(DR("F")) + ", NTL " + cell(DR("G")) + " and Total Raised " +
+          cell(DR("M")) + ", each scaled to the largest value in its own column"],
+        ["Totals row", "additive columns summed; CPA and ROAS recomputed from those sums"]
+      ],
+      calc: "Sorting and filtering never change a value — only which rows are shown and in what order. " +
+            "The totals row recomputes CPA as summed spend ÷ summed NTL, and ROAS as summed raised ÷ " +
+            "summed spend, because averaging per-row ratios would be wrong.",
+      caveat: "Bar lengths are comparable within a column but not across columns, since each column is " +
+              "scaled independently.",
+      source: PM_SHEET
+    }]
+  ];
+  viewInfo.forEach(([hostId, spec]) => {
+    const card = document.getElementById(hostId).closest(".card");
+    const head = card && card.querySelector(".sechead.sub h3");
+    if (head) head.appendChild(infoBubble(spec));
+  });
+
+})();
+
+/* ==================== tabs ==================== */
+document.querySelectorAll(".tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", String(t === tab)));
+    document.querySelectorAll(".panel").forEach(p => {
+      p.hidden = p.id !== tab.getAttribute("aria-controls");
+    });
+    closePop();
+  });
+});
+window.addEventListener("resize", closePop);
+</script>
+</body>
+</html>

@@ -1,0 +1,2019 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Digital Fundraising Report</title>
+<style>
+:root{
+  --bg:#f6f7f9; --surface:#ffffff; --surface-2:#f0f2f5; --border:#e2e5ea;
+  --text:#15181d; --muted:#5f6673; --faint:#8b929f;
+  --goal:#9aa4b2; --goal-bar:#7fb0ad; --actual:#2f6fed; --actual-soft:#dbe6fd;
+  --good:#1f9254; --warn:#b7791f; --bad:#c1392b;
+  --ch1:#2f6fed; --ch2:#e08a3c; --ch3:#3f9e8c; --ch4:#8b5cd6; --ch5:#c94f7c; --ch6:#5a7a99;
+  --shadow:0 1px 2px rgba(16,20,28,.06),0 4px 16px rgba(16,20,28,.05);
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f1216; --surface:#171b21; --surface-2:#1e232b; --border:#2a3038;
+    --text:#e8ebf0; --muted:#9aa3b1; --faint:#6b7280;
+    --goal:#4d5663; --goal-bar:#3d6b68; --actual:#5b8cf5; --actual-soft:#1e2c4d;
+    --good:#3fbf7f; --warn:#d9a441; --bad:#e0685c;
+    --ch1:#5b8cf5; --ch2:#eaa05c; --ch3:#54b8a3; --ch4:#a37ce6; --ch5:#e0708f; --ch6:#7b9bba;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 16px rgba(0,0,0,.3);
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--text); font-family:var(--sans);
+  font-size:15px; line-height:1.5; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1180px;margin:0 auto;padding:28px 20px 72px}
+
+/* ---------- header ---------- */
+header.page{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-end;justify-content:space-between;margin-bottom:22px}
+.page h1{font-size:25px;line-height:1.2;margin:0 0 6px;letter-spacing:-.02em}
+.page .sub{color:var(--muted);font-size:13.5px}
+.metagrid{display:flex;flex-wrap:wrap;gap:0 26px}
+.metagrid div{font-size:13px}
+.metagrid dt{color:var(--faint);font-size:11px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px}
+.metagrid dd{margin:0;font-weight:600}
+
+/* ---------- tabs ---------- */
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-bottom:26px}
+.tab{
+  appearance:none;background:none;border:0;border-bottom:2px solid transparent;
+  padding:9px 15px;font:inherit;font-size:14px;font-weight:550;color:var(--muted);
+  cursor:pointer;margin-bottom:-1px;border-radius:6px 6px 0 0;
+}
+.tab:hover{color:var(--text);background:var(--surface-2)}
+.tab[aria-selected="true"]{color:var(--actual);border-bottom-color:var(--actual)}
+.tab[disabled]{opacity:.45;cursor:default}
+.tab[disabled]:hover{background:none;color:var(--muted)}
+.panel[hidden]{display:none}
+
+/* ---------- sections ---------- */
+section{margin-bottom:34px}
+.sechead{display:flex;align-items:baseline;gap:9px;margin:0 0 4px}
+.sechead h2{font-size:16.5px;margin:0;letter-spacing:-.01em}
+.sechead .note{color:var(--faint);font-size:12.5px;margin:0 0 14px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow)}
+.card.pad{padding:18px 20px 20px}
+
+/* ---------- hero stats ---------- */
+.heroes{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:14px}
+.hero{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:15px 16px 16px;box-shadow:var(--shadow);position:relative}
+.hero .lbl{display:flex;align-items:center;gap:5px;color:var(--muted);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.hero .big{font-size:27px;font-weight:680;letter-spacing:-.025em;margin:7px 0 2px;font-variant-numeric:tabular-nums}
+.hero .of{color:var(--faint);font-size:12.5px;font-variant-numeric:tabular-nums}
+.hero .bar{height:6px;border-radius:99px;background:var(--surface-2);margin-top:11px;overflow:hidden}
+.hero .bar i{display:block;height:100%;border-radius:99px;background:var(--actual)}
+.hero .pct{font-size:12.5px;font-weight:650;margin-top:6px;font-variant-numeric:tabular-nums}
+
+/* ---------- info bubbles ---------- */
+.info{
+  appearance:none;border:1px solid var(--border);background:var(--surface-2);color:var(--muted);
+  width:16px;height:16px;min-width:16px;border-radius:99px;font:inherit;font-size:10.5px;font-weight:700;
+  line-height:1;cursor:pointer;padding:0;display:inline-flex;align-items:center;justify-content:center;
+  vertical-align:middle;
+}
+.info:hover,.info[aria-expanded="true"]{background:var(--actual);border-color:var(--actual);color:#fff}
+.pop{
+  position:absolute;z-index:40;width:min(390px,calc(100vw - 32px));
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  box-shadow:0 8px 30px rgba(10,14,22,.22);padding:13px 15px;font-size:12.5px;line-height:1.55;
+  color:var(--text);
+}
+.pop h4{margin:0 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--faint)}
+.pop dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:5px 10px}
+.pop dt{color:var(--muted);font-weight:600;white-space:nowrap}
+.pop dd{margin:0}
+.pop code,.cell{font-family:var(--mono);font-size:11.5px;background:var(--surface-2);border:1px solid var(--border);border-radius:4px;padding:.5px 4px}
+.pop .calc{font-family:var(--mono);font-size:11.5px;word-break:break-word}
+.pop .caveat{margin-top:9px;padding-top:9px;border-top:1px solid var(--border);color:var(--warn)}
+.pop .src{margin-top:9px;padding-top:9px;border-top:1px solid var(--border);color:var(--faint);font-size:11.5px}
+
+/* ---------- charts ---------- */
+.chartwrap{position:relative;overflow-x:auto}
+svg{display:block;max-width:100%;height:auto;font-family:var(--sans)}
+svg text{fill:var(--text)}
+.ax{stroke:var(--border);stroke-width:1}
+.grid{stroke:var(--border);stroke-width:1;stroke-dasharray:2 4}
+.tick{font-size:11px;fill:var(--muted)}
+.axlbl{font-size:11px;fill:var(--faint)}
+.vlbl{font-size:10.5px;fill:var(--muted);font-variant-numeric:tabular-nums}
+.legend{display:flex;flex-wrap:wrap;gap:16px;margin:2px 0 14px;font-size:12.5px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:13px;height:9px;border-radius:2px;display:inline-block}
+
+/* hover tooltips */
+.tip{
+  position:fixed;z-index:60;pointer-events:none;display:none;
+  background:var(--surface);border:1px solid var(--border);border-radius:9px;
+  box-shadow:0 6px 24px rgba(10,14,22,.22);padding:9px 11px;font-size:12px;line-height:1.45;
+  min-width:172px;max-width:290px;color:var(--text);
+}
+.tip .th{font-weight:680;font-size:12.5px;margin-bottom:5px}
+.tip dl{margin:0;display:grid;grid-template-columns:auto auto;gap:3px 14px}
+.tip dt{color:var(--muted);white-space:nowrap}
+.tip dd{margin:0;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap}
+.tip .tf{margin-top:7px;padding-top:6px;border-top:1px solid var(--border);color:var(--faint);
+  font-family:var(--mono);font-size:10.5px;line-height:1.4}
+.hit{fill:var(--text);fill-opacity:0;cursor:pointer}
+.hit:hover{fill-opacity:.05}
+.cbar{cursor:pointer;border-radius:6px}
+.cbar:hover{background:var(--surface-2)}
+
+/* channel bars */
+.cbars{display:grid;gap:9px}
+.cbar{display:grid;grid-template-columns:118px 1fr 128px;gap:12px;align-items:center}
+.cbar .nm{font-size:13px;font-weight:600;display:flex;align-items:center;gap:5px;min-width:0}
+.cbar .nm span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cbar .track{position:relative;height:22px;background:var(--surface-2);border-radius:5px;overflow:hidden}
+.cbar .fill{position:absolute;inset:0 auto 0 0;background:var(--actual);border-radius:5px}
+.cbar .fig{font-size:12px;text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
+.cbar .fig b{color:var(--text)}
+.cbar.dormant{opacity:.5}
+.cbar.dormant .fig{font-style:italic}
+
+/* small multiples */
+.smgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.sm{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:15px 17px 10px;box-shadow:var(--shadow);position:relative}
+.sm h3{font-size:14.5px;margin:0 0 2px;display:flex;align-items:center;gap:5px}
+.sm .cap{font-size:12.5px;color:var(--faint);margin:0 0 8px;font-variant-numeric:tabular-nums}
+
+/* paid media: scope banner, subheads, two-up grid */
+.scope{
+  display:flex;gap:9px;align-items:flex-start;background:var(--surface-2);
+  border:1px solid var(--border);border-left:3px solid var(--warn);border-radius:8px;
+  padding:10px 13px;margin:0 0 24px;font-size:12.5px;color:var(--muted);line-height:1.5;
+}
+.scope b{color:var(--text)}
+.subhead{font-size:12.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--faint);
+  margin:18px 0 9px;font-weight:650}
+.subhead:first-of-type{margin-top:4px}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.sechead.sub{margin-bottom:2px}
+.sechead.sub h3{font-size:14px;margin:0;letter-spacing:-.01em}
+
+/* filter chips */
+.filters{display:flex;flex-wrap:wrap;gap:16px}
+.fgroup{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+.fgroup .flabel{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--faint);
+  font-weight:650;margin-right:2px}
+.chip{
+  appearance:none;font:inherit;font-size:12px;font-weight:550;cursor:pointer;
+  background:var(--surface-2);color:var(--muted);border:1px solid var(--border);
+  border-radius:99px;padding:3.5px 11px;display:inline-flex;align-items:center;gap:5px;
+}
+.chip:hover{color:var(--text);border-color:var(--muted)}
+.chip[aria-pressed="true"]{background:var(--actual);border-color:var(--actual);color:#fff}
+.chip i.dot{width:8px;height:8px;border-radius:99px;display:inline-block}
+.fstat{margin-top:11px;padding-top:10px;border-top:1px solid var(--border);
+  font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.fstat b{color:var(--text)}
+.empty{padding:22px 4px;color:var(--faint);font-size:13px;font-style:italic;text-align:center}
+
+/* leaderboard */
+.lb{width:100%;border-collapse:collapse;font-size:12.5px}
+.lb th{cursor:pointer;user-select:none;white-space:nowrap}
+.lb th:hover{color:var(--text)}
+.lb th[aria-sort] {color:var(--actual)}
+.lb th .arrow{font-size:9px;margin-left:3px}
+.lb td.lbl{text-align:left}
+.lb .minibar{position:relative;height:16px;background:var(--surface-2);border-radius:3px;min-width:52px}
+.lb .minibar i{position:absolute;inset:0 auto 0 0;border-radius:3px;background:var(--actual);opacity:.85}
+.lb .minibar span{position:relative;z-index:1;display:block;padding:0 5px;line-height:16px;
+  font-size:11px;text-align:right;font-variant-numeric:tabular-nums}
+.lb td.cellwrap{padding:4px 9px}
+.chdot{width:8px;height:8px;border-radius:99px;display:inline-block;margin-right:6px;vertical-align:1px}
+
+/* tables */
+details.data{margin-top:14px;border-top:1px solid var(--border);padding-top:10px}
+details.data summary{cursor:pointer;font-size:12.5px;color:var(--muted);font-weight:600}
+details.data summary:hover{color:var(--text)}
+table{border-collapse:collapse;width:100%;margin-top:11px;font-size:12.5px}
+th,td{text-align:right;padding:5px 9px;border-bottom:1px solid var(--border);font-variant-numeric:tabular-nums}
+th{color:var(--faint);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+tbody tr:hover{background:var(--surface-2)}
+tfoot td{font-weight:650;border-top:2px solid var(--border);border-bottom:0}
+td.ref{font-family:var(--mono);font-size:11px;color:var(--faint);text-align:left}
+.pend{color:var(--faint);font-style:italic}
+
+footer.page{margin-top:40px;padding-top:16px;border-top:1px solid var(--border);color:var(--faint);font-size:12px}
+footer.page code{font-family:var(--mono)}
+
+@media print{
+  body{background:#fff}
+  .tabs,details.data summary{display:none}
+  details.data[open],details.data{display:block}
+  .card,.hero,.sm{box-shadow:none;break-inside:avoid}
+  section{break-inside:avoid}
+}
+@media (max-width:760px){
+  .smgrid,.duo{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:560px){
+  .cbar{grid-template-columns:1fr;gap:4px}
+  .cbar .fig{text-align:left}
+  .hero .big{font-size:23px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="page">
+    <div>
+      <h1 id="pgTitle">Digital Fundraising Toplines</h1>
+      <div class="sub" id="pgSub"></div>
+    </div>
+    <dl class="metagrid" id="pgMeta"></dl>
+  </header>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" aria-controls="p-overview" id="t-overview">Overview</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="p-paid" id="t-paid">Paid Media</button>
+  </div>
+
+  <div class="panel" role="tabpanel" id="p-overview" aria-labelledby="t-overview">
+    <section id="s-hero">
+      <div class="sechead"><h2>Quarterly toplines</h2></div>
+      <p class="note" id="heroNote"></p>
+      <div class="heroes" id="heroes"></div>
+    </section>
+
+    <section id="s-month">
+      <div class="sechead"><h2>Goal vs. actual by month</h2></div>
+      <p class="note">All channels combined, per month of the quarter. Hover a month for exact figures.</p>
+      <div class="card pad">
+        <div class="legend" id="lgMonth"></div>
+        <div class="chartwrap" id="chMonth"></div>
+        <details class="data"><summary>Show the numbers behind this chart</summary><div id="tbMonth"></div></details>
+      </div>
+    </section>
+
+    <section id="s-channel">
+      <div class="sechead"><h2>Goal vs. actual by channel</h2></div>
+      <p class="note">Quarter to date, sorted by percent to goal. Every goal bar is the same length, so the fill compares progress rather than size. Hover a channel for exact figures.</p>
+      <div class="card pad">
+        <div class="legend" id="lgChannel"></div>
+        <div class="cbars" id="chChannel"></div>
+        <details class="data"><summary>Show the numbers behind this chart</summary><div id="tbChannel"></div></details>
+      </div>
+    </section>
+
+    <section id="s-accum">
+      <div class="sechead"><h2>Accumulation by month</h2></div>
+      <p class="note">Running total per channel across the quarter. Solid = cumulative actual, dashed = cumulative goal. Hover any month for exact figures.</p>
+      <div class="smgrid" id="chAccum"></div>
+      <div class="card pad" style="margin-top:14px">
+        <details class="data" style="border-top:0;padding-top:0"><summary>Show the numbers behind these charts</summary><div id="tbAccum"></div></details>
+      </div>
+    </section>
+  </div>
+
+  <div class="panel" role="tabpanel" id="p-paid" aria-labelledby="t-paid" hidden>
+    <div class="scope" id="pmScope"></div>
+
+    <section id="pm-hero">
+      <div class="sechead"><h2>Year-to-date toplines</h2></div>
+      <p class="note" id="pmHeroNote"></p>
+      <div class="heroes" id="pmHeroes"></div>
+    </section>
+
+    <section id="pm-quarter">
+      <div class="sechead"><h2>Quarterly toplines</h2></div>
+      <p class="note">Each quarter in the workbook's quarterly table. Hover a quarter for exact figures.</p>
+      <div class="duo">
+        <div class="card pad">
+          <div class="legend" id="pmLgQSpend"></div>
+          <div class="chartwrap" id="pmChQSpend"></div>
+        </div>
+        <div class="card pad">
+          <div class="legend" id="pmLgQNtl"></div>
+          <div class="chartwrap" id="pmChQNtl"></div>
+        </div>
+      </div>
+      <div class="card pad" style="margin-top:14px">
+        <details class="data" style="border-top:0;padding-top:0"><summary>Show the numbers behind these charts</summary><div id="pmTbQ"></div></details>
+      </div>
+    </section>
+
+    <section id="pm-month">
+      <div class="sechead"><h2>Monthly toplines</h2></div>
+      <p class="note" id="pmMonthNote"></p>
+      <div class="duo">
+        <div class="card pad">
+          <div class="legend" id="pmLgMSpend"></div>
+          <div class="chartwrap" id="pmChMSpend"></div>
+        </div>
+        <div class="card pad">
+          <div class="legend" id="pmLgMNtl"></div>
+          <div class="chartwrap" id="pmChMNtl"></div>
+        </div>
+      </div>
+      <div class="card pad" style="margin-top:14px">
+        <details class="data" style="border-top:0;padding-top:0"><summary>Show the numbers behind these charts</summary><div id="pmTbM"></div></details>
+      </div>
+    </section>
+
+    <section id="pm-accum">
+      <div class="sechead"><h2>Accumulation over time</h2></div>
+      <p class="note">Running totals of Gross Spend, NTL, and Total Raised — by quarter across the year, and by month within the quarter. Hover any point for exact figures.</p>
+      <h3 class="subhead" id="pmAccQHead">By quarter</h3>
+      <div class="smgrid" id="pmAccumQ"></div>
+      <h3 class="subhead" id="pmAccMHead">By month</h3>
+      <div class="smgrid" id="pmAccumM"></div>
+      <div class="card pad" style="margin-top:14px">
+        <details class="data" style="border-top:0;padding-top:0"><summary>Show the numbers behind these charts</summary><div id="pmTbAcc"></div></details>
+      </div>
+    </section>
+
+    <section id="pm-detail">
+      <div class="sechead"><h2>Placement breakdown</h2></div>
+      <p class="note" id="pmDetailNote"></p>
+      <div class="card pad">
+        <div class="filters" id="pmFilters"></div>
+        <div class="fstat" id="pmFilterStat"></div>
+      </div>
+
+      <div class="duo" style="margin-top:14px">
+        <div class="card pad">
+          <div class="sechead sub"><h3>Spend by channel</h3></div>
+          <div class="chartwrap" id="pmChStackSpend"></div>
+        </div>
+        <div class="card pad">
+          <div class="sechead sub"><h3>Total Raised by channel</h3></div>
+          <div class="chartwrap" id="pmChStackRaised"></div>
+        </div>
+      </div>
+
+      <div class="card pad" style="margin-top:14px">
+        <div class="sechead sub"><h3>Efficiency: cost per name vs. return on spend</h3></div>
+        <p class="note">Each bubble is one placement-month, sized by gross spend. Cost per name uses a log scale because placements span three orders of magnitude.</p>
+        <div class="chartwrap" id="pmChScatter"></div>
+      </div>
+
+      <div class="card pad" style="margin-top:14px">
+        <div class="sechead sub"><h3>Placement leaderboard</h3></div>
+        <p class="note">Click any column heading to re-sort. Bars are scaled within each column.</p>
+        <div class="chartwrap" id="pmLeader"></div>
+      </div>
+    </section>
+  </div>
+
+  <footer class="page" id="pgFoot"></footer>
+</div>
+
+<script>
+const DATA = /*__DATA__*/;
+</script>
+<script>
+/* ==================== formatting helpers ==================== */
+const MONTHS = DATA.month_keys;
+const PENDING = new Set(DATA.pending_months || []);
+const SRC = DATA.sources || {};
+
+const usd = (n, cents) => n == null ? "—" : (n < 0 ? "-" : "") + "$" +
+  Math.abs(n).toLocaleString("en-US", {minimumFractionDigits: cents ? 2 : 0, maximumFractionDigits: cents ? 2 : 0});
+const usdc = n => usd(n, true);
+const int = n => n == null ? "—" : Math.round(n).toLocaleString("en-US");
+const pct = (n, d) => n == null ? "—" : (n * 100).toFixed(d == null ? 1 : d) + "%";
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c =>
+  ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[c]));
+const cell = r => '<code>' + esc(r) + '</code>';
+const cells = a => a.map(cell).join(" + ");
+const pctClass = p => p == null ? "" : p >= 1 ? "good" : p >= 0.7 ? "warn" : "bad";
+const pctColor = p => p == null ? "var(--muted)" : p >= 1 ? "var(--good)" : p >= 0.7 ? "var(--warn)" : "var(--bad)";
+
+const byName = {};
+DATA.channels.forEach(c => byName[c.name] = c);
+const active = DATA.channels.filter(c => !c.dormant);
+const dormant = DATA.channels.filter(c => c.dormant);
+
+/* Sum a field across all channels for one period — used where the workbook's
+   Overall row is blank or shows a computed zero for an unreported month. */
+function chSum(period, field) {
+  let t = 0, any = false;
+  DATA.channels.forEach(c => {
+    const v = c.periods[period][field];
+    if (v != null) { t += v; any = true; }
+  });
+  return any ? t : null;
+}
+
+/* ==================== info bubbles ==================== */
+let openPop = null;
+function closePop() {
+  if (openPop) {
+    openPop.pop.remove();
+    openPop.btn.setAttribute("aria-expanded", "false");
+    openPop = null;
+  }
+}
+document.addEventListener("click", e => {
+  if (openPop && !e.target.closest(".pop") && !e.target.closest(".info")) closePop();
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape") closePop(); });
+
+/* spec: {title, rows:[[label, html]], calc, formula, source, caveat} */
+function infoBubble(spec) {
+  const btn = document.createElement("button");
+  btn.className = "info";
+  btn.type = "button";
+  btn.setAttribute("aria-expanded", "false");
+  btn.setAttribute("aria-label", "How " + (spec.title || "this") + " was calculated");
+  btn.textContent = "i";
+  btn.addEventListener("click", ev => {
+    ev.stopPropagation();
+    hideTip();  // don't stack a hover tooltip under the provenance popover
+    const wasMine = openPop && openPop.btn === btn;
+    closePop();
+    if (wasMine) return;
+    const pop = document.createElement("div");
+    pop.className = "pop";
+    let h = "<h4>" + esc(spec.title || "Source & calculation") + "</h4><dl>";
+    (spec.rows || []).forEach(r => {
+      h += "<dt>" + esc(r[0]) + "</dt><dd>" + r[1] + "</dd>";
+    });
+    h += "</dl>";
+    if (spec.calc) h += '<dl style="margin-top:5px"><dt>Calculation</dt><dd class="calc">' + spec.calc + "</dd></dl>";
+    if (spec.formula) h += '<dl style="margin-top:5px"><dt>Workbook</dt><dd class="calc">' + esc(spec.formula) + "</dd></dl>";
+    if (spec.caveat) h += '<div class="caveat">' + spec.caveat + "</div>";
+    if (spec.source) h += '<div class="src">' + spec.source + "</div>";
+    pop.innerHTML = h;
+    document.body.appendChild(pop);
+    const r = btn.getBoundingClientRect();
+    const pw = pop.offsetWidth, ph = pop.offsetHeight;
+    let left = r.left + window.scrollX - pw / 2 + r.width / 2;
+    left = Math.max(12, Math.min(left, window.innerWidth - pw - 12));
+    let top = r.bottom + window.scrollY + 8;
+    if (r.bottom + ph + 16 > window.innerHeight && r.top - ph - 8 > 0) top = r.top + window.scrollY - ph - 8;
+    pop.style.left = left + "px";
+    pop.style.top = top + "px";
+    btn.setAttribute("aria-expanded", "true");
+    openPop = {btn, pop};
+  });
+  return btn;
+}
+/* ==================== hover tooltips ==================== */
+/* Tooltip bodies are registered in a JS array and referenced from the DOM by
+   index, so chart markup built as SVG strings never has to escape HTML. */
+const TIPS = [];
+let tipEl = null;
+
+function registerTip(spec) { TIPS.push(spec); return TIPS.length - 1; }
+
+function tipMarkup(spec) {
+  let h = '<div class="th">' + esc(spec.title) + "</div><dl>";
+  (spec.rows || []).forEach(r => {
+    if (r == null) return;
+    const style = r[2] ? ' style="color:' + r[2] + '"' : "";
+    h += "<dt>" + esc(r[0]) + "</dt><dd" + style + ">" + esc(r[1]) + "</dd>";
+  });
+  h += "</dl>";
+  if (spec.foot) h += '<div class="tf">' + esc(spec.foot) + "</div>";
+  return h;
+}
+
+function showTip(spec, x, y) {
+  if (!tipEl) {
+    tipEl = document.createElement("div");
+    tipEl.className = "tip";
+    document.body.appendChild(tipEl);
+  }
+  tipEl.innerHTML = tipMarkup(spec);
+  tipEl.style.display = "block";
+  moveTip(x, y);
+}
+function moveTip(x, y) {
+  if (!tipEl) return;
+  const w = tipEl.offsetWidth, h = tipEl.offsetHeight, pad = 14;
+  let left = x + pad, top = y + pad;
+  if (left + w + 8 > window.innerWidth) left = x - w - pad;
+  if (top + h + 8 > window.innerHeight) top = Math.max(8, y - h - pad);
+  tipEl.style.left = Math.max(8, left) + "px";
+  tipEl.style.top = top + "px";
+}
+function hideTip() { if (tipEl) tipEl.style.display = "none"; }
+
+/* Wire every [data-tip-id] descendant of root for hover (and tap on touch). */
+function bindTips(root) {
+  root.querySelectorAll("[data-tip-id]").forEach(el => {
+    const spec = TIPS[+el.getAttribute("data-tip-id")];
+    if (!spec) return;
+    el.addEventListener("mouseenter", e => showTip(spec, e.clientX, e.clientY));
+    el.addEventListener("mousemove", e => moveTip(e.clientX, e.clientY));
+    el.addEventListener("mouseleave", hideTip);
+    el.addEventListener("click", e => {
+      // touch devices get a tap-to-show; also keeps keyboard/AT users covered
+      e.stopPropagation();
+      showTip(spec, e.clientX || 20, e.clientY || 20);
+    });
+  });
+}
+document.addEventListener("click", e => {
+  if (!e.target.closest("[data-tip-id]")) hideTip();
+});
+window.addEventListener("scroll", hideTip, {passive: true});
+
+/* Signed gap helper used across tooltips: actual minus goal. */
+function gapRow(actual, goal) {
+  if (actual == null || !goal) return null;
+  const d = actual - goal;
+  return ["Gap to goal", (d >= 0 ? "+" : "-") + usdc(Math.abs(d)).replace("-", ""),
+          d >= 0 ? "var(--good)" : "var(--bad)"];
+}
+
+const SHEET_NOTE = 'Tab <code>' + esc(DATA.meta.sheet) + '</code> of <code>' + esc(DATA.meta.source_workbook) + '</code>.';
+function srcNote(key) {
+  const t = SRC[key];
+  return SHEET_NOTE + (t ? ' Imported from the CAB Google Sheet, <code>' + esc(t) + '</code>, via IMPORTRANGE.' : "");
+}
+const PENDING_CAVEAT = 'September actuals are not yet reported (<code>N14:N21</code> are empty), so the month is shown as pending rather than as $0.';
+</script>
+<script>
+/* ==================== header ==================== */
+(function header() {
+  const m = DATA.meta;
+  document.getElementById("pgTitle").textContent = m.title || "Digital Fundraising Toplines";
+  document.getElementById("pgSub").textContent =
+    "Q" + (m.quarter.value || "") + " " + (m.year.value || "") + " · digital fundraising performance";
+  document.title = (m.client.value ? m.client.value + " — " : "") + "Q" + m.quarter.value + " " + m.year.value + " Digital Report";
+  const rows = [
+    ["Client", m.client.value, m.client.cell],
+    ["Email lead", m.email_lead.value, m.email_lead.cell],
+    ["Quarter", "Q" + m.quarter.value + " " + m.year.value, m.quarter.cell + " / " + m.year.cell]
+  ];
+  document.getElementById("pgMeta").innerHTML = rows.map(r =>
+    "<div><dt>" + esc(r[0]) + "</dt><dd>" + esc(r[1]) + "</dd></div>").join("");
+
+  const reported = MONTHS.filter(k => !PENDING.has(k)).map(k => byName[DATA.channels[0].name].periods[k].label);
+  const pend = MONTHS.filter(k => PENDING.has(k)).map(k => DATA.channels[0].periods[k].label);
+  let note = reported.length ? reported.join(" and ") + " reported" : "No months reported yet";
+  if (pend.length) note += "; " + pend.join(" and ") + " not yet reported";
+  document.getElementById("heroNote").textContent = note + ".";
+
+  document.getElementById("pgFoot").innerHTML =
+    "Generated from <code>" + esc(m.source_workbook) + "</code>, tab <code>" + esc(m.sheet) +
+    "</code>, extracted " + esc((m.extracted_at || "").replace("T", " ")) +
+    ". Every figure on this page traces to a cell in that tab — click any <b>i</b> to see which. " +
+    "Values in the workbook are cached IMPORTRANGE results from the upstream CAB Google Sheet.";
+})();
+
+/* ==================== hero stats ==================== */
+(function heroes() {
+  const o = DATA.overall;
+  const q = k => o[k].periods.quarter;
+  const defs = [
+    {
+      key: "total_raised", label: "Total raised", fmt: usd, showGoal: true,
+      info: () => {
+        const p = q("total_raised");
+        return {
+          title: "Total raised, quarter to date",
+          rows: [
+            ["Actual", cell(p.actual_cell) + " = " + usdc(p.actual)],
+            ["Goal", cell(p.goal_cell) + " = " + usdc(p.goal)],
+            ["% to goal", cell(p.pct_cell) + " = " + pct(p.pct, 2)]
+          ],
+          calc: pct(p.pct, 2) + " = " + usdc(p.actual) + " ÷ " + usdc(p.goal),
+          formula: '=IFERROR(D23/C23,"-")',
+          caveat: "Sums all eight channel rows <code>B14:B21</code>. " + PENDING_CAVEAT,
+          source: srcNote("quarter_actual")
+        };
+      }
+    },
+    {
+      key: "total_donations", label: "Total donations", fmt: int, showGoal: false,
+      info: () => {
+        const p = q("total_donations");
+        return {
+          title: "Total donations, quarter to date",
+          rows: [["Value", cell(p.actual_cell) + " = " + int(p.actual) + " donations"]],
+          calc: "July " + cell(o.total_donations.periods.july.actual_cell) + " " +
+                int(o.total_donations.periods.july.actual) + " + August " +
+                cell(o.total_donations.periods.august.actual_cell) + " " +
+                int(o.total_donations.periods.august.actual) + " = " + int(p.actual),
+          caveat: "The workbook sets no goal for donation count, so no percent to goal is shown.",
+          source: srcNote("quarter_actual")
+        };
+      }
+    },
+    {
+      key: "average_donation", label: "Average donation", fmt: usdc, showGoal: false,
+      info: () => {
+        const p = q("average_donation"), r = q("total_raised"), c = q("total_donations");
+        return {
+          title: "Average donation, quarter to date",
+          rows: [
+            ["Value", cell(p.actual_cell) + " = " + usdc(p.actual)],
+            ["Inputs", cell(r.actual_cell) + " ÷ " + cell(c.actual_cell)]
+          ],
+          calc: usdc(r.actual) + " ÷ " + int(c.actual) + " = $" + p.actual.toFixed(8),
+          caveat: "Verified against the stored value to eight decimal places.",
+          source: srcNote("quarter_actual")
+        };
+      }
+    },
+    {
+      key: "total_finance", label: "Total finance", fmt: usdc, showGoal: false,
+      info: () => {
+        const p = q("total_finance");
+        return {
+          title: "Total finance, quarter to date",
+          rows: [
+            ["Value", cell(p.actual_cell) + " = " + usdc(p.actual)],
+            ["July", cell(o.total_finance.periods.july.actual_cell) + " = " + usdc(o.total_finance.periods.july.actual)],
+            ["August", cell(o.total_finance.periods.august.actual_cell) + " = " + usdc(o.total_finance.periods.august.actual)]
+          ],
+          calc: usdc(o.total_finance.periods.july.actual) + " + " + usdc(o.total_finance.periods.august.actual) +
+                " = " + usdc(p.actual),
+          caveat: "Reported separately from the channel grid; it is not part of Total raised.",
+          source: SHEET_NOTE
+        };
+      }
+    }
+  ];
+
+  const host = document.getElementById("heroes");
+  defs.forEach(d => {
+    const p = q(d.key);
+    const el = document.createElement("div");
+    el.className = "hero";
+    const lbl = document.createElement("div");
+    lbl.className = "lbl";
+    lbl.appendChild(document.createTextNode(d.label));
+    lbl.appendChild(infoBubble(d.info()));
+    el.appendChild(lbl);
+    const big = document.createElement("div");
+    big.className = "big";
+    big.textContent = d.fmt(p.actual);
+    el.appendChild(big);
+    if (d.showGoal && p.goal) {
+      const of = document.createElement("div");
+      of.className = "of";
+      of.textContent = "of " + usd(p.goal) + " goal";
+      el.appendChild(of);
+      const bar = document.createElement("div");
+      bar.className = "bar";
+      const i = document.createElement("i");
+      i.style.width = Math.max(0, Math.min(100, (p.pct || 0) * 100)) + "%";
+      i.style.background = pctColor(p.pct);
+      bar.appendChild(i);
+      el.appendChild(bar);
+      const pc = document.createElement("div");
+      pc.className = "pct";
+      pc.style.color = pctColor(p.pct);
+      pc.textContent = pct(p.pct, 1) + " to goal";
+      el.appendChild(pc);
+    }
+    host.appendChild(el);
+  });
+})();
+</script>
+<script>
+/* ==================== chart 1: goal vs actual by month ==================== */
+(function monthChart() {
+  const rows = MONTHS.map(k => {
+    const ref = DATA.channels[0].periods[k];
+    const pending = PENDING.has(k);
+    return {
+      key: k, label: ref.label, pending: pending,
+      goal: chSum(k, "goal"),
+      actual: pending ? null : chSum(k, "actual"),
+      goalCells: DATA.channels.map(c => c.periods[k].goal_cell),
+      actualCells: DATA.channels.map(c => c.periods[k].actual_cell)
+    };
+  });
+  rows.forEach(r => r.pct = (r.actual != null && r.goal) ? r.actual / r.goal : null);
+
+  document.getElementById("lgMonth").innerHTML =
+    '<span><i class="sw" style="background:var(--goal-bar)"></i>Goal</span>' +
+    '<span><i class="sw" style="background:var(--actual)"></i>Actual</span>' +
+    '<span><i class="sw" style="background:repeating-linear-gradient(45deg,var(--border),var(--border) 3px,transparent 3px,transparent 6px);border:1px solid var(--border)"></i>Not yet reported</span>';
+
+  const W = 760, H = 320, ML = 66, MR = 14, MT = 12, MB = 52;
+  const iw = W - ML - MR, ih = H - MT - MB;
+  const max = Math.max(...rows.map(r => Math.max(r.goal || 0, r.actual || 0))) * 1.12 || 1;
+  const y = v => MT + ih - (v / max) * ih;
+  const gw = iw / rows.length, bw = Math.min(74, gw * 0.3), gap = 12;
+
+  let s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Goal versus actual by month">';
+  s += '<defs><pattern id="hatch" width="6" height="6" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">' +
+       '<line x1="0" y1="0" x2="0" y2="6" stroke="var(--goal)" stroke-width="2.5" opacity=".55"/></pattern></defs>';
+  const ticks = 5;
+  for (let i = 0; i <= ticks; i++) {
+    const v = max * i / ticks, yy = y(v);
+    s += '<line class="grid" x1="' + ML + '" y1="' + yy + '" x2="' + (W - MR) + '" y2="' + yy + '"/>';
+    s += '<text class="tick" x="' + (ML - 8) + '" y="' + (yy + 3.5) + '" text-anchor="end">$' +
+         Math.round(v / 1000) + 'k</text>';
+  }
+  s += '<line class="ax" x1="' + ML + '" y1="' + (MT + ih) + '" x2="' + (W - MR) + '" y2="' + (MT + ih) + '"/>';
+
+  rows.forEach((r, i) => {
+    const cx = ML + gw * i + gw / 2;
+    const gx = cx - bw - gap / 2, ax = cx + gap / 2;
+    // goal bar
+    s += '<rect x="' + gx + '" y="' + y(r.goal) + '" width="' + bw + '" height="' + (MT + ih - y(r.goal)) +
+         '" rx="3" fill="var(--goal-bar)"/>';
+    s += '<text class="vlbl" x="' + (gx + bw / 2) + '" y="' + (y(r.goal) - 6) + '" text-anchor="middle">' + usd(r.goal) + '</text>';
+    // actual bar
+    if (r.actual == null) {
+      s += '<rect x="' + ax + '" y="' + y(r.goal) + '" width="' + bw + '" height="' + (MT + ih - y(r.goal)) +
+           '" rx="3" fill="url(#hatch)" stroke="var(--border)" stroke-dasharray="3 3"/>';
+      s += '<text class="vlbl" x="' + (ax + bw / 2) + '" y="' + (MT + ih - 8) + '" text-anchor="middle" ' +
+           'style="font-style:italic">pending</text>';
+    } else {
+      s += '<rect x="' + ax + '" y="' + y(r.actual) + '" width="' + bw + '" height="' + (MT + ih - y(r.actual)) +
+           '" rx="3" fill="var(--actual)"/>';
+      s += '<text class="vlbl" x="' + (ax + bw / 2) + '" y="' + (y(r.actual) - 6) + '" text-anchor="middle">' + usd(r.actual) + '</text>';
+    }
+    s += '<text x="' + cx + '" y="' + (MT + ih + 20) + '" text-anchor="middle" style="font-size:13px;font-weight:600">' +
+         esc(r.label) + '</text>';
+    s += '<text x="' + cx + '" y="' + (MT + ih + 38) + '" text-anchor="middle" style="font-size:11.5px;fill:' +
+         pctColor(r.pct) + '">' + (r.pct == null ? "not yet reported" : pct(r.pct, 1) + " to goal") + '</text>';
+
+    // transparent hover band over the whole month group
+    const gcRange = r.goalCells[0].replace(/\d+$/, "14") + ":" + r.goalCells[0].replace(/\d+$/, "21");
+    const acRange = r.actualCells[0].replace(/\d+$/, "14") + ":" + r.actualCells[0].replace(/\d+$/, "21");
+    const tid = registerTip({
+      title: r.label + " " + DATA.meta.year.value,
+      rows: [
+        ["Goal", usdc(r.goal)],
+        ["Actual", r.actual == null ? "not yet reported" : usdc(r.actual)],
+        r.pct == null ? null : ["% to goal", pct(r.pct, 1), pctColor(r.pct)],
+        gapRow(r.actual, r.goal)
+      ],
+      foot: "goal " + gcRange + "  ·  actual " + acRange
+    });
+    s += '<rect class="hit" data-tip-id="' + tid + '" x="' + (ML + gw * i) + '" y="' + MT +
+         '" width="' + gw + '" height="' + ih + '" rx="4"/>';
+  });
+  s += "</svg>";
+
+  const wrap = document.getElementById("chMonth");
+  wrap.innerHTML = s;
+  bindTips(wrap);
+
+  // info bubble for the chart, placed in the section heading
+  document.querySelector("#s-month .sechead").appendChild(infoBubble({
+    title: "Goal vs. actual by month",
+    rows: rows.map(r => [r.label, "goal " + cell(r.goalCells[0].replace(/\d+$/, "14")) + ":" +
+      cell(r.goalCells[0].replace(/\d+$/, "21")) + " = " + usdc(r.goal) +
+      (r.actual == null ? "; actual not reported" : ", actual = " + usdc(r.actual))]),
+    calc: "Each bar sums the eight channel rows <code>14</code>–<code>21</code> for that month's column. " +
+          "Percent to goal = actual ÷ goal.",
+    caveat: PENDING_CAVEAT + " Column sums were checked against the workbook's own Overall row " +
+            "<code>G23</code>/<code>H23</code>, <code>J23</code>/<code>K23</code>, <code>M23</code>.",
+    source: srcNote("july_actual")
+  }));
+
+  // data table
+  let t = "<table><thead><tr><th>Month</th><th>Goal</th><th>Actual</th><th>% to goal</th><th>Cells (goal / actual)</th></tr></thead><tbody>";
+  rows.forEach(r => {
+    const gc = r.goalCells[0].replace(/\d+$/, "14") + ":" + r.goalCells[0].replace(/\d+$/, "21");
+    const ac = r.actualCells[0].replace(/\d+$/, "14") + ":" + r.actualCells[0].replace(/\d+$/, "21");
+    t += "<tr><td>" + esc(r.label) + "</td><td>" + usdc(r.goal) + "</td><td>" +
+      (r.actual == null ? '<span class="pend">not reported</span>' : usdc(r.actual)) + "</td><td>" +
+      (r.pct == null ? '<span class="pend">—</span>' : pct(r.pct, 2)) + '</td><td class="ref">' + gc + " / " + ac + "</td></tr>";
+  });
+  const qg = DATA.overall.total_raised.periods.quarter;
+  t += "</tbody><tfoot><tr><td>Quarter</td><td>" + usdc(qg.goal) + "</td><td>" + usdc(qg.actual) +
+    "</td><td>" + pct(qg.pct, 2) + '</td><td class="ref">C23 / D23</td></tr></tfoot></table>';
+  document.getElementById("tbMonth").innerHTML = t;
+})();
+</script>
+<script>
+/* ==================== chart 2: goal vs actual by channel ==================== */
+(function channelChart() {
+  const list = DATA.channels.slice().sort((a, b) => {
+    if (a.dormant !== b.dormant) return a.dormant ? 1 : -1;
+    const pa = a.periods.quarter.pct, pb = b.periods.quarter.pct;
+    return (pb == null ? -1 : pb) - (pa == null ? -1 : pa);
+  });
+  const maxV = Math.max(...DATA.channels.map(c =>
+    Math.max(c.periods.quarter.goal || 0, c.periods.quarter.actual || 0))) || 1;
+
+  document.getElementById("lgChannel").innerHTML =
+    '<span><i class="sw" style="background:var(--surface-2);border:1px solid var(--border)"></i>Goal (full bar)</span>' +
+    '<span><i class="sw" style="background:var(--actual)"></i>Actual (fill = % to goal)</span>';
+
+  const host = document.getElementById("chChannel");
+  list.forEach(c => {
+    const q = c.periods.quarter;
+    const row = document.createElement("div");
+    row.className = "cbar" + (c.dormant ? " dormant" : "");
+
+    const nm = document.createElement("div");
+    nm.className = "nm";
+    const sp = document.createElement("span");
+    sp.textContent = c.name;
+    nm.appendChild(sp);
+    nm.appendChild(infoBubble({
+      title: c.name + " — quarter to date",
+      rows: [
+        ["Goal", cell(q.goal_cell) + " = " + usdc(q.goal)],
+        ["Actual", cell(q.actual_cell) + " = " + usdc(q.actual)],
+        ["% to goal", cell(q.pct_cell) + " = " + (q.pct == null ? "“-”" : pct(q.pct, 2))],
+        ["Monthly goals", MONTHS.map(m => cell(c.periods[m].goal_cell)).join(", ")],
+        ["Monthly actuals", MONTHS.map(m => cell(c.periods[m].actual_cell)).join(", ")]
+      ],
+      calc: q.goal
+        ? pct(q.pct, 2) + " = " + usdc(q.actual) + " ÷ " + usdc(q.goal) + "<br>" +
+          "Goal " + usdc(q.goal) + " = SUM(" + MONTHS.map(m => cell(c.helpers[m].cell)).join(", ") + ") = " +
+          MONTHS.map(m => usdc(c.helpers[m].value)).join(" + ")
+        : "No goal set, so the workbook stores “-” for percent to goal.",
+      formula: q.goal ? "=SUM(" + c.helpers.july.cell + ":" + c.helpers.september.cell + ")   ·   " +
+        "=IFERROR(" + q.actual_cell + "/" + q.goal_cell + ',"-")' : null,
+      caveat: c.dormant
+        ? "This channel has no goal and no activity this quarter, so it is greyed out rather than shown at 0%."
+        : "Helper cells <code>" + c.helpers.july.cell + ":" + c.helpers.september.cell + "</code> are hidden in the " +
+          "workbook; each is <code>=IF($O$9,actual,goal)</code>-style, and both dynamic-goal toggles " +
+          "(<code>O9</code>, <code>O10</code>) are FALSE, so they equal the monthly goals.",
+      source: srcNote("quarter_actual")
+    }));
+    row.appendChild(nm);
+
+    const track = document.createElement("div");
+    track.className = "track";
+    // Every goal bar is the same length; the fill alone carries % to goal, so
+    // channels are compared on progress rather than on absolute size.
+    track.style.width = "100%";
+    if (q.goal) {
+      const fill = document.createElement("div");
+      fill.className = "fill";
+      fill.style.width = Math.max(0, Math.min(100, ((q.actual || 0) / q.goal) * 100)) + "%";
+      fill.style.background = pctColor(q.pct);
+      track.appendChild(fill);
+    }
+    row.appendChild(track);
+
+    const fig = document.createElement("div");
+    fig.className = "fig";
+    fig.innerHTML = c.dormant
+      ? "no activity this quarter"
+      : "<b>" + usd(q.actual) + "</b> / " + usd(q.goal) +
+        ' <span style="color:' + pctColor(q.pct) + ';font-weight:650">' + pct(q.pct, 0) + "</span>";
+    row.appendChild(fig);
+
+    // hover tooltip for the row, including the monthly breakdown
+    const monthRows = MONTHS.map(m => {
+      const p = c.periods[m];
+      return [p.label, p.actual == null ? "not reported" : usdc(p.actual) +
+        (p.goal ? " / " + usdc(p.goal) : "")];
+    });
+    row.setAttribute("data-tip-id", String(registerTip({
+      title: c.name + " — Q" + DATA.meta.quarter.value + " " + DATA.meta.year.value,
+      rows: [
+        ["Goal", usdc(q.goal)],
+        ["Actual", usdc(q.actual)],
+        q.pct == null ? null : ["% to goal", pct(q.pct, 1), pctColor(q.pct)],
+        gapRow(q.actual, q.goal)
+      ].concat([["", ""]]).concat(monthRows),
+      foot: q.goal_cell + " / " + q.actual_cell + " / " + q.pct_cell +
+            "  ·  months " + MONTHS.map(m => c.periods[m].actual_cell).join(",")
+    })));
+    host.appendChild(row);
+  });
+  bindTips(host);
+
+  document.querySelector("#s-channel .sechead").appendChild(infoBubble({
+    title: "Goal vs. actual by channel",
+    rows: [
+      ["Goals", cell("C14") + ":" + cell("C21") + " (each = SUM of " + cell("Q") + ":" + cell("S") + " on its row)"],
+      ["Actuals", cell("D14") + ":" + cell("D21")],
+      ["% to goal", cell("E14") + ":" + cell("E21") + " = D ÷ C"],
+      ["Bar length", "identical for every channel — it represents that channel's own goal, not its size"],
+      ["Fill", "actual ÷ goal, capped at 100% of the bar"],
+      ["Largest goal", "for reference, " + usdc(maxV) + " (" +
+        cell(DATA.channels.reduce((a, b) =>
+          (b.periods.quarter.goal || 0) > (a.periods.quarter.goal || 0) ? b : a).periods.quarter.goal_cell) + ")"]
+    ],
+    calc: "Channel rows sum to the workbook's Overall row: " + cell("C23") + " = " + usdc(DATA.overall.total_raised.periods.quarter.goal) +
+          " and " + cell("D23") + " = " + usdc(DATA.overall.total_raised.periods.quarter.actual) + " — both verified.",
+    caveat: dormant.length
+      ? dormant.map(c => c.name).join(" and ") + " have zero goal and zero actual, so the workbook stores “-” " +
+        "for percent to goal. They are greyed rather than shown at 0%."
+      : null,
+    source: srcNote("quarter_actual")
+  }));
+
+  let t = "<table><thead><tr><th>Channel</th><th>Goal</th><th>Actual</th><th>% to goal</th><th>Row</th></tr></thead><tbody>";
+  list.forEach(c => {
+    const q = c.periods.quarter;
+    t += "<tr><td>" + esc(c.name) + "</td><td>" + usdc(q.goal) + "</td><td>" + usdc(q.actual) + "</td><td>" +
+      (q.pct == null ? '<span class="pend">—</span>' : pct(q.pct, 2)) + '</td><td class="ref">' +
+      q.goal_cell + " / " + q.actual_cell + " / " + q.pct_cell + "</td></tr>";
+  });
+  const qq = DATA.overall.total_raised.periods.quarter;
+  t += "</tbody><tfoot><tr><td>Total raised</td><td>" + usdc(qq.goal) + "</td><td>" + usdc(qq.actual) + "</td><td>" +
+    pct(qq.pct, 2) + '</td><td class="ref">C23 / D23 / E23</td></tr></tfoot></table>';
+  document.getElementById("tbChannel").innerHTML = t;
+})();
+</script>
+<script>
+/* ==================== chart 3: accumulation small multiples ==================== */
+(function accumCharts() {
+  const host = document.getElementById("chAccum");
+  const series = active.map(c => ({channel: c, cum: DATA.cumulative[c.name]}));
+  const gmax = Math.max(...series.map(s =>
+    Math.max(...s.cum.goal.map(p => p.value), ...s.cum.actual.map(p => p.value || 0)))) || 1;
+
+  series.forEach(s => {
+    const c = s.channel, cum = s.cum;
+    const W = 520, H = 210, ML = 56, MR = 16, MT = 14, MB = 30;
+    const iw = W - ML - MR, ih = H - MT - MB;
+    const localMax = Math.max(...cum.goal.map(p => p.value),
+                              ...cum.actual.map(p => p.value || 0)) * 1.1 || 1;
+    const x = i => ML + (iw / (MONTHS.length - 1)) * i;
+    const y = v => MT + ih - (v / localMax) * ih;
+
+    const gpts = cum.goal.map((p, i) => [x(i), y(p.value)]);
+    const apts = [];
+    cum.actual.forEach((p, i) => { if (p.value != null) apts.push([x(i), y(p.value)]); });
+
+    let sv = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Cumulative actual versus goal for ' + esc(c.name) + '">';
+    // horizontal gridlines with dollar ticks, now that there is room for them
+    const nT = 3;
+    for (let t = 0; t <= nT; t++) {
+      const v = localMax * t / nT, yy = y(v);
+      sv += '<line class="grid" x1="' + ML + '" y1="' + yy + '" x2="' + (W - MR) + '" y2="' + yy + '"/>';
+      sv += '<text class="tick" x="' + (ML - 8) + '" y="' + (yy + 3.5) + '" text-anchor="end">' +
+            (v >= 1000 ? "$" + Math.round(v / 1000) + "k" : "$" + Math.round(v)) + '</text>';
+    }
+    sv += '<line class="ax" x1="' + ML + '" y1="' + (MT + ih) + '" x2="' + (W - MR) + '" y2="' + (MT + ih) + '"/>';
+    cum.goal.forEach((p, i) => {
+      sv += '<line class="grid" x1="' + x(i) + '" y1="' + MT + '" x2="' + x(i) + '" y2="' + (MT + ih) + '"/>';
+      sv += '<text class="tick" x="' + x(i) + '" y="' + (MT + ih + 18) + '" text-anchor="' +
+            (i === 0 ? "start" : i === MONTHS.length - 1 ? "end" : "middle") + '" style="font-size:12px">' +
+            esc(p.month) + '</text>';
+    });
+    // cumulative goal (dashed)
+    sv += '<polyline fill="none" stroke="var(--goal)" stroke-width="1.75" stroke-dasharray="4 3" points="' +
+          gpts.map(p => p.join(",")).join(" ") + '"/>';
+    gpts.forEach(p => sv += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="2.4" fill="var(--goal)"/>');
+    // cumulative actual (solid, area + line)
+    if (apts.length) {
+      const col = pctColor(c.periods.quarter.pct);
+      sv += '<polygon fill="' + col + '" opacity=".1" points="' +
+            (ML + "," + (MT + ih) + " " + apts.map(p => p.join(",")).join(" ") + " " + apts[apts.length - 1][0] + "," + (MT + ih)) + '"/>';
+      sv += '<polyline fill="none" stroke="' + col + '" stroke-width="2.25" stroke-linejoin="round" points="' +
+            apts.map(p => p.join(",")).join(" ") + '"/>';
+      apts.forEach(p => sv += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="3" fill="' + col + '"/>');
+      // dotted lead-out to show the unreported remainder
+      const last = apts[apts.length - 1];
+      if (apts.length < MONTHS.length) {
+        sv += '<line x1="' + last[0] + '" y1="' + last[1] + '" x2="' + x(MONTHS.length - 1) + '" y2="' + last[1] +
+              '" stroke="' + col + '" stroke-width="1.25" stroke-dasharray="2 3" opacity=".5"/>';
+      }
+    }
+
+    // per-month hover columns
+    const colW = iw / (MONTHS.length - 1);
+    MONTHS.forEach((m, i) => {
+      const ca = cum.actual[i], cg = cum.goal[i], mp = c.periods[m];
+      const paceHere = (ca.value != null && cg.value) ? ca.value / cg.value : null;
+      const tid = registerTip({
+        title: c.name + " — through " + mp.label,
+        rows: [
+          ["Cumulative actual", ca.value == null ? "not yet reported" : usdc(ca.value)],
+          ["Cumulative goal", usdc(cg.value)],
+          paceHere == null ? null : ["Pace to date", pct(paceHere, 1), pctColor(paceHere)],
+          gapRow(ca.value, cg.value),
+          ["", ""],
+          [mp.label + " alone", mp.actual == null ? "not reported" : usdc(mp.actual) +
+            (mp.goal ? " / " + usdc(mp.goal) : "")]
+        ],
+        foot: "actual " + MONTHS.slice(0, i + 1).map(k => c.periods[k].actual_cell).join("+") +
+              "  ·  goal " + MONTHS.slice(0, i + 1).map(k => c.periods[k].goal_cell).join("+")
+      });
+      sv += '<rect class="hit" data-tip-id="' + tid + '" x="' + Math.max(ML, x(i) - colW / 2) +
+            '" y="' + MT + '" width="' + (i === 0 || i === MONTHS.length - 1 ? colW / 2 : colW) +
+            '" height="' + ih + '" rx="3"/>';
+    });
+    sv += "</svg>";
+
+    const box = document.createElement("div");
+    box.className = "sm";
+    const h3 = document.createElement("h3");
+    const sp = document.createElement("span");
+    sp.textContent = c.name;
+    h3.appendChild(sp);
+
+    const lastA = cum.actual.filter(p => p.value != null).pop();
+    const lastG = cum.goal[cum.goal.length - 1];
+    const paceIdx = cum.actual.filter(p => p.value != null).length - 1;
+    const paceGoal = paceIdx >= 0 ? cum.goal[paceIdx].value : null;
+    const pace = (lastA && paceGoal) ? lastA.value / paceGoal : null;
+
+    h3.appendChild(infoBubble({
+      title: c.name + " — accumulation",
+      rows: [
+        ["Cumulative actual", MONTHS.map((m, i) => {
+          const p = cum.actual[i];
+          return p.value == null
+            ? c.periods[m].label + ": not reported"
+            : c.periods[m].label + ": " + usdc(p.value) + " (" + cells(MONTHS.slice(0, i + 1).map(k => c.periods[k].actual_cell)) + ")";
+        }).join("<br>")],
+        ["Cumulative goal", MONTHS.map((m, i) =>
+          c.periods[m].label + ": " + usdc(cum.goal[i].value) + " (" +
+          cells(MONTHS.slice(0, i + 1).map(k => c.periods[k].goal_cell)) + ")").join("<br>")]
+      ],
+      calc: "Each point is the running sum of the monthly cells listed above — computed on this page, not read " +
+            "from the workbook. The final cumulative goal " + usdc(lastG.value) + " equals the quarterly goal " +
+            cell(c.periods.quarter.goal_cell) + ".",
+      caveat: (paceIdx >= 0
+                ? "The solid line stops at " + c.periods[MONTHS[paceIdx]].label +
+                  " because later actuals are not yet reported; the dashed goal line continues so the remaining gap stays visible. "
+                : "No actuals reported yet. ") +
+              (pace != null ? "Pace through that month: " + pct(pace, 1) + " of the cumulative goal to date." : ""),
+      source: srcNote("july_actual")
+    }));
+    box.appendChild(h3);
+
+    const cap = document.createElement("p");
+    cap.className = "cap";
+    cap.innerHTML = lastA
+      ? usd(lastA.value) + " of " + usd(lastG.value) +
+        ' · <span style="color:' + pctColor(c.periods.quarter.pct) + ';font-weight:650">' +
+        pct(c.periods.quarter.pct, 0) + "</span> of quarter goal"
+      : "no actuals reported";
+    box.appendChild(cap);
+
+    const cw = document.createElement("div");
+    cw.className = "chartwrap";
+    cw.innerHTML = sv;
+    bindTips(cw);
+    box.appendChild(cw);
+    host.appendChild(box);
+  });
+
+  document.querySelector("#s-accum .sechead").appendChild(infoBubble({
+    title: "Accumulation by month",
+    rows: [
+      ["Cumulative actual", "running sum of " + cell("H") + ", " + cell("K") + ", " + cell("N") + " per channel row"],
+      ["Cumulative goal", "running sum of " + cell("G") + ", " + cell("J") + ", " + cell("M") + " per channel row"],
+      ["Charts shown", active.length + " active channel(s); " + (dormant.length ? dormant.map(c => c.name).join(", ") + " omitted (no goal, no activity)" : "none omitted")]
+    ],
+    calc: "These running totals are computed on this page from the monthly cells. As a check, each channel's " +
+          "final cumulative goal equals its quarterly goal in column <code>C</code>, and the cumulative actual " +
+          "through August equals " + cell("H") + " + " + cell("K") + ".",
+    caveat: PENDING_CAVEAT + " Solid lines therefore stop at August, while dashed goal lines run the full quarter.",
+    source: srcNote("july_actual")
+  }));
+
+  // combined table
+  let t = "<table><thead><tr><th>Channel</th>" +
+    MONTHS.map(m => "<th>" + esc(DATA.channels[0].periods[m].label) + " cum. actual</th>").join("") +
+    MONTHS.map(m => "<th>" + esc(DATA.channels[0].periods[m].label) + " cum. goal</th>").join("") +
+    "</tr></thead><tbody>";
+  active.forEach(c => {
+    const cum = DATA.cumulative[c.name];
+    t += "<tr><td>" + esc(c.name) + "</td>" +
+      cum.actual.map(p => "<td>" + (p.value == null ? '<span class="pend">—</span>' : usdc(p.value)) + "</td>").join("") +
+      cum.goal.map(p => "<td>" + usdc(p.value) + "</td>").join("") + "</tr>";
+  });
+  t += "</tbody><tfoot><tr><td>All channels</td>" +
+    MONTHS.map((m, i) => {
+      let v = 0, any = false;
+      MONTHS.slice(0, i + 1).forEach(k => { const s = chSum(k, "actual"); if (s != null && !PENDING.has(k)) { v += s; any = true; } });
+      const stillPending = PENDING.has(m);
+      return "<td>" + (stillPending ? '<span class="pend">—</span>' : (any ? usdc(v) : "—")) + "</td>";
+    }).join("") +
+    MONTHS.map((m, i) => {
+      let v = 0;
+      MONTHS.slice(0, i + 1).forEach(k => { v += chSum(k, "goal") || 0; });
+      return "<td>" + usdc(v) + "</td>";
+    }).join("") + "</tr></tfoot></table>";
+  document.getElementById("tbAccum").innerHTML = t;
+})();
+
+/* ============================================================
+   PAID MEDIA TAB
+   Same conventions as the Overview tab: an info bubble on every stat and
+   chart naming its source cells, hover tooltips with exact figures, and a
+   collapsible table of underlying numbers beneath each chart group.
+   ============================================================ */
+const PM = /*__PM_DATA__*/;
+
+if (!PM) {
+  const tb = document.getElementById("t-paid");
+  if (tb) tb.remove();
+  const pn = document.getElementById("p-paid");
+  if (pn) pn.remove();
+} else (function paidMedia() {
+
+  /* ---------- formatting by metric kind ---------- */
+  const KIND = PM.metric_kinds, LABEL = PM.metric_labels, COL = PM.metric_columns;
+  const roas = n => n == null ? "—" : n.toFixed(2) + "×";
+  function fmtKind(kind, v) {
+    if (v == null) return "—";
+    if (kind === "usd") return usd(v);
+    if (kind === "usd2") return usdc(v);
+    if (kind === "count") return int(v);
+    if (kind === "roas") return roas(v);
+    return String(v);
+  }
+  const fmtM = (key, v) => fmtKind(KIND[key], v);
+  function compact(kind, v) {
+    if (v == null) return "—";
+    const a = Math.abs(v), pre = (kind === "usd" || kind === "usd2") ? "$" : "";
+    if (kind === "roas") return v.toFixed(1) + "×";
+    if (a >= 1e6) return pre + (v / 1e6).toFixed(1) + "M";
+    if (a >= 1000) return pre + Math.round(v / 1000) + "k";
+    if (kind === "usd2" && a < 100) return pre + v.toFixed(2);
+    return pre + Math.round(v);
+  }
+  const trim = (s, n) => (s && s.length > n) ? s.slice(0, n - 1) + "…" : (s || "");
+
+  /* ---------- definitions key, reused across info bubbles ---------- */
+  const DEF = {};
+  PM.definitions.forEach(d => DEF[d.term.toLowerCase()] = d);
+  function defNote(terms) {
+    const hits = terms.map(t => DEF[t.toLowerCase()]).filter(Boolean);
+    if (!hits.length) return null;
+    return hits.map(d => "<b>" + esc(d.term) + "</b> (" + cell(d.text_cell) + "): " + esc(d.text)).join("<br>");
+  }
+  const PM_SHEET = 'Tab <code>' + esc(PM.meta.sheet) + '</code> of <code>' + esc(PM.meta.source_workbook) + '</code>.';
+  const QSEL = PM.meta.quarter.value;
+  const PM_YEAR = PM.meta.year.value;
+
+  /* ---------- cell-range helpers, so bubbles cite real ranges not bare columns ---------- */
+  const DR = col => col + PM.detail[0].row + ":" + col + PM.detail[PM.detail.length - 1].row;
+  const MR = col => col + PM.months[0].row + ":" + col + PM.months[PM.months.length - 1].row;
+  const QR = col => col + PM.quarters[0].row + ":" + col + PM.quarters[PM.quarters.length - 1].row;
+
+  /* ---------- channel colors ---------- */
+  const CH_COLOR = {};
+  PM.channels.forEach((c, i) => CH_COLOR[c] = "var(--ch" + ((i % 6) + 1) + ")");
+
+  /* ---------- scope banner ---------- */
+  document.getElementById("pmScope").innerHTML =
+    "<div>&#9432;</div><div><b>Two different periods on this tab.</b> The year-to-date " +
+    "toplines below cover <b>" + PM.ytd.quarters.join(", ") + " " + PM_YEAR + "</b>, summed from the " +
+    "workbook's quarterly table. The monthly toplines and placement breakdown cover only " +
+    "<b>Q" + QSEL + "</b> (" + PM.months.map(m => m.label).join(", ") + "), which is the quarter this " +
+    "tab is set to in " + cell(PM.meta.quarter.cell) + ". The Overview tab reports Q" +
+    DATA.meta.quarter.value + ", a different quarter again.</div>";
+
+  /* ---------- shared chart primitives ---------- */
+
+  // Grouped vertical bars with value labels and an optional sub-label per group.
+  function barChart(host, cfg) {
+    const rows = cfg.rows, ns = cfg.series.length;
+    const W = cfg.width || 480, H = cfg.height || 300;
+    const ML = 58, MR = 12, MT = 14, MB = cfg.sub ? 54 : 36;
+    const iw = W - ML - MR, ih = H - MT - MB;
+    let max = 0;
+    rows.forEach(r => r.values.forEach(v => { if (v != null && v > max) max = v; }));
+    max = max * 1.16 || 1;
+    const y = v => MT + ih - (v / max) * ih;
+    const gw = iw / rows.length;
+    const bw = Math.min(52, (gw * 0.62) / ns), gap = 6;
+    const groupW = bw * ns + gap * (ns - 1);
+
+    let s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(cfg.aria || "") + '">';
+    const nT = 4;
+    for (let t = 0; t <= nT; t++) {
+      const v = max * t / nT, yy = y(v);
+      s += '<line class="grid" x1="' + ML + '" y1="' + yy + '" x2="' + (W - MR) + '" y2="' + yy + '"/>';
+      s += '<text class="tick" x="' + (ML - 8) + '" y="' + (yy + 3.5) + '" text-anchor="end">' +
+           esc(compact(cfg.kind, v)) + '</text>';
+    }
+    s += '<line class="ax" x1="' + ML + '" y1="' + (MT + ih) + '" x2="' + (W - MR) + '" y2="' + (MT + ih) + '"/>';
+
+    rows.forEach((r, i) => {
+      const cx = ML + gw * i + gw / 2, x0 = cx - groupW / 2;
+      r.values.forEach((v, k) => {
+        const bx = x0 + k * (bw + gap);
+        if (v == null) {
+          s += '<text class="vlbl" x="' + (bx + bw / 2) + '" y="' + (MT + ih - 6) +
+               '" text-anchor="middle" style="font-style:italic">n/a</text>';
+          return;
+        }
+        s += '<rect x="' + bx + '" y="' + y(v) + '" width="' + bw + '" height="' + (MT + ih - y(v)) +
+             '" rx="3" fill="' + cfg.series[k].color + '"/>';
+        s += '<text class="vlbl" x="' + (bx + bw / 2) + '" y="' + (y(v) - 5) + '" text-anchor="middle">' +
+             esc(compact(cfg.kind, v)) + '</text>';
+      });
+      s += '<text x="' + cx + '" y="' + (MT + ih + 19) + '" text-anchor="middle" ' +
+           'style="font-size:12.5px;font-weight:600">' + esc(r.label) + '</text>';
+      if (r.sub) {
+        s += '<text x="' + cx + '" y="' + (MT + ih + 37) + '" text-anchor="middle" style="font-size:11.5px;fill:' +
+             (r.subColor || "var(--muted)") + '">' + esc(r.sub) + '</text>';
+      }
+      if (r.tip) {
+        s += '<rect class="hit" data-tip-id="' + registerTip(r.tip) + '" x="' + (ML + gw * i) +
+             '" y="' + MT + '" width="' + gw + '" height="' + ih + '" rx="4"/>';
+      }
+    });
+    s += "</svg>";
+    host.innerHTML = s;
+    bindTips(host);
+    if (cfg.legend) {
+      cfg.legend.innerHTML = cfg.series.map(sr =>
+        '<span><i class="sw" style="background:' + sr.color + '"></i>' + esc(sr.label) + "</span>").join("");
+    }
+  }
+
+  // Single cumulative line with area fill and per-point hover columns.
+  function lineChart(host, cfg) {
+    const pts = cfg.points;
+    const W = 520, H = 210, ML = 62, MR = 16, MT = 14, MB = 30;
+    const iw = W - ML - MR, ih = H - MT - MB;
+    const max = Math.max(...pts.map(p => p.value || 0)) * 1.12 || 1;
+    const x = i => ML + (pts.length === 1 ? iw / 2 : (iw / (pts.length - 1)) * i);
+    const y = v => MT + ih - (v / max) * ih;
+    const col = cfg.color;
+
+    let s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(cfg.aria || "") + '">';
+    const nT = 3;
+    for (let t = 0; t <= nT; t++) {
+      const v = max * t / nT, yy = y(v);
+      s += '<line class="grid" x1="' + ML + '" y1="' + yy + '" x2="' + (W - MR) + '" y2="' + yy + '"/>';
+      s += '<text class="tick" x="' + (ML - 8) + '" y="' + (yy + 3.5) + '" text-anchor="end">' +
+           esc(compact(cfg.kind, v)) + '</text>';
+    }
+    s += '<line class="ax" x1="' + ML + '" y1="' + (MT + ih) + '" x2="' + (W - MR) + '" y2="' + (MT + ih) + '"/>';
+    pts.forEach((p, i) => {
+      s += '<line class="grid" x1="' + x(i) + '" y1="' + MT + '" x2="' + x(i) + '" y2="' + (MT + ih) + '"/>';
+      s += '<text class="tick" x="' + x(i) + '" y="' + (MT + ih + 18) + '" text-anchor="' +
+           (i === 0 ? "start" : i === pts.length - 1 ? "end" : "middle") + '" style="font-size:12px">' +
+           esc(p.label) + '</text>';
+    });
+    const xy = pts.map((p, i) => [x(i), y(p.value || 0)]);
+    s += '<polygon fill="' + col + '" opacity=".1" points="' + ML + "," + (MT + ih) + " " +
+         xy.map(p => p.join(",")).join(" ") + " " + xy[xy.length - 1][0] + "," + (MT + ih) + '"/>';
+    s += '<polyline fill="none" stroke="' + col + '" stroke-width="2.25" stroke-linejoin="round" points="' +
+         xy.map(p => p.join(",")).join(" ") + '"/>';
+    xy.forEach(p => s += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="3.2" fill="' + col + '"/>');
+    const colW = pts.length > 1 ? iw / (pts.length - 1) : iw;
+    pts.forEach((p, i) => {
+      if (!p.tip) return;
+      const edge = (i === 0 || i === pts.length - 1);
+      s += '<rect class="hit" data-tip-id="' + registerTip(p.tip) + '" x="' +
+           Math.max(ML, x(i) - colW / 2) + '" y="' + MT + '" width="' + (edge ? colW / 2 : colW) +
+           '" height="' + ih + '" rx="3"/>';
+    });
+    s += "</svg>";
+    host.innerHTML = s;
+    bindTips(host);
+  }
+
+  // Stacked vertical bars, one stack per group, one segment per channel.
+  function stackedChart(host, cfg) {
+    const groups = cfg.groups, keys = cfg.keys;
+    const W = 480, H = 300, ML = 58, MR = 12, MT = 14, MB = 36;
+    const iw = W - ML - MR, ih = H - MT - MB;
+    let max = 0;
+    groups.forEach(g => {
+      const tot = keys.reduce((a, k) => a + (g.parts[k] || 0), 0);
+      if (tot > max) max = tot;
+    });
+    max = max * 1.14 || 1;
+    const y = v => MT + ih - (v / max) * ih;
+    const gw = iw / groups.length, bw = Math.min(74, gw * 0.5);
+
+    let s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(cfg.aria || "") + '">';
+    const nT = 4;
+    for (let t = 0; t <= nT; t++) {
+      const v = max * t / nT, yy = y(v);
+      s += '<line class="grid" x1="' + ML + '" y1="' + yy + '" x2="' + (W - MR) + '" y2="' + yy + '"/>';
+      s += '<text class="tick" x="' + (ML - 8) + '" y="' + (yy + 3.5) + '" text-anchor="end">' +
+           esc(compact(cfg.kind, v)) + '</text>';
+    }
+    s += '<line class="ax" x1="' + ML + '" y1="' + (MT + ih) + '" x2="' + (W - MR) + '" y2="' + (MT + ih) + '"/>';
+
+    groups.forEach((g, i) => {
+      const cx = ML + gw * i + gw / 2, bx = cx - bw / 2;
+      let acc = 0, tot = keys.reduce((a, k) => a + (g.parts[k] || 0), 0);
+      keys.forEach(k => {
+        const v = g.parts[k] || 0;
+        if (v <= 0) return;
+        const yTop = y(acc + v), hgt = y(acc) - y(acc + v);
+        s += '<rect x="' + bx + '" y="' + yTop + '" width="' + bw + '" height="' + Math.max(1, hgt) +
+             '" fill="' + CH_COLOR[k] + '" stroke="var(--surface)" stroke-width=".75"/>';
+        acc += v;
+      });
+      s += '<text class="vlbl" x="' + cx + '" y="' + (y(tot) - 5) + '" text-anchor="middle">' +
+           esc(compact(cfg.kind, tot)) + '</text>';
+      s += '<text x="' + cx + '" y="' + (MT + ih + 19) + '" text-anchor="middle" ' +
+           'style="font-size:12.5px;font-weight:600">' + esc(g.label) + '</text>';
+      if (g.tip) {
+        s += '<rect class="hit" data-tip-id="' + registerTip(g.tip) + '" x="' + (ML + gw * i) +
+             '" y="' + MT + '" width="' + gw + '" height="' + ih + '" rx="4"/>';
+      }
+    });
+    s += "</svg>";
+    host.innerHTML = s;
+    bindTips(host);
+  }
+
+  // Bubble scatter with a log-scaled x axis.
+  function scatterChart(host, cfg) {
+    const pts = cfg.points;
+    const W = 1060, H = 380, ML = 62, MR = 18, MT = 16, MB = 46;
+    const iw = W - ML - MR, ih = H - MT - MB;
+    if (!pts.length) { host.innerHTML = '<div class="empty">No placements match the current filters.</div>'; return; }
+    const xs = pts.map(p => p.x), ys = pts.map(p => p.y);
+    const lx = v => Math.log10(Math.max(v, 1e-3));
+    const x0 = lx(Math.min(...xs)) - 0.25, x1 = lx(Math.max(...xs)) + 0.25;
+    const ymax = Math.max(...ys, 1) * 1.15;
+    const X = v => ML + ((lx(v) - x0) / (x1 - x0 || 1)) * iw;
+    const Y = v => MT + ih - (v / ymax) * ih;
+    const maxR = Math.max(...pts.map(p => p.size));
+    const R = v => 5 + 16 * Math.sqrt(Math.max(v, 0) / (maxR || 1));
+
+    let s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(cfg.aria || "") + '">';
+    // y gridlines (ROAS)
+    for (let t = 0; t <= 4; t++) {
+      const v = ymax * t / 4, yy = Y(v);
+      s += '<line class="grid" x1="' + ML + '" y1="' + yy + '" x2="' + (W - MR) + '" y2="' + yy + '"/>';
+      s += '<text class="tick" x="' + (ML - 8) + '" y="' + (yy + 3.5) + '" text-anchor="end">' + v.toFixed(1) + '×</text>';
+    }
+    // x gridlines at each power of ten in range
+    for (let e = Math.ceil(x0); e <= Math.floor(x1); e++) {
+      const v = Math.pow(10, e), xx = X(v);
+      s += '<line class="grid" x1="' + xx + '" y1="' + MT + '" x2="' + xx + '" y2="' + (MT + ih) + '"/>';
+      s += '<text class="tick" x="' + xx + '" y="' + (MT + ih + 17) + '" text-anchor="middle">' +
+           (v < 1 ? "$" + v.toFixed(2) : "$" + int(v)) + '</text>';
+    }
+    // break-even reference line at ROAS = 1
+    if (ymax > 1) {
+      s += '<line x1="' + ML + '" y1="' + Y(1) + '" x2="' + (W - MR) + '" y2="' + Y(1) +
+           '" stroke="var(--warn)" stroke-width="1.25" stroke-dasharray="5 4" opacity=".8"/>';
+      s += '<text class="axlbl" x="' + (W - MR - 4) + '" y="' + (Y(1) - 6) + '" text-anchor="end" ' +
+           'style="fill:var(--warn)">break even (1.00×)</text>';
+    }
+    s += '<line class="ax" x1="' + ML + '" y1="' + (MT + ih) + '" x2="' + (W - MR) + '" y2="' + (MT + ih) + '"/>';
+    s += '<text class="axlbl" x="' + (ML + iw / 2) + '" y="' + (H - 8) + '" text-anchor="middle">' +
+         'Gross CPA — cost per name added (log scale)</text>';
+    s += '<text class="axlbl" transform="translate(14,' + (MT + ih / 2) + ') rotate(-90)" text-anchor="middle">' +
+         'Total ROAS</text>';
+    // largest bubbles first so small ones stay clickable on top
+    pts.slice().sort((a, b) => b.size - a.size).forEach(p => {
+      s += '<circle cx="' + X(p.x) + '" cy="' + Y(p.y) + '" r="' + R(p.size) + '" fill="' + p.color +
+           '" fill-opacity=".55" stroke="' + p.color + '" stroke-width="1.5" class="hit" style="fill-opacity:.55" ' +
+           'data-tip-id="' + registerTip(p.tip) + '"/>';
+    });
+    s += "</svg>";
+    host.innerHTML = s;
+    // the .hit class zeroes fill-opacity; circles need their own hover handling
+    host.querySelectorAll("circle.hit").forEach(c => {
+      c.setAttribute("class", "");
+      c.style.cursor = "pointer";
+    });
+    bindTips(host);
+  }
+
+  /* ---------- 1. year-to-date hero stats ---------- */
+  (function pmHeroes() {
+    const Y = PM.ytd.metrics;
+    document.getElementById("pmHeroNote").textContent =
+      "Summed across " + PM.ytd.quarters.join(", ") + " " + PM_YEAR +
+      ". Cost and return ratios are recomputed from the summed totals, not averaged across quarters.";
+
+    // Each Raised card carries its own ROAS as the secondary line, the way the
+    // Overview tab's cards carry percent to goal.
+    const cards = [
+      {key: "gross_spend", label: "Gross spend"},
+      {key: "ntl", label: "NTL added"},
+      {key: "gross_cpa", label: "Gross CPA", subKey: null, subText: "per name added to the list"},
+      {key: "immediate_raised", label: "Immediate raised", subKey: "immediate_roas"},
+      {key: "lifetime_raised", label: "Lifetime raised", subKey: "lifetime_roas"},
+      {key: "total_raised", label: "Total raised", subKey: "total_roas"}
+    ];
+    const host = document.getElementById("pmHeroes");
+
+    cards.forEach(cd => {
+      const m = Y[cd.key];
+      const el = document.createElement("div");
+      el.className = "hero";
+      const lbl = document.createElement("div");
+      lbl.className = "lbl";
+      lbl.appendChild(document.createTextNode(cd.label));
+
+      // provenance: which quarterly cells were summed, and how ratios were derived
+      const qCells = PM.quarters.map(q => q.metrics[cd.key] && q.metrics[cd.key].cell);
+      const isRatio = KIND[cd.key] === "roas" || cd.key === "gross_cpa";
+      const rows = [];
+      if (!isRatio) {
+        PM.quarters.forEach(q => rows.push([q.label + " " + PM_YEAR,
+          cell(q.metrics[cd.key].cell) + " = " + fmtM(cd.key, q.metrics[cd.key].value)]));
+        rows.push(["Year to date", "<b>" + fmtM(cd.key, m.value) + "</b>"]);
+      } else {
+        const nk = cd.key === "gross_cpa" ? "gross_spend" : m.numerator;
+        const dk = cd.key === "gross_cpa" ? "ntl" : "gross_spend";
+        rows.push(["Numerator", LABEL[nk] + " = " + fmtM(nk, Y[nk].value)]);
+        rows.push(["Denominator", LABEL[dk] + " = " + fmtM(dk, Y[dk].value)]);
+        rows.push(["Result", "<b>" + fmtM(cd.key, m.value) + "</b>"]);
+        PM.quarters.forEach(q => rows.push([q.label + " as reported",
+          cell(q.metrics[cd.key].cell) + " = " + fmtM(cd.key, q.metrics[cd.key].value)]));
+      }
+
+      const defTerms = {
+        ntl: ["NTL"], gross_cpa: ["CPA"], immediate_raised: ["Immediate Raised"],
+        lifetime_raised: ["Lifetime Raised"], total_raised: ["Total Raised"]
+      }[cd.key] || [];
+      const dn = defNote(defTerms.concat(cd.subKey ? ["ROAS"] : []));
+
+      lbl.appendChild(infoBubble({
+        title: cd.label + " — year to date",
+        rows: rows,
+        calc: isRatio
+          ? fmtM(cd.key, m.value) + " = " + fmtM(cd.key === "gross_cpa" ? "gross_spend" : m.numerator,
+              Y[cd.key === "gross_cpa" ? "gross_spend" : m.numerator].value) + " ÷ " +
+              fmtM(cd.key === "gross_cpa" ? "ntl" : "gross_spend",
+              Y[cd.key === "gross_cpa" ? "ntl" : "gross_spend"].value) +
+              " — computed on this page from the summed components. Averaging the per-quarter " +
+              "ratios would give a different, incorrect answer."
+          : "SUM(" + qCells.map(c => cell(c)).join(", ") + ") = " +
+              PM.quarters.map(q => fmtM(cd.key, q.metrics[cd.key].value)).join(" + ") + " = " +
+              fmtM(cd.key, m.value),
+        caveat: "No workbook cell holds this year-to-date figure; it is computed on this page from " +
+                "the quarterly rows " + cell(PM.quarters[0].metrics[cd.key].cell) + "–" +
+                cell(PM.quarters[PM.quarters.length - 1].metrics[cd.key].cell) + ". " +
+                "The monthly and placement sections below cover Q" + QSEL + " only." +
+                (cd.key === "total_raised"
+                  ? " Total Raised is not Immediate + Lifetime: per " + cell("G9") +
+                    ", immediate is removed from NTL so it is not counted twice."
+                  : ""),
+        source: PM_SHEET + (dn ? "<br>" + dn : "")
+      }));
+      el.appendChild(lbl);
+
+      const big = document.createElement("div");
+      big.className = "big";
+      big.textContent = fmtM(cd.key, m.value);
+      el.appendChild(big);
+
+      const of = document.createElement("div");
+      of.className = "of";
+      if (cd.subKey) {
+        const rv = Y[cd.subKey].value;
+        of.innerHTML = '<span style="color:' + (rv >= 1 ? "var(--good)" : "var(--muted)") +
+          ';font-weight:650">' + roas(rv) + "</span> " + LABEL[cd.subKey].replace(" ROAS", "") + " ROAS";
+      } else if (cd.subText) {
+        of.textContent = cd.subText;
+      } else if (cd.key === "gross_spend") {
+        of.textContent = "across " + PM.ytd.quarters.join(", ");
+      } else if (cd.key === "ntl") {
+        of.textContent = "new-to-list names";
+      }
+      el.appendChild(of);
+      host.appendChild(el);
+    });
+  })();
+
+  /* ---------- 2 & 3. quarterly and monthly topline bars ---------- */
+  function toplineSection(rowsSrc, ids, grainLabel) {
+    // money chart: spend vs total raised, with Total ROAS as the sub-label
+    const moneyRows = rowsSrc.map(r => {
+      const M = r.metrics;
+      return {
+        label: r.label.trim(),
+        values: [M.gross_spend.value, M.total_raised.value],
+        sub: roas(M.total_roas.value) + " total ROAS",
+        subColor: (M.total_roas.value != null && M.total_roas.value >= 1) ? "var(--good)" : "var(--bad)",
+        tip: {
+          title: r.label.trim() + " " + PM_YEAR,
+          rows: [
+            ["Gross spend", fmtM("gross_spend", M.gross_spend.value)],
+            ["Immediate raised", fmtM("immediate_raised", M.immediate_raised.value)],
+            ["Lifetime raised", fmtM("lifetime_raised", M.lifetime_raised.value)],
+            ["Total raised", fmtM("total_raised", M.total_raised.value)],
+            ["", ""],
+            ["Immediate ROAS", roas(M.immediate_roas.value)],
+            ["Lifetime ROAS", roas(M.lifetime_roas.value)],
+            ["Total ROAS", roas(M.total_roas.value),
+              M.total_roas.value >= 1 ? "var(--good)" : "var(--bad)"]
+          ],
+          foot: "row " + r.row + ": " + M.gross_spend.cell + ", " + M.immediate_raised.cell + ", " +
+                M.lifetime_raised.cell + ", " + M.total_raised.cell + ", " + M.total_roas.cell
+        }
+      };
+    });
+    barChart(document.getElementById(ids.money), {
+      rows: moneyRows, kind: "usd",
+      series: [{label: "Gross spend", color: "var(--goal-bar)"},
+               {label: "Total raised", color: "var(--actual)"}],
+      legend: document.getElementById(ids.moneyLg),
+      sub: true, aria: "Gross spend versus total raised by " + grainLabel
+    });
+
+    // names chart: NTL, with Gross CPA as the sub-label
+    const ntlRows = rowsSrc.map(r => {
+      const M = r.metrics;
+      return {
+        label: r.label.trim(),
+        values: [M.ntl.value],
+        sub: M.gross_cpa.value == null ? "no CPA (0 names)" : fmtM("gross_cpa", M.gross_cpa.value) + " per name",
+        subColor: "var(--muted)",
+        tip: {
+          title: r.label.trim() + " " + PM_YEAR,
+          rows: [
+            ["NTL added", fmtM("ntl", M.ntl.value)],
+            ["Gross spend", fmtM("gross_spend", M.gross_spend.value)],
+            ["Gross CPA", fmtM("gross_cpa", M.gross_cpa.value)]
+          ],
+          foot: M.ntl.cell + " · " + M.gross_spend.cell + " ÷ " + M.ntl.cell + " = " + M.gross_cpa.cell
+        }
+      };
+    });
+    barChart(document.getElementById(ids.ntl), {
+      rows: ntlRows, kind: "count",
+      series: [{label: "NTL added", color: "var(--ch3)"}],
+      legend: document.getElementById(ids.ntlLg),
+      sub: true, aria: "New-to-list names by " + grainLabel
+    });
+
+    // shared data table
+    const keys = PM.metric_order;
+    let t = "<table><thead><tr><th>" + esc(grainLabel === "quarter" ? "Quarter" : "Month") + "</th>" +
+      keys.map(k => "<th>" + esc(LABEL[k]) + "</th>").join("") + "<th>Cells</th></tr></thead><tbody>";
+    rowsSrc.forEach(r => {
+      t += "<tr><td>" + esc(r.label.trim()) + "</td>" +
+        keys.map(k => "<td>" + (r.metrics[k].value == null
+          ? '<span class="pend">—</span>' : esc(fmtM(k, r.metrics[k].value))) + "</td>").join("") +
+        '<td class="ref">F' + r.row + ":N" + r.row + "</td></tr>";
+    });
+    t += "</tbody></table>";
+    document.getElementById(ids.table).innerHTML = t;
+  }
+
+  toplineSection(PM.quarters, {
+    money: "pmChQSpend", moneyLg: "pmLgQSpend",
+    ntl: "pmChQNtl", ntlLg: "pmLgQNtl", table: "pmTbQ"
+  }, "quarter");
+
+  document.getElementById("pmMonthNote").textContent =
+    "Q" + QSEL + " " + PM_YEAR + " only — " + PM.months.map(m => m.label.trim()).join(", ") +
+    ". Hover a month for exact figures.";
+  toplineSection(PM.months, {
+    money: "pmChMSpend", moneyLg: "pmLgMSpend",
+    ntl: "pmChMNtl", ntlLg: "pmLgMNtl", table: "pmTbM"
+  }, "month");
+
+  // section-level info bubbles
+  document.querySelector("#pm-quarter .sechead").appendChild(infoBubble({
+    title: "Quarterly toplines",
+    rows: PM.quarters.map(q => [q.label,
+      "row " + q.row + " — spend " + cell(q.metrics.gross_spend.cell) + ", raised " +
+      cell(q.metrics.total_raised.cell) + ", ROAS " + cell(q.metrics.total_roas.cell)]),
+    calc: "Bars read the quarterly table directly; nothing is recomputed. Total ROAS = Total Raised ÷ " +
+          "Gross Spend, and Gross CPA = Gross Spend ÷ NTL — both verified against the stored cells.",
+    caveat: "Q" + QSEL + " is the quarter this tab is set to (" + cell(PM.meta.quarter.cell) +
+            "); the other quarters appear here for context only, and the monthly and placement " +
+            "sections do not cover them.",
+    source: PM_SHEET + "<br>" + defNote(["NTL", "CPA", "ROAS"])
+  }));
+  document.querySelector("#pm-month .sechead").appendChild(infoBubble({
+    title: "Monthly toplines",
+    rows: PM.months.map(m => [m.label.trim(),
+      "row " + m.row + " — spend " + cell(m.metrics.gross_spend.cell) + ", raised " +
+      cell(m.metrics.total_raised.cell) + ", ROAS " + cell(m.metrics.total_roas.cell)]),
+    calc: "These three months sum exactly to the Q" + QSEL + " quarterly row: spend " +
+          fmtM("gross_spend", PM.months.reduce((a, m) => a + m.metrics.gross_spend.value, 0)) +
+          " against " + cell((PM.quarters.find(q => q.quarter === QSEL) || PM.quarters[0]).metrics.gross_spend.cell) +
+          " — verified.",
+    caveat: "Covers Q" + QSEL + " only, while the hero stats above are year to date.",
+    source: PM_SHEET + "<br>" + defNote(["NTL", "CPA", "ROAS"])
+  }));
+
+  /* ---------- 4. accumulation lines ---------- */
+  function accumSection(hostId, grain, rowsSrc, grainWord) {
+    const host = document.getElementById(hostId);
+    const colors = {gross_spend: "var(--goal-bar)", ntl: "var(--ch3)", total_raised: "var(--actual)"};
+    PM.accum_keys.forEach(key => {
+      const series = PM.cumulative[grain][key];
+      const box = document.createElement("div");
+      box.className = "sm";
+      const h3 = document.createElement("h3");
+      const sp = document.createElement("span");
+      sp.textContent = LABEL[key];
+      h3.appendChild(sp);
+      h3.appendChild(infoBubble({
+        title: LABEL[key] + " — cumulative by " + grainWord,
+        rows: series.map((p, i) => [p.label.trim(),
+          fmtM(key, p.value) + " (" + cells(series.slice(0, i + 1).map(q => q.cell)) + ")"]),
+        calc: "Each point is the running sum of the " + grainWord + "ly cells listed above — computed " +
+              "on this page, not read from a workbook cell. Final value " +
+              fmtM(key, series[series.length - 1].value) + ".",
+        caveat: grain === "monthly"
+          ? "Q" + QSEL + " only. The final point equals the Q" + QSEL + " quarterly figure in " +
+            cell((PM.quarters.find(q => q.quarter === QSEL) || PM.quarters[0]).metrics[key].cell) + "."
+          : "Runs across " + PM.quarters.map(q => q.label).join(", ") + ". The final point equals the " +
+            "year-to-date hero stat above.",
+        source: PM_SHEET + (defNote(key === "ntl" ? ["NTL"] : key === "total_raised" ? ["Total Raised"] : []) || "")
+      }));
+      box.appendChild(h3);
+
+      const cap = document.createElement("p");
+      cap.className = "cap";
+      cap.textContent = fmtM(key, series[series.length - 1].value) + " cumulative by " +
+        series[series.length - 1].label.trim();
+      box.appendChild(cap);
+
+      const cw = document.createElement("div");
+      cw.className = "chartwrap";
+      box.appendChild(cw);
+      host.appendChild(box);
+
+      lineChart(cw, {
+        kind: KIND[key], color: colors[key],
+        aria: "Cumulative " + LABEL[key] + " by " + grainWord,
+        points: series.map((p, i) => ({
+          label: p.label.trim(), value: p.value,
+          tip: {
+            title: LABEL[key] + " — through " + p.label.trim(),
+            rows: [
+              ["Cumulative", fmtM(key, p.value)],
+              [p.label.trim() + " alone", fmtM(key, p.step)],
+              ["", ""],
+              ["Share of final", pct(p.value / series[series.length - 1].value, 1)]
+            ],
+            foot: "sum of " + series.slice(0, i + 1).map(q => q.cell).join(" + ")
+          }
+        }))
+      });
+    });
+  }
+  accumSection("pmAccumQ", "quarterly", PM.quarters, "quarter");
+  accumSection("pmAccumM", "monthly", PM.months, "month");
+  document.getElementById("pmAccQHead").textContent =
+    "By quarter — " + PM.quarters.map(q => q.label).join(", ") + " " + PM_YEAR;
+  document.getElementById("pmAccMHead").textContent =
+    "By month — Q" + QSEL + " " + PM_YEAR;
+
+  document.querySelector("#pm-accum .sechead").appendChild(infoBubble({
+    title: "Accumulation over time",
+    rows: PM.accum_keys.map(k => [LABEL[k],
+      "quarterly " + cell(COL[k] + PM.quarters[0].row + ":" + COL[k] + PM.quarters[PM.quarters.length - 1].row) +
+      ", monthly " + cell(COL[k] + PM.months[0].row + ":" + COL[k] + PM.months[PM.months.length - 1].row)]),
+    calc: "Running sums computed on this page. Only additive metrics are accumulated — CPA and ROAS " +
+          "are ratios and cannot be summed, so they are not shown here.",
+    caveat: "The quarterly and monthly series cover different spans: quarterly runs " +
+            PM.quarters.map(q => q.label).join("→") + " across the year, monthly runs within Q" + QSEL + ".",
+    source: PM_SHEET
+  }));
+
+  // accumulation data table
+  (function accTable() {
+    let t = "";
+    [["Quarterly", "quarterly", PM.quarters], ["Monthly (Q" + QSEL + ")", "monthly", PM.months]].forEach(g => {
+      t += "<table><thead><tr><th>" + esc(g[0]) + "</th>" +
+        PM.cumulative[g[1]][PM.accum_keys[0]].map(p => "<th>" + esc(p.label.trim()) + "</th>").join("") +
+        "</tr></thead><tbody>";
+      PM.accum_keys.forEach(k => {
+        t += "<tr><td>" + esc(LABEL[k]) + " (cum.)</td>" +
+          PM.cumulative[g[1]][k].map(p => "<td>" + esc(fmtM(k, p.value)) + "</td>").join("") + "</tr>";
+      });
+      t += "</tbody></table>";
+    });
+    document.getElementById("pmTbAcc").innerHTML = t;
+  })();
+
+  /* ---------- 5. placement breakdown: three linked views ---------- */
+  const MONTH_LABELS = PM.months.map(m => m.label.trim());
+  const state = {month: "all", channel: "all", sort: "total_raised", dir: -1};
+
+  document.getElementById("pmDetailNote").innerHTML =
+    "Every placement-month in Q" + QSEL + " " + PM_YEAR + " — " + PM.detail.length +
+    " rows across " + PM.channels.length + " channels, from <code>B" + PM.detail[0].row +
+    "</code>:<code>N" + PM.detail[PM.detail.length - 1].row + "</code>. " +
+    "The three views below share the filters; changing a filter updates all of them.";
+
+  function filtered() {
+    return PM.detail.filter(d =>
+      (state.month === "all" || d.month.trim() === state.month) &&
+      (state.channel === "all" || d.channel === state.channel));
+  }
+  function sumOf(rows, key) {
+    let t = 0, any = false;
+    rows.forEach(r => { const v = r.metrics[key].value; if (v != null) { t += v; any = true; } });
+    return any ? t : null;
+  }
+
+  /* filter chips */
+  (function buildFilters() {
+    const host = document.getElementById("pmFilters");
+    function group(labelText, values, key, colorFor) {
+      const g = document.createElement("div");
+      g.className = "fgroup";
+      const l = document.createElement("span");
+      l.className = "flabel";
+      l.textContent = labelText;
+      g.appendChild(l);
+      [["all", "All"]].concat(values.map(v => [v, v])).forEach(([val, text]) => {
+        const b = document.createElement("button");
+        b.className = "chip";
+        b.type = "button";
+        b.setAttribute("data-filter", key);
+        b.setAttribute("data-value", val);
+        b.setAttribute("aria-pressed", String(state[key] === val));
+        if (colorFor && val !== "all") {
+          const dot = document.createElement("i");
+          dot.className = "dot";
+          dot.style.background = colorFor(val);
+          b.appendChild(dot);
+        }
+        b.appendChild(document.createTextNode(text));
+        b.addEventListener("click", () => {
+          state[key] = val;
+          host.querySelectorAll('[data-filter="' + key + '"]').forEach(o =>
+            o.setAttribute("aria-pressed", String(o.getAttribute("data-value") === val)));
+          renderDetail();
+        });
+        g.appendChild(b);
+      });
+      host.appendChild(g);
+    }
+    group("Month", MONTH_LABELS, "month", null);
+    group("Channel", PM.channels, "channel", c => CH_COLOR[c]);
+  })();
+
+  document.querySelector("#pm-detail .sechead").appendChild(infoBubble({
+    title: "Placement breakdown",
+    rows: [
+      ["Rows", cell("B" + PM.detail[0].row) + ":" + cell("N" + PM.detail[PM.detail.length - 1].row) +
+        " — " + PM.detail.length + " placement-months"],
+      ["Dimensions", "Month " + cell(DR("B")) + ", Channel " + cell(DR("C")) + ", Placement " +
+        cell(DR("D")) + ", Objective " + cell(DR("E"))],
+      ["Metrics", cell(DR("F")) + " through " + cell(DR("N")) + ", the same nine as the topline tables"],
+      ["Channels", PM.channels.join(", ")],
+      ["Objectives", PM.objectives.join(", ")]
+    ],
+    calc: "Detail rows sum exactly to their month's topline row, and the months sum to the Q" + QSEL +
+          " quarterly row — both verified for spend, NTL, and all three Raised figures.",
+    caveat: "Column " + cell("E") + " is headed “Goal” in the workbook but holds categories " +
+            "(" + PM.objectives.join(", ") + "), so it is labelled <b>Objective</b> here rather than " +
+            "shown as a numeric target.",
+    source: PM_SHEET + "<br>" + defNote(["NTL", "CPA", "ROAS", "Immediate Raised", "Lifetime Raised", "Total Raised"])
+  }));
+
+  /* the three views, re-rendered together whenever a filter changes */
+  function renderDetail() {
+    const rows = filtered();
+    const chans = PM.channels.filter(c => rows.some(r => r.channel === c));
+
+    /* filter summary line */
+    const fs = document.getElementById("pmFilterStat");
+    if (!rows.length) {
+      fs.innerHTML = "<b>No rows</b> match the current filters.";
+    } else {
+      const sp = sumOf(rows, "gross_spend"), nt = sumOf(rows, "ntl"), tr = sumOf(rows, "total_raised");
+      fs.innerHTML = "<b>" + rows.length + "</b> of " + PM.detail.length + " placement-months · " +
+        "spend <b>" + usd(sp) + "</b> · NTL <b>" + int(nt) + "</b> · total raised <b>" + usd(tr) + "</b> · " +
+        "CPA <b>" + (nt ? usdc(sp / nt) : "—") + "</b> · ROAS <b>" + (sp ? roas(tr / sp) : "—") + "</b>" +
+        '<span class="pend"> — totals computed on this page from the filtered rows</span>';
+    }
+
+    /* view A: stacked bars by channel, per month */
+    const monthsShown = MONTH_LABELS.filter(m => state.month === "all" || m === state.month);
+    function stackFor(hostId, key, kind) {
+      const host = document.getElementById(hostId);
+      if (!rows.length) { host.innerHTML = '<div class="empty">No rows match the current filters.</div>'; return; }
+      const groups = monthsShown.map(mLabel => {
+        const kids = rows.filter(r => r.month.trim() === mLabel);
+        const parts = {};
+        chans.forEach(c => {
+          parts[c] = kids.filter(r => r.channel === c)
+                         .reduce((a, r) => a + (r.metrics[key].value || 0), 0);
+        });
+        const tot = chans.reduce((a, c) => a + parts[c], 0);
+        return {
+          label: mLabel, parts: parts,
+          tip: {
+            title: mLabel + " — " + LABEL[key],
+            rows: chans.filter(c => parts[c] > 0).map(c => [c, fmtKind(kind, parts[c])])
+              .concat([["", ""], ["Total", fmtKind(kind, tot)]]),
+            foot: kids.length + " row(s): " + kids.map(r => r.metrics[key].cell).join(", ")
+          }
+        };
+      });
+      stackedChart(host, {groups: groups, keys: chans, kind: kind,
+        aria: LABEL[key] + " by channel per month"});
+    }
+    stackFor("pmChStackSpend", "gross_spend", "usd");
+    stackFor("pmChStackRaised", "total_raised", "usd");
+
+    /* view B: CPA vs ROAS scatter */
+    const scatterRows = rows.filter(r =>
+      r.metrics.gross_cpa.value != null && r.metrics.total_roas.value != null &&
+      r.metrics.gross_cpa.value > 0);
+    const excluded = rows.length - scatterRows.length;
+    scatterChart(document.getElementById("pmChScatter"), {
+      aria: "Gross CPA versus total ROAS by placement",
+      points: scatterRows.map(r => {
+        const M = r.metrics;
+        return {
+          x: M.gross_cpa.value, y: M.total_roas.value, size: M.gross_spend.value || 0,
+          color: CH_COLOR[r.channel],
+          tip: {
+            title: r.placement + " — " + r.month.trim(),
+            rows: [
+              ["Channel", r.channel], ["Objective", r.objective], ["", ""],
+              ["Gross spend", fmtM("gross_spend", M.gross_spend.value)],
+              ["NTL", fmtM("ntl", M.ntl.value)],
+              ["Gross CPA", fmtM("gross_cpa", M.gross_cpa.value)],
+              ["Total raised", fmtM("total_raised", M.total_raised.value)],
+              ["Total ROAS", roas(M.total_roas.value),
+                M.total_roas.value >= 1 ? "var(--good)" : "var(--bad)"]
+            ],
+            foot: "row " + r.row + ": " + M.gross_cpa.cell + " (CPA), " + M.total_roas.cell +
+                  " (ROAS), " + M.gross_spend.cell + " (size)"
+          }
+        };
+      })
+    });
+    // refresh the scatter's own note about excluded rows
+    const scNote = document.getElementById("pmChScatter").parentNode.querySelector(".note");
+    if (scNote) {
+      scNote.innerHTML = "Each bubble is one placement-month, sized by gross spend. Cost per name uses " +
+        "a log scale because placements span three orders of magnitude." +
+        (excluded ? ' <span class="pend">' + excluded + " row(s) hidden: no CPA, because NTL is zero.</span>" : "");
+    }
+
+    /* view C: sortable placement leaderboard */
+    renderLeaderboard(rows);
+  }
+
+  const LB_COLS = [
+    {key: "placement", label: "Placement", type: "text"},
+    {key: "month", label: "Month", type: "text"},
+    {key: "objective", label: "Objective", type: "text"},
+    {key: "gross_spend", label: "Gross Spend", type: "metric", bar: true},
+    {key: "ntl", label: "NTL", type: "metric", bar: true},
+    {key: "gross_cpa", label: "Gross CPA", type: "metric"},
+    {key: "immediate_raised", label: "Immediate", type: "metric"},
+    {key: "lifetime_raised", label: "Lifetime", type: "metric"},
+    {key: "total_raised", label: "Total Raised", type: "metric", bar: true},
+    {key: "total_roas", label: "Total ROAS", type: "metric"}
+  ];
+
+  function renderLeaderboard(rows) {
+    const host = document.getElementById("pmLeader");
+    if (!rows.length) { host.innerHTML = '<div class="empty">No rows match the current filters.</div>'; return; }
+    const col = LB_COLS.find(c => c.key === state.sort) || LB_COLS[8];
+    const getv = (r, c) => c.type === "text"
+      ? (c.key === "month" ? r.month.trim() : r[c.key])
+      : r.metrics[c.key].value;
+    const sorted = rows.slice().sort((a, b) => {
+      const va = getv(a, col), vb = getv(b, col);
+      if (va == null && vb == null) return 0;
+      if (va == null) return 1;   // nulls always last
+      if (vb == null) return -1;
+      if (col.type === "text") return String(va).localeCompare(String(vb)) * state.dir;
+      return (va - vb) * state.dir;
+    });
+    const maxOf = {};
+    LB_COLS.filter(c => c.bar).forEach(c =>
+      maxOf[c.key] = Math.max(...rows.map(r => r.metrics[c.key].value || 0)) || 1);
+
+    let t = '<table class="lb"><thead><tr>';
+    LB_COLS.forEach(c => {
+      const isSort = c.key === state.sort;
+      t += "<th" + (isSort ? ' aria-sort="' + (state.dir < 0 ? "descending" : "ascending") + '"' : "") +
+        ' data-sort="' + c.key + '" title="Sort by ' + esc(c.label) + '">' + esc(c.label) +
+        (isSort ? '<span class="arrow">' + (state.dir < 0 ? "▼" : "▲") + "</span>" : "") + "</th>";
+    });
+    t += "</tr></thead><tbody>";
+    sorted.forEach(r => {
+      const M = r.metrics;
+      t += '<tr data-tip-id="' + registerTip({
+        title: r.placement + " — " + r.month.trim(),
+        rows: [["Channel", r.channel], ["Objective", r.objective], ["", ""]].concat(
+          PM.metric_order.map(k => [LABEL[k], fmtM(k, M[k].value)])),
+        foot: "row " + r.row + ": " + M.gross_spend.cell + ":" + M.total_roas.cell
+      }) + '">';
+      LB_COLS.forEach(c => {
+        if (c.type === "text") {
+          const v = c.key === "month" ? r.month.trim() : r[c.key];
+          t += '<td class="lbl">' + (c.key === "placement"
+            ? '<i class="chdot" style="background:' + CH_COLOR[r.channel] + '" title="' + esc(r.channel) + '"></i>' +
+              '<b>' + esc(trim(v, 26)) + "</b>"
+            : esc(trim(v, 18))) + "</td>";
+        } else if (c.bar) {
+          const v = M[c.key].value || 0;
+          t += '<td class="cellwrap"><div class="minibar"><i style="width:' +
+            Math.max(1, (v / maxOf[c.key]) * 100) + "%;background:" + CH_COLOR[r.channel] +
+            '"></i><span>' + esc(fmtM(c.key, M[c.key].value)) + "</span></div></td>";
+        } else {
+          const v = M[c.key].value;
+          const style = c.key === "total_roas" && v != null
+            ? ' style="color:' + (v >= 1 ? "var(--good)" : "var(--bad)") + ';font-weight:650"' : "";
+          t += "<td" + style + ">" + (v == null ? '<span class="pend">—</span>' : esc(fmtM(c.key, v))) + "</td>";
+        }
+      });
+      t += "</tr>";
+    });
+    // totals row: additive columns summed, ratios recomputed
+    const sp = sumOf(rows, "gross_spend"), nt = sumOf(rows, "ntl"), tr = sumOf(rows, "total_raised");
+    t += "</tbody><tfoot><tr>";
+    LB_COLS.forEach((c, i) => {
+      if (i === 0) { t += '<td class="lbl">' + rows.length + " placement-months</td>"; return; }
+      if (c.type === "text") { t += "<td></td>"; return; }
+      let v = null;
+      if (c.key === "gross_cpa") v = nt ? sp / nt : null;
+      else if (c.key === "total_roas") v = sp ? tr / sp : null;
+      else if (PM.additive.indexOf(c.key) >= 0) v = sumOf(rows, c.key);
+      t += "<td>" + (v == null ? "—" : esc(fmtM(c.key, v))) + "</td>";
+    });
+    t += "</tr></tfoot></table>";
+    host.innerHTML = t;
+
+    host.querySelectorAll("th[data-sort]").forEach(th => {
+      th.addEventListener("click", () => {
+        const k = th.getAttribute("data-sort");
+        if (state.sort === k) state.dir = -state.dir;
+        else { state.sort = k; state.dir = LB_COLS.find(c => c.key === k).type === "text" ? 1 : -1; }
+        renderLeaderboard(filtered());
+      });
+    });
+    bindTips(host);
+  }
+
+  renderDetail();
+
+  // info bubbles on the three detail views
+  const viewInfo = [
+    ["pmChStackSpend", {
+      title: "Spend by channel",
+      rows: [["Source", cell(DR("F")) + ", grouped by " + cell(DR("B")) +
+        " (month) and " + cell(DR("C")) + " (channel)"]],
+      calc: "Each stack is the sum of that month's detail rows for each channel. Stack totals equal " +
+            "the monthly topline spend in " + cell(MR("F")) + " when no filter is applied — verified.",
+      caveat: "Respects the filters above, so stack totals match the monthly toplines only when both " +
+              "filters are set to All.",
+      source: PM_SHEET
+    }],
+    ["pmChStackRaised", {
+      title: "Total Raised by channel",
+      rows: [["Source", cell(DR("M")) + ", grouped by month " + cell(DR("B")) +
+        " and channel " + cell(DR("C"))]],
+      calc: "Sum of Total Raised per channel per month.",
+      caveat: "Total Raised is not Immediate + Lifetime — per " + cell("G9") + ", immediate is removed " +
+              "from NTL so it is not double counted. Summing the stacks will therefore not equal " +
+              "Immediate plus Lifetime.",
+      source: PM_SHEET + "<br>" + defNote(["Total Raised", "Immediate Raised", "Lifetime Raised"])
+    }],
+    ["pmChScatter", {
+      title: "Cost per name vs. return on spend",
+      rows: [
+        ["X axis", "Gross CPA " + cell(DR("H")) + " — log scale"],
+        ["Y axis", "Total ROAS " + cell(DR("N"))],
+        ["Bubble size", "Gross Spend " + cell(DR("F")) + ", scaled by square root of spend"],
+        ["Color", "channel " + cell(DR("C"))]
+      ],
+      calc: "Nothing is recomputed — all three values are read from the detail row. The dashed line " +
+            "marks ROAS = 1.00×, where money raised equals money spent.",
+      caveat: "Rows with zero NTL have no CPA (division by zero) and cannot be placed on a log axis, " +
+              "so they are excluded; the count is stated under the chart. The two visible clusters are " +
+              "real: fixed-CPA placements buy names cheaply with little immediate revenue, while P2P " +
+              "placements cost far more per name but return above break-even.",
+      source: PM_SHEET + "<br>" + defNote(["CPA", "ROAS", "NTL"])
+    }],
+    ["pmLeader", {
+      title: "Placement leaderboard",
+      rows: [
+        ["Rows", "one per placement-month, " + cell("B" + PM.detail[0].row) + ":" +
+          cell("N" + PM.detail[PM.detail.length - 1].row)],
+        ["Bars", "Gross Spend " + cell(DR("F")) + ", NTL " + cell(DR("G")) + " and Total Raised " +
+          cell(DR("M")) + ", each scaled to the largest value in its own column"],
+        ["Totals row", "additive columns summed; CPA and ROAS recomputed from those sums"]
+      ],
+      calc: "Sorting and filtering never change a value — only which rows are shown and in what order. " +
+            "The totals row recomputes CPA as summed spend ÷ summed NTL, and ROAS as summed raised ÷ " +
+            "summed spend, because averaging per-row ratios would be wrong.",
+      caveat: "Bar lengths are comparable within a column but not across columns, since each column is " +
+              "scaled independently.",
+      source: PM_SHEET
+    }]
+  ];
+  viewInfo.forEach(([hostId, spec]) => {
+    const card = document.getElementById(hostId).closest(".card");
+    const head = card && card.querySelector(".sechead.sub h3");
+    if (head) head.appendChild(infoBubble(spec));
+  });
+
+})();
+
+/* ==================== tabs ==================== */
+document.querySelectorAll(".tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", String(t === tab)));
+    document.querySelectorAll(".panel").forEach(p => {
+      p.hidden = p.id !== tab.getAttribute("aria-controls");
+    });
+    closePop();
+  });
+});
+window.addEventListener("resize", closePop);
+</script>
+</body>
+</html>
