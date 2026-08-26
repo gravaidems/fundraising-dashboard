@@ -95,11 +95,16 @@ const activeCount = D.channels.filter(c => !c.dormant).length;
 check("accumulation small multiples rendered", doc.querySelectorAll("#chAccum .sm").length === activeCount,
   "charts " + doc.querySelectorAll("#chAccum .sm").length + " vs active channels " + activeCount);
 
-// ---------- 1. header metadata ---------------------------------------------
-const metaTxt = txt(doc.getElementById("pgMeta"));
-[["client", D.meta.client.value], ["email lead", D.meta.email_lead.value]].forEach(([k, v]) => {
-  check("header shows " + k, metaTxt.includes(String(v)), k + " = " + v + " not found in: " + metaTxt);
-});
+// ---------- 1. header metadata -----------------------------------------
+// The header intentionally does not surface Client / Email lead / Quarter —
+// those were removed from the page. Confirm the title is the static,
+// workbook-independent string rather than something read off a sheet cell.
+check("header title is the static page title",
+  txt(doc.getElementById("pgTitle")) === "Digital Fundraising Report",
+  "pgTitle = " + JSON.stringify(txt(doc.getElementById("pgTitle"))));
+check("header no longer has a client/email-lead/quarter meta block",
+  !doc.getElementById("pgMeta"),
+  "expected #pgMeta to be gone from the page");
 
 // ---------- 2. hero stats ---------------------------------------------------
 const q = k => D.overall[k].periods.quarter;

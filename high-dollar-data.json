@@ -1,0 +1,967 @@
+{
+  "meta": {
+    "title": "High-Dollar Donations",
+    "sheet": "High-Dollar Donations",
+    "source_workbook": "EXTERNAL_ CAB Digital Report.xlsx",
+    "extracted_at": "2026-08-26T00:10:01",
+    "year": {
+      "value": 2026,
+      "cell": null,
+      "derived": true
+    },
+    "quarter": {
+      "value": 3,
+      "cell": null,
+      "derived": true
+    }
+  },
+  "metric_order": [
+    "amount"
+  ],
+  "metric_labels": {
+    "amount": "amount"
+  },
+  "metric_kinds": {
+    "amount": "usd"
+  },
+  "metric_columns": {
+    "amount": "D"
+  },
+  "additive": [
+    "amount"
+  ],
+  "ratios": [],
+  "unresolvable_ratios": [],
+  "ratio_components": {},
+  "month_keys": [
+    "august_2026"
+  ],
+  "months": [
+    {
+      "label": "August 2026",
+      "rows": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26
+      ],
+      "count": 22,
+      "metrics": {
+        "amount": {
+          "label": "amount",
+          "kind": "usd",
+          "value": 29500,
+          "cells": [
+            "D5",
+            "D6",
+            "D7",
+            "D8",
+            "D9",
+            "D10",
+            "D11",
+            "D12",
+            "D13",
+            "D14",
+            "D15",
+            "D16",
+            "D17",
+            "D18",
+            "D19",
+            "D20",
+            "D21",
+            "D22",
+            "D23",
+            "D24",
+            "D25",
+            "D26"
+          ],
+          "computed": true
+        }
+      },
+      "key": "august_2026"
+    }
+  ],
+  "totals": {
+    "label": "Quarter to date",
+    "rows": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26
+    ],
+    "count": 22,
+    "metrics": {
+      "amount": {
+        "label": "amount",
+        "kind": "usd",
+        "value": 29500,
+        "cells": [
+          "D5",
+          "D6",
+          "D7",
+          "D8",
+          "D9",
+          "D10",
+          "D11",
+          "D12",
+          "D13",
+          "D14",
+          "D15",
+          "D16",
+          "D17",
+          "D18",
+          "D19",
+          "D20",
+          "D21",
+          "D22",
+          "D23",
+          "D24",
+          "D25",
+          "D26"
+        ],
+        "computed": true
+      }
+    }
+  },
+  "detail": [
+    {
+      "row": 5,
+      "category": "Website",
+      "category_cell": "A5",
+      "receipt_id": "AB404526000",
+      "receipt_id_cell": "B5",
+      "date_serial": 46237,
+      "date_cell": "C5",
+      "date": "2026-08-03",
+      "year": 2026,
+      "quarter": 3,
+      "month": "August 2026",
+      "month_derived": true,
+      "fundraising_page": "https://secure.actblue.com/donate/my-express",
+      "first": "Ian",
+      "last": "Lipsitch",
+      "email": "lipsitch@att.net",
+      "finance_claim": false,
+      "finance_claim_cell": "I5",
+      "authentic_added": false,
+      "authentic_added_cell": "J5",
+      "metrics": {
+        "amount": {
+          "label": "amount",
+          "kind": "usd",
+          "value": 500,
+          "cell": "D5",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),500.0)"
+        }
+      }
+    },
+    {
+      "row": 6,
+      "category": "Website",
+      "category_cell": "A6",
+      "receipt_id": "AB404669884",
+      "receipt_id_cell": "B6",
+      "date_serial": 46238,
+      "date_cell": "C6",
+      "date": "2026-08-04",
+      "year": 2026,
+      "quarter": 3,
+      "month": "August 2026",
+      "month_derived": true,
+      "fundraising_page": "https://secure.actblue.com/donate/my-express",
+      "first": "Susan",
+      "last": "Lipsitch",
+      "email": "lipsitch@att.net",
+      "finance_claim": false,
+      "finance_claim_cell": "I6",
+      "authentic_added": false,
+      "authentic_added_cell": "J6",
+      "metrics": {
+        "amount": {
+          "label": "amount",
+          "kind": "usd",
+          "value": 500,
+          "cell": "D6",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),500.0)"
+        }
+      }
+    },
+    {
+      "row": 7,
+      "category": "Website",
+      "category_cell": "A7",
+      "receipt_id": "AB404709437",
+      "receipt_id_cell": "B7",
+      "date_serial": 46238,
+      "date_cell": "C7",
+      "date": "2026-08-04",
+      "year": 2026,
+      "quarter": 3,
+      "month": "August 2026",
+      "month_derived": true,
+      "fundraising_page": "https://secure.actblue.com/donate/corybooker-2020-website",
+      "first": "Daniel",
+      "last": "Walsh",
+      "email": "danwalsh45211@yahoo.com",
+      "finance_claim": false,
+      "finance_claim_cell": "I7",
+      "authentic_added": false,
+      "authentic_added_cell": "J7",
+      "metrics": {
+        "amount": {
+          "label": "amount",
+          "kind": "usd",
+          "value": 1000,
+          "cell": "D7",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1000.0)"
+        }
+      }
+    },
+    {
+      "row": 8,
+      "category": "Email",
+      "category_cell": "A8",
+      "receipt_id": "AB405059196",
+      "receipt_id_cell": "B8",
+      "date_serial": 46240,
+      "date_cell": "C8",
+      "date": "2026-08-06",
+      "year": 2026,
+      "quarter": 3,
+      "month": "August 2026",
+      "month_derived": true,
+      "fundraising_page": "https://secure.actblue.com/donate/cab-em-q3-2026",
+      "first": "Anthony",
+      "last": "Conte",
+      "email": "tony@mbtcpartners.com",
+      "finance_claim": false,
+      "finance_claim_cell": "I8",
+      "authentic_added": false,
+      "authentic_added_cell": "J8",
+      "metrics": {
+        "amount": {
+          "label": "amount",
+          "kind": "usd",
+          "value": 500,
+          "cell": "D8",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),500.0)"
+        }
+      }
+    },
+    {
+      "row": 9,
+      "category": "Website",
+      "category_cell": "A9",
+      "receipt_id": "AB405148229",
+      "receipt_id_cell": "B9",
+      "date_serial": 46241,
+      "date_cell": "C9",
+      "date": "2026-08-07",
+      "year": 2026,
+      "quarter": 3,
+      "month": "August 2026",
+      "month_derived": true,
+      "fundraising_page": "https://secure.actblue.com/donate/corybooker-2020-website",
+      "first": "Mary",
+      "last": "Steenburgen",
+      "email": "sydney@mary-ted.com",
+      "finance_claim": false,
+      "finance_claim_cell": "I9",
+      "authentic_added": false,
+      "authentic_added_cell": "J9",
+      "metrics": {
+        "amount": {
+          "label": "amount",
+          "kind": "usd",
+          "value": 2500,
+          "cell": "D9",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),2500.0)"
+        }
+      }
+    },
+    {
+      "row": 10,
+      "category": "Email",
+      "category_cell": "A10",
+      "receipt_id": "AB405290618",
+      "receipt_id_cell": "B10",
+      "date_serial": 46242,
+      "date_cell": "C10",
+      "date": "2026-08-08",
+      "year": 2026,
+      "quarter": 3,
+      "month": "August 2026",
+      "month_derived": true,
+      "fundraising_page": "https://secure.actblue.com/donate/cab-em-q3-2026",
+      "first": "Phyllis",
+      "last": "Louis Dreyfus",
+      "email": "phyllisjpe3@aol.com",
+      "finance_claim": false,
+      "finance_claim_cell": "I10",
+      "authentic_added": false,
+      "authentic_added_cell": "J10",
+      "metrics": {
+        "amount": {
+          "label": "amount",
+          "kind": "usd",
+          "value": 3500,
+          "cell": "D10",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),3500.0)"
+        }
+      }
+    },
+    {
+      "row": 11,
+      "category": "Email",
+      "category_cell": "A11",
+      "receipt_id": "AB405317069",
+      "receipt_id_cell": "B11",
+      "date_serial": 46242,
+      "date_cell": "C11",
+      "date": "2026-08-08",
+      "year": 2026,
+      "quarter": 3,
+      "month": "August 2026",
+      "month_derived": true,
+      "fundraising_page": "https://secure.actblue.com/donate/cab-em-q3-2026",
+      "first": "Joyce",
+      "last": "Carlough",
+      "email": "joycarlough@gmail.com",
+      "finance_claim": false,
+      "finance_claim_cell": "I11",
+      "authentic_added": false,
+      "authentic_added_cell": "J11",
+      "metrics": {
+        "amount": {
+          "label": "amount",
+          "kind": "usd",
+          "value": 500,
+          "cell": "D11",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),500.0)"
+        }
+      }
+    },
+    {
+      "row": 12,
+      "category": "P2P",
+      "category_cell": "A12",
+      "receipt_id": "AB405325178",
+      "receipt_id_cell": "B12",
+      "date_serial": 46242,
+      "date_cell": "C12",
+      "date": "2026-08-08",
+      "year": 2026,
+      "quarter": 3,
+      "month": "August 2026",
+      "month_derived": true,
+      "fundraising_page": "https://secure.actblue.com/donate/cab-ads-260808-stw-blancherr-dd-us",
+      "first": "Jean",
+      "last": "Potratz",
+      "email": "potratzjean@gmail.com",
+      "finance_claim": false,
+      "finance_claim_cell": "I12",
+      "authentic_added": false,
+      "authentic_added_cell": "J12",
+      "metrics": {
+        "amount": {
+          "label": "amount",
+          "kind": "usd",
+          "value": 500,
+          "cell": "D12",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),500.0)"
+        }
+      }
+    },
+    {
+      "row": 13,
+      "category": "Website",
+      "category_cell": "A13",
+      "receipt_id": "AB405325318",
+      "receipt_id_cell": "B13",
+      "date_serial": 46242,
+      "date_cell": "C13",
+      "date": "2026-08-08",
+      "year": 2026,
+      "quarter": 3,
+      "month": "August 2026",
+      "month_derived": true,
+      "fundraising_page": "https://secure.actblue.com/donate/cab-sticker",
+      "first": "Jean",
+      "last": "Potratz",
+      "email": "potratzjean@gmail.com",
+      "finance_claim": false,
+      "finance_claim_cell": "I13",
+      "authentic_added": false,
+      "authentic_added_cell": "J13",
+      "metrics": {
+        "amount": {
+          "label": "amount",
+          "kind": "usd",
+          "value": 2000,
+          "cell": "D13",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),2000.0)"
+        }
+      }
+    },
+    {
+      "row": 14,
+      "category": "P2P",
+      "category_cell": "A14",
+      "receipt_id": "AB405329369",
+      "receipt_id_cell": "B14",
+      "date_serial": 46242,
+      "date_cell": "C14",
+      "date": "2026-08-08",
+      "year": 2026,
+      "quarter": 3,
+      "month": "August 2026",
+      "month_derived": true,
+      "fundraising_page": "https://secure.actblue.com/donate/cab-ads-260808-stw-blancherr-dd-us",
+      "first": "Thomas",
+      "last": "Sullivan",
+      "email": "thsullivan38@gmail.com",
+      "finance_claim": false,
+      "finance_claim_cell": "I14",
+      "authentic_added": false,
+      "authentic_added_cell": "J14",
+      "metrics": {
+        "amount": {
+          "label": "amount",
+          "kind": "usd",
+          "value": 500,
+          "cell": "D14",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),500.0)"
+        }
+      }
+    },
+    {
+      "row": 15,
+      "category": "P2P",
+      "category_cell": "A15",
+      "receipt_id": "AB405338985",
+      "receipt_id_cell": "B15",
+      "date_serial": 46242,
+      "date_cell": "C15",
+      "date": "2026-08-08",
+      "year": 2026,
+      "quarter": 3,
+      "month": "August 2026",
+      "month_derived": true,
+      "fundraising_page": "https://secure.actblue.com/donate/cab-ads-260808-stw-blancherr-dd-us",
+      "first": "Kathleen",
+      "last": "Williams",
+      "email": "katiew@idealliving.com",
+      "finance_claim": false,
+      "finance_claim_cell": "I15",
+      "authentic_added": false,
+      "authentic_added_cell": "J15",
+      "metrics": {
+        "amount": {
+          "label": "amount",
+          "kind": "usd",
+          "value": 500,
+          "cell": "D15",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),500.0)"
+        }
+      }
+    },
+    {
+      "row": 16,
+      "category": "Ads",
+      "category_cell": "A16",
+      "receipt_id": "AB405427089",
+      "receipt_id_cell": "B16",
+      "date_serial": 46243,
+      "date_cell": "C16",
+      "date": "2026-08-09",
+      "year": 2026,
+      "quarter": 3,
+      "month": "August 2026",
+      "month_derived": true,
+      "fundraising_page": "https://secure.actblue.com/donate/cab-ads-260808-tba-blancherr-dd-us",
+      "first": "ELIZABETH",
+      "last": "JOHNSON",
+      "email": "SOCCERMOM17@HOTMAIL.COM",
+      "finance_claim": false,
+      "finance_claim_cell": "I16",
+      "authentic_added": false,
+      "authentic_added_cell": "J16",
+      "metrics": {
+        "amount": {
+          "label": "amount",
+          "kind": "usd",
+          "value": 500,
+          "cell": "D16",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),500.0)"
+        }
+      }
+    },
+    {
+      "row": 17,
+      "category": "Email",
+      "category_cell": "A17",
+      "receipt_id": "AB405930318",
+      "receipt_id_cell": "B17",
+      "date_serial": 46247,
+      "date_cell": "C17",
+      "date": "2026-08-13",
+      "year": 2026,
+      "quarter": 3,
+      "month": "August 2026",
+      "month_derived": true,
+      "fundraising_page": "https://secure.actblue.com/donate/cab-apr2024-em",
+      "first": "Luellen",
+      "last": "Fletcher",
+      "email": "luellenfletcher4@gmail.com",
+      "finance_claim": false,
+      "finance_claim_cell": "I17",
+      "authentic_added": false,
+      "authentic_added_cell": "J17",
+      "metrics": {
+        "amount": {
+          "label": "amount",
+          "kind": "usd",
+          "value": 3500,
+          "cell": "D17",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),3500.0)"
+        }
+      }
+    },
+    {
+      "row": 18,
+      "category": "Email",
+      "category_cell": "A18",
+      "receipt_id": "AB405960644",
+      "receipt_id_cell": "B18",
+      "date_serial": 46247,
+      "date_cell": "C18",
+      "date": "2026-08-13",
+      "year": 2026,
+      "quarter": 3,
+      "month": "August 2026",
+      "month_derived": true,
+      "fundraising_page": "https://secure.actblue.com/donate/cab-em-q3-2026",
+      "first": "Ellen",
+      "last": "Breslow Newhouse",
+      "email": "ellen_breslow@condenast.com",
+      "finance_claim": false,
+      "finance_claim_cell": "I18",
+      "authentic_added": false,
+      "authentic_added_cell": "J18",
+      "metrics": {
+        "amount": {
+          "label": "amount",
+          "kind": "usd",
+          "value": 1000,
+          "cell": "D18",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1000.0)"
+        }
+      }
+    },
+    {
+      "row": 19,
+      "category": "Ads",
+      "category_cell": "A19",
+      "receipt_id": "AB405986773",
+      "receipt_id_cell": "B19",
+      "date_serial": 46247,
+      "date_cell": "C19",
+      "date": "2026-08-13",
+      "year": 2026,
+      "quarter": 3,
+      "month": "August 2026",
+      "month_derived": true,
+      "fundraising_page": "https://secure.actblue.com/donate/cab-ads-260521-meta-dtc-dd-us",
+      "first": "Karen",
+      "last": "Cramer",
+      "email": "pidgins.94-trainer@icloud.com",
+      "finance_claim": false,
+      "finance_claim_cell": "I19",
+      "authentic_added": false,
+      "authentic_added_cell": "J19",
+      "metrics": {
+        "amount": {
+          "label": "amount",
+          "kind": "usd",
+          "value": 500,
+          "cell": "D19",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),500.0)"
+        }
+      }
+    },
+    {
+      "row": 20,
+      "category": "Website",
+      "category_cell": "A20",
+      "receipt_id": "AB406118492",
+      "receipt_id_cell": "B20",
+      "date_serial": 46248,
+      "date_cell": "C20",
+      "date": "2026-08-14",
+      "year": 2026,
+      "quarter": 3,
+      "month": "August 2026",
+      "month_derived": true,
+      "fundraising_page": "https://secure.actblue.com/donate/corybooker-2020-website",
+      "first": "George",
+      "last": "Kaiser",
+      "email": "jeanac@kfoc.net",
+      "finance_claim": false,
+      "finance_claim_cell": "I20",
+      "authentic_added": false,
+      "authentic_added_cell": "J20",
+      "metrics": {
+        "amount": {
+          "label": "amount",
+          "kind": "usd",
+          "value": 3500,
+          "cell": "D20",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),3500.0)"
+        }
+      }
+    },
+    {
+      "row": 21,
+      "category": "Website",
+      "category_cell": "A21",
+      "receipt_id": "AB406145158",
+      "receipt_id_cell": "B21",
+      "date_serial": 46248,
+      "date_cell": "C21",
+      "date": "2026-08-14",
+      "year": 2026,
+      "quarter": 3,
+      "month": "August 2026",
+      "month_derived": true,
+      "fundraising_page": "https://secure.actblue.com/donate/corybooker-2020-website",
+      "first": "Susan",
+      "last": "Bloomfield",
+      "email": "SCS3Sweet@gmail.com",
+      "finance_claim": false,
+      "finance_claim_cell": "I21",
+      "authentic_added": false,
+      "authentic_added_cell": "J21",
+      "metrics": {
+        "amount": {
+          "label": "amount",
+          "kind": "usd",
+          "value": 3500,
+          "cell": "D21",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),3500.0)"
+        }
+      }
+    },
+    {
+      "row": 22,
+      "category": "Website",
+      "category_cell": "A22",
+      "receipt_id": "AB406886187",
+      "receipt_id_cell": "B22",
+      "date_serial": 46253,
+      "date_cell": "C22",
+      "date": "2026-08-19",
+      "year": 2026,
+      "quarter": 3,
+      "month": "August 2026",
+      "month_derived": true,
+      "fundraising_page": "https://secure.actblue.com/donate/corybooker-2020-website",
+      "first": "Betsy",
+      "last": "Seeley",
+      "email": "betsy.seeley.cl@mail.com",
+      "finance_claim": false,
+      "finance_claim_cell": "I22",
+      "authentic_added": false,
+      "authentic_added_cell": "J22",
+      "metrics": {
+        "amount": {
+          "label": "amount",
+          "kind": "usd",
+          "value": 2000,
+          "cell": "D22",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),2000.0)"
+        }
+      }
+    },
+    {
+      "row": 23,
+      "category": "Website",
+      "category_cell": "A23",
+      "receipt_id": "AB406950345",
+      "receipt_id_cell": "B23",
+      "date_serial": 46253,
+      "date_cell": "C23",
+      "date": "2026-08-19",
+      "year": 2026,
+      "quarter": 3,
+      "month": "August 2026",
+      "month_derived": true,
+      "fundraising_page": "https://secure.actblue.com/donate/my-express",
+      "first": "Richard",
+      "last": "Shapiro",
+      "email": "rich@gtgtandems.com",
+      "finance_claim": false,
+      "finance_claim_cell": "I23",
+      "authentic_added": false,
+      "authentic_added_cell": "J23",
+      "metrics": {
+        "amount": {
+          "label": "amount",
+          "kind": "usd",
+          "value": 500,
+          "cell": "D23",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),500.0)"
+        }
+      }
+    },
+    {
+      "row": 24,
+      "category": "Website",
+      "category_cell": "A24",
+      "receipt_id": "AB407417100",
+      "receipt_id_cell": "B24",
+      "date_serial": 46257,
+      "date_cell": "C24",
+      "date": "2026-08-23",
+      "year": 2026,
+      "quarter": 3,
+      "month": "August 2026",
+      "month_derived": true,
+      "fundraising_page": "https://secure.actblue.com/donate/corybookermajority",
+      "first": "Gary",
+      "last": "Schulze",
+      "email": "gschulze2@yahoo.com",
+      "finance_claim": false,
+      "finance_claim_cell": "I24",
+      "authentic_added": false,
+      "authentic_added_cell": "J24",
+      "metrics": {
+        "amount": {
+          "label": "amount",
+          "kind": "usd",
+          "value": 1000,
+          "cell": "D24",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),1000.0)"
+        }
+      }
+    },
+    {
+      "row": 25,
+      "category": "Ads",
+      "category_cell": "A25",
+      "receipt_id": "AB407572891",
+      "receipt_id_cell": "B25",
+      "date_serial": 46258,
+      "date_cell": "C25",
+      "date": "2026-08-24",
+      "year": 2026,
+      "quarter": 3,
+      "month": "August 2026",
+      "month_derived": true,
+      "fundraising_page": "https://secure.actblue.com/donate/cab-ads-260521-meta-dtc-dd-us",
+      "first": "Ravenna",
+      "last": "Taylor",
+      "email": "byzyntia@gmail.com",
+      "finance_claim": false,
+      "finance_claim_cell": "I25",
+      "authentic_added": false,
+      "authentic_added_cell": "J25",
+      "metrics": {
+        "amount": {
+          "label": "amount",
+          "kind": "usd",
+          "value": 500,
+          "cell": "D25",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),500.0)"
+        }
+      }
+    },
+    {
+      "row": 26,
+      "category": null,
+      "category_cell": "A26",
+      "receipt_id": "AB407669516",
+      "receipt_id_cell": "B26",
+      "date_serial": 46258,
+      "date_cell": "C26",
+      "date": "2026-08-24",
+      "year": 2026,
+      "quarter": 3,
+      "month": "August 2026",
+      "month_derived": true,
+      "fundraising_page": "https://secure.actblue.com/donate/cab-ads-260824-msgd-cablobster-dd-us",
+      "first": "Jessie",
+      "last": "Ewing",
+      "email": "ewingjessie0@gmail.com",
+      "finance_claim": false,
+      "finance_claim_cell": "I26",
+      "authentic_added": false,
+      "authentic_added_cell": "J26",
+      "metrics": {
+        "amount": {
+          "label": "amount",
+          "kind": "usd",
+          "value": 500,
+          "cell": "D26",
+          "formula": "=IFERROR(__xludf.DUMMYFUNCTION(\"\"\"COMPUTED_VALUE\"\"\"),500.0)"
+        }
+      }
+    }
+  ],
+  "categories": [
+    "Ads",
+    "Email",
+    "P2P",
+    "Website"
+  ],
+  "accum_keys": [
+    "amount"
+  ],
+  "cumulative": {
+    "overall": {
+      "amount": [
+        {
+          "month": "august_2026",
+          "label": "August 2026",
+          "value": 29500,
+          "step": 29500,
+          "step_cells": [
+            "D5",
+            "D6",
+            "D7",
+            "D8",
+            "D9",
+            "D10",
+            "D11",
+            "D12",
+            "D13",
+            "D14",
+            "D15",
+            "D16",
+            "D17",
+            "D18",
+            "D19",
+            "D20",
+            "D21",
+            "D22",
+            "D23",
+            "D24",
+            "D25",
+            "D26"
+          ],
+          "computed_running_total": true
+        }
+      ]
+    },
+    "by_category": {
+      "Ads": {
+        "amount": [
+          {
+            "month": "august_2026",
+            "label": "August 2026",
+            "value": 1500,
+            "step": 1500,
+            "step_cells": [
+              "D16",
+              "D19",
+              "D25"
+            ],
+            "computed_running_total": true
+          }
+        ]
+      },
+      "Email": {
+        "amount": [
+          {
+            "month": "august_2026",
+            "label": "August 2026",
+            "value": 9000,
+            "step": 9000,
+            "step_cells": [
+              "D8",
+              "D10",
+              "D11",
+              "D17",
+              "D18"
+            ],
+            "computed_running_total": true
+          }
+        ]
+      },
+      "P2P": {
+        "amount": [
+          {
+            "month": "august_2026",
+            "label": "August 2026",
+            "value": 1500,
+            "step": 1500,
+            "step_cells": [
+              "D12",
+              "D14",
+              "D15"
+            ],
+            "computed_running_total": true
+          }
+        ]
+      },
+      "Website": {
+        "amount": [
+          {
+            "month": "august_2026",
+            "label": "August 2026",
+            "value": 17000,
+            "step": 17000,
+            "step_cells": [
+              "D5",
+              "D6",
+              "D7",
+              "D9",
+              "D13",
+              "D20",
+              "D21",
+              "D22",
+              "D23",
+              "D24"
+            ],
+            "computed_running_total": true
+          }
+        ]
+      }
+    }
+  }
+}

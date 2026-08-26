@@ -7,6 +7,7 @@
  * Usage:
  *   node build-data.js ["EXTERNAL_ CAB Digital Report.xlsx"]
  *        [-d digital-report-data.json] [-p paid-media-data.json] [-s p2p-data.json]
+ *        [-e email-stats-data.json] [-hd high-dollar-data.json]
  */
 const fs = require("fs");
 const path = require("path");
@@ -21,13 +22,15 @@ function arg(flag, dflt) {
 }
 
 (async function main() {
-  const flags = ["-d", "-p", "-s"];
+  const flags = ["-d", "-p", "-s", "-e", "-hd"];
   const positional = process.argv.slice(2).filter(a => !a.startsWith("-") &&
     flags.indexOf(process.argv[process.argv.indexOf(a) - 1]) < 0);
   const wbPath = positional[0] || "EXTERNAL_ CAB Digital Report.xlsx";
   const outD = arg("-d", "digital-report-data.json");
   const outP = arg("-p", "paid-media-data.json");
   const outS = arg("-s", "p2p-data.json");
+  const outE = arg("-e", "email-stats-data.json");
+  const outHD = arg("-hd", "high-dollar-data.json");
 
   if (!fs.existsSync(wbPath)) {
     console.error("workbook not found: " + wbPath);
@@ -64,6 +67,17 @@ function arg(flag, dflt) {
     console.log("wrote " + outS + " (" + out.p2p.months.length + " months, " +
       out.p2p.detail.length + " detail rows, " + out.p2p.audiences.length + " audiences, " +
       out.p2p.topics.length + " topics)");
+  }
+  if (out.email) {
+    fs.writeFileSync(outE, JSON.stringify(out.email, null, 2));
+    console.log("wrote " + outE + " (" + out.email.months.length + " months, " +
+      out.email.detail.length + " detail rows, " + out.email.audiences.length + " audiences, " +
+      out.email.topics.length + " topics)");
+  }
+  if (out.highDollar) {
+    fs.writeFileSync(outHD, JSON.stringify(out.highDollar, null, 2));
+    console.log("wrote " + outHD + " (" + out.highDollar.months.length + " months, " +
+      out.highDollar.detail.length + " detail rows, " + out.highDollar.categories.length + " categories)");
   }
   if (rep.warnings) console.log(rep.warnings + " warning(s) — see above.");
 })().catch(e => { console.error(e.stack || String(e)); process.exit(1); });

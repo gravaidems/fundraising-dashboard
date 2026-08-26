@@ -21,6 +21,8 @@ echo "\n== arithmetic identities =="
 python3 verify_digital_report.py digital-report-data.json
 python3 verify_paid_media.py paid-media-data.json
 python3 verify_p2p.py p2p-data.json
+python3 verify_email_stats.py email-stats-data.json
+python3 verify_high_dollar.py high-dollar-data.json
 
 echo "\n== rendered page vs workbook =="
 node verify_rendered.js digital-report.html digital-report-data.json paid-media-data.json

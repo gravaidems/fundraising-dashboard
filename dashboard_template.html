@@ -35,6 +35,7 @@ body{
 
 /* ---------- header ---------- */
 header.page{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-end;justify-content:space-between;margin-bottom:22px}
+header.page[hidden]{display:none}
 .page h1{font-size:25px;line-height:1.2;margin:0 0 6px;letter-spacing:-.02em}
 .page .sub{color:var(--muted);font-size:13.5px}
 .metagrid{display:flex;flex-wrap:wrap;gap:0 26px}
@@ -61,6 +62,7 @@ header.page{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-end;justify-co
 .srcbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;
   background:var(--surface);border:1px solid var(--border);border-radius:10px;
   padding:9px 13px;margin:0 0 14px;box-shadow:var(--shadow)}
+.srcbar[hidden]{display:none}
 .srcnow{font-size:12.5px;color:var(--muted);min-width:0}
 .srcnow b{color:var(--text)}
 .srcnow code{font-family:var(--mono);font-size:11.5px;background:var(--surface-2);
@@ -107,6 +109,7 @@ header.page{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-end;justify-co
 
 /* ---------- tabs ---------- */
 .tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-bottom:26px}
+.tabs[hidden]{display:none}
 .tab{
   appearance:none;background:none;border:0;border-bottom:2px solid transparent;
   padding:9px 15px;font:inherit;font-size:14px;font-weight:550;color:var(--muted);
@@ -182,7 +185,8 @@ svg text{fill:var(--text)}
 .tip .th{font-weight:680;font-size:12.5px;margin-bottom:5px}
 .tip dl{margin:0;display:grid;grid-template-columns:auto auto;gap:3px 14px}
 .tip dt{color:var(--muted);white-space:nowrap}
-.tip dd{margin:0;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap}
+.tip dd{margin:0;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;
+  overflow-wrap:anywhere;word-break:break-word}
 .tip .tf{margin-top:7px;padding-top:6px;border-top:1px solid var(--border);color:var(--faint);
   font-family:var(--mono);font-size:10.5px;line-height:1.4}
 .hit{fill:var(--text);fill-opacity:0;cursor:pointer}
@@ -253,6 +257,9 @@ svg text{fill:var(--text)}
   font-size:11px;text-align:right;font-variant-numeric:tabular-nums}
 .lb td.cellwrap{padding:4px 9px}
 .chdot{width:8px;height:8px;border-radius:99px;display:inline-block;margin-right:6px;vertical-align:1px}
+.lb a{color:var(--actual);text-decoration:none}
+.lb a:hover{text-decoration:underline}
+.lb a:visited{color:var(--actual)}
 
 /* tables */
 details.data{margin-top:14px;border-top:1px solid var(--border);padding-top:10px}
@@ -302,22 +309,22 @@ footer.page code{font-family:var(--mono)}
          It is read in your browser — nothing is uploaded anywhere.</p>
       <button class="btn big" type="button" id="btnPickEmpty">Choose a workbook…</button>
       <p class="esnote">Expects a <code>Digital Report</code> tab, a
-         <code>Paid Media Report</code> tab, and/or a <code>P2P Statistics</code> tab — any
+         <code>Paid Media Report</code> tab, a <code>P2P Statistics</code> tab, an
+         <code>Email Statistics</code> tab, and/or a <code>High-Dollar Donations</code> tab — any
          combination works. Rows, channels, placements and columns are found by their
          headings, so a workbook that has grown since last quarter still reads correctly.</p>
       <div id="esWarn"></div>
     </div>
   </section>
 
-  <header class="page" id="pgHeader">
+  <header class="page" id="pgHeader" hidden>
     <div>
-      <h1 id="pgTitle">Digital Fundraising Toplines</h1>
+      <h1 id="pgTitle">Digital Fundraising Report</h1>
       <div class="sub" id="pgSub"></div>
     </div>
-    <dl class="metagrid" id="pgMeta"></dl>
   </header>
 
-  <div class="srcbar">
+  <div class="srcbar" hidden>
     <div class="srcnow" id="srcNow"></div>
     <div class="srcact">
       <button class="btn" type="button" id="btnPick">Load a workbook…</button>
@@ -327,13 +334,15 @@ footer.page code{font-family:var(--mono)}
   </div>
   <div class="report" id="report" hidden></div>
 
-  <div class="tabs" role="tablist">
+  <div class="tabs" role="tablist" hidden>
     <button class="tab" role="tab" aria-selected="true" aria-controls="p-overview" id="t-overview">Overview</button>
     <button class="tab" role="tab" aria-selected="false" aria-controls="p-paid" id="t-paid">Paid Media</button>
     <button class="tab" role="tab" aria-selected="false" aria-controls="p-p2p" id="t-p2p">P2P</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="p-email" id="t-email">Email Statistics</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="p-hd" id="t-hd">High-Dollar Donations</button>
   </div>
 
-  <div class="panel" role="tabpanel" id="p-overview" aria-labelledby="t-overview">
+  <div class="panel" role="tabpanel" id="p-overview" aria-labelledby="t-overview" hidden>
     <section id="s-hero">
       <div class="sechead"><h2>Quarterly toplines</h2></div>
       <p class="note" id="heroNote"></p>
@@ -511,6 +520,110 @@ footer.page code{font-family:var(--mono)}
         <div class="sechead sub"><h3>Leaderboard</h3></div>
         <p class="note">Click any column heading to re-sort. Bars are scaled within each column.</p>
         <div class="chartwrap" id="p2Leader"></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="panel" role="tabpanel" id="p-email" aria-labelledby="t-email" hidden>
+    <div class="scope" id="esScope"></div>
+
+    <section id="es-hero">
+      <div class="sechead"><h2>Quarter-to-date toplines</h2></div>
+      <p class="note" id="esHeroNote"></p>
+      <div class="heroes" id="esHeroes"></div>
+    </section>
+
+    <section id="es-month">
+      <div class="sechead"><h2>Monthly toplines</h2></div>
+      <p class="note" id="esMonthNote"></p>
+      <div class="duo">
+        <div class="card pad">
+          <div class="legend" id="esLgMoney"></div>
+          <div class="chartwrap" id="esChMoney"></div>
+        </div>
+        <div class="card pad">
+          <div class="legend" id="esLgDonors"></div>
+          <div class="chartwrap" id="esChDonors"></div>
+        </div>
+      </div>
+      <div class="card pad" style="margin-top:14px">
+        <details class="data" style="border-top:0;padding-top:0"><summary>Show the numbers behind these charts</summary><div id="esTbMonth"></div></details>
+      </div>
+    </section>
+
+    <section id="es-accum">
+      <div class="sechead"><h2>Cumulative by category</h2></div>
+      <p class="note" id="esAccumNote">Running totals per month, split by category. Pick a metric and a category to break down by. Hover any point for exact figures.</p>
+      <div class="card pad">
+        <div class="filters" id="esAccumFilters"></div>
+      </div>
+      <div class="smgrid" id="esAccum" style="margin-top:14px"></div>
+      <div class="card pad" style="margin-top:14px">
+        <details class="data" style="border-top:0;padding-top:0"><summary>Show the numbers behind these charts</summary><div id="esTbAccum"></div></details>
+      </div>
+    </section>
+
+    <section id="es-detail">
+      <div class="sechead"><h2>Row-by-row breakdown</h2></div>
+      <p class="note" id="esDetailNote"></p>
+      <div class="card pad">
+        <div class="filters" id="esFilters"></div>
+        <div class="fstat" id="esFilterStat"></div>
+      </div>
+
+      <div class="card pad" style="margin-top:14px">
+        <div class="sechead sub"><h3>Leaderboard</h3></div>
+        <p class="note">Click any column heading to re-sort. Bars are scaled within each column.</p>
+        <div class="chartwrap" id="esLeader"></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="panel" role="tabpanel" id="p-hd" aria-labelledby="t-hd" hidden>
+    <div class="scope" id="hdScope"></div>
+
+    <section id="hd-hero">
+      <div class="sechead"><h2>Quarter-to-date toplines</h2></div>
+      <p class="note" id="hdHeroNote"></p>
+      <div class="heroes" id="hdHeroes"></div>
+    </section>
+
+    <section id="hd-month">
+      <div class="sechead"><h2>Monthly toplines</h2></div>
+      <p class="note" id="hdMonthNote"></p>
+      <div class="card pad">
+        <div class="legend" id="hdLgAmount"></div>
+        <div class="chartwrap" id="hdChAmount"></div>
+      </div>
+      <div class="card pad" style="margin-top:14px">
+        <details class="data" style="border-top:0;padding-top:0"><summary>Show the numbers behind this chart</summary><div id="hdTbMonth"></div></details>
+      </div>
+    </section>
+
+    <section id="hd-accum">
+      <div class="sechead"><h2>Cumulative by category</h2></div>
+      <p class="note" id="hdAccumNote">Running total of donation amounts per month, split by category. Hover any point for exact figures.</p>
+      <div class="card pad">
+        <div class="filters" id="hdAccumFilters"></div>
+      </div>
+      <div class="smgrid" id="hdAccum" style="margin-top:14px"></div>
+      <div class="card pad" style="margin-top:14px">
+        <details class="data" style="border-top:0;padding-top:0"><summary>Show the numbers behind these charts</summary><div id="hdTbAccum"></div></details>
+      </div>
+    </section>
+
+    <section id="hd-detail">
+      <div class="sechead"><h2>Donation-by-donation breakdown</h2></div>
+      <p class="note" id="hdDetailNote"></p>
+      <div class="card pad">
+        <div class="filters" id="hdFilters"></div>
+        <div class="fstat" id="hdFilterStat"></div>
+      </div>
+
+      <div class="card pad" style="margin-top:14px">
+        <div class="sechead sub"><h3>Donations</h3></div>
+        <p class="note">Click any column heading to re-sort. Full donor detail (name and email) is shown, matching the workbook.</p>
+        <div class="chartwrap" id="hdLeader"></div>
       </div>
     </section>
   </div>
@@ -753,17 +866,10 @@ function toggleNote() {
 /* ==================== header ==================== */
 function renderHeader() {
   const m = DATA.meta;
-  document.getElementById("pgTitle").textContent = m.title || "Digital Fundraising Toplines";
+  document.getElementById("pgTitle").textContent = "Digital Fundraising Report";
   document.getElementById("pgSub").textContent =
     "Q" + (m.quarter.value || "") + " " + (m.year.value || "") + " · digital fundraising performance";
-  document.title = (m.client.value ? m.client.value + " — " : "") + "Q" + m.quarter.value + " " + m.year.value + " Digital Report";
-  const rows = [
-    ["Client", m.client.value, m.client.cell],
-    ["Email lead", m.email_lead.value, m.email_lead.cell],
-    ["Quarter", "Q" + m.quarter.value + " " + m.year.value, m.quarter.cell + " / " + m.year.cell]
-  ];
-  document.getElementById("pgMeta").innerHTML = rows.map(r =>
-    "<div><dt>" + esc(r[0]) + "</dt><dd>" + esc(r[1]) + "</dd></div>").join("");
+  document.title = "Q" + m.quarter.value + " " + m.year.value + " Digital Fundraising Report";
 
   const reported = MONTHS.filter(k => !PENDING.has(k)).map(k => byName[DATA.channels[0].name].periods[k].label);
   const pend = MONTHS.filter(k => PENDING.has(k)).map(k => DATA.channels[0].periods[k].label);
@@ -2122,12 +2228,12 @@ function renderPaidMedia() {
     {key: "placement", label: "Placement", type: "text"},
     {key: "month", label: "Month", type: "text"},
     {key: "objective", label: "Objective", type: "text"},
-    {key: "gross_spend", label: "Gross Spend", type: "metric", bar: true},
-    {key: "ntl", label: "NTL", type: "metric", bar: true},
+    {key: "gross_spend", label: "Gross Spend", type: "metric"},
+    {key: "ntl", label: "NTL", type: "metric"},
     {key: "gross_cpa", label: "Gross CPA", type: "metric"},
     {key: "immediate_raised", label: "Immediate", type: "metric"},
     {key: "lifetime_raised", label: "Lifetime", type: "metric"},
-    {key: "total_raised", label: "Total Raised", type: "metric", bar: true},
+    {key: "total_raised", label: "Total Raised", type: "metric"},
     {key: "total_roas", label: "Total ROAS", type: "metric"}
   ];
 
@@ -2590,7 +2696,7 @@ function renderP2P() {
       P2P.months.map(m => m.label).join(", ") + " — each bar sums that month's detail rows; nothing is read " +
       "from a stored monthly cell because none exists on this tab.";
 
-    const keys = P2P.metric_order;
+    const keys = P2P.metric_order.filter(k => P2P.unresolvable_ratios.indexOf(k) < 0);
     let t = "<table><thead><tr><th>Month</th>" + keys.map(k => "<th>" + esc(LABEL[k]) + "</th>").join("") + "</tr></thead><tbody>";
     rowsSrc.forEach(m => {
       t += "<tr><td>" + esc(m.label) + "</td>" +
@@ -2608,7 +2714,12 @@ function renderP2P() {
         cells(m.metrics.gross_spend.cells)]),
       calc: "Each bar sums that month's detail rows. ROAS and rate figures are recomputed from the summed " +
             "components, never averaged from the per-row values.",
-      caveat: "No monthly rollup row exists on this tab — every figure here is computed on this page.",
+      caveat: "No monthly rollup row exists on this tab — every figure here is computed on this page. " +
+              (P2P.unresolvable_ratios.length
+                ? P2P.unresolvable_ratios.map(k => "“" + esc(LABEL[k]) + "”").join(" and ") +
+                  " is left out of this table because the sheet has no stored numerator count to sum — " +
+                  "it's still shown per row in the detail table below."
+                : ""),
       source: P2_SHEET
     }));
   }
@@ -2796,11 +2907,11 @@ function renderP2P() {
       {key: "audience", label: "Audience", type: "text"},
       {key: "month", label: "Month", type: "text"},
       {key: "objective", label: "Objective", type: "text"},
-      {key: "recipients", label: "Recipients", type: "metric", bar: true},
-      {key: "gross_spend", label: "Gross Spend", type: "metric", bar: true},
-      {key: "immediate_raised", label: "Immediate Raised", type: "metric", bar: true},
+      {key: "recipients", label: "Recipients", type: "metric"},
+      {key: "gross_spend", label: "Gross Spend", type: "metric"},
+      {key: "immediate_raised", label: "Immediate Raised", type: "metric"},
       {key: "immediate_roas", label: "Immediate ROAS", type: "metric"},
-      {key: "donors", label: "Donors", type: "metric", bar: true},
+      {key: "donors", label: "Donors", type: "metric"},
       {key: "average_gift", label: "Avg Gift", type: "metric"},
       {key: "donate_rate", label: "Donate Rate", type: "metric"},
       {key: "ntl", label: "NTL", type: "metric"},
@@ -2920,6 +3031,1125 @@ function renderP2P() {
   renderDetailP2P();
 }
 
+/* ============================================================
+   EMAIL STATISTICS TAB
+   Same shape as P2P: one flat detail table (one row per email send), no
+   stored monthly/quarterly rollup, so every total here is computed on this
+   page from the detail rows and flagged computed:true.
+   ============================================================ */
+let EMAIL = /*__EMAIL_DATA__*/;
+
+function renderEmailStats() {
+  const tabBtn = document.getElementById("t-email");
+  const panel = document.getElementById("p-email");
+  const usable = EMAIL && EMAIL.detail && EMAIL.detail.length && EMAIL.months && EMAIL.months.length;
+  if (tabBtn) tabBtn.hidden = !usable;
+  if (!usable) {
+    if (panel) panel.hidden = true;
+    if (tabBtn && tabBtn.getAttribute("aria-selected") === "true") selectTab("t-overview");
+    return;
+  }
+
+  const KIND = EMAIL.metric_kinds, LABEL = EMAIL.metric_labels;
+  const RCOMP = EMAIL.ratio_components || {};
+  const rate2 = n => n == null ? "—" : pct(n, 2);
+  function fmtKind(kind, v) {
+    if (v == null) return "—";
+    if (kind === "usd") return usd(v);
+    if (kind === "usd2") return usdc(v);
+    if (kind === "count") return int(v);
+    if (kind === "rate") return rate2(v);
+    return String(v);
+  }
+  const fmtM = (key, v) => fmtKind(KIND[key], v);
+  function compact(kind, v) {
+    if (v == null) return "—";
+    if (kind === "rate") return (v * 100).toFixed(1) + "%";
+    const a = Math.abs(v), pre = (kind === "usd" || kind === "usd2") ? "$" : "";
+    if (a >= 1e6) return pre + (v / 1e6).toFixed(1) + "M";
+    if (a >= 1000) return pre + Math.round(v / 1000) + "k";
+    if (kind === "usd2" && a < 100) return pre + v.toFixed(2);
+    return pre + Math.round(v);
+  }
+  const trim = (s, n) => (s && s.length > n) ? s.slice(0, n - 1) + "…" : (s || "");
+  const ES_SHEET = 'Tab <code>' + esc(EMAIL.meta.sheet) + '</code> of <code>' + esc(EMAIL.meta.source_workbook) + '</code>.';
+  const ES_YEAR = EMAIL.meta.year.value, ES_Q = EMAIL.meta.quarter.value;
+
+  function sumOf(rows, key) {
+    let t = 0, any = false;
+    rows.forEach(r => { const v = r.metrics[key].value; if (v != null) { t += v; any = true; } });
+    return any ? t : null;
+  }
+  function totalsOf(rows) {
+    const out = {};
+    EMAIL.additive.forEach(k => out[k] = sumOf(rows, k));
+    EMAIL.ratios.forEach(k => {
+      const comp = RCOMP[k];
+      out[k] = (comp && out[comp[1]]) ? out[comp[0]] / out[comp[1]] : null;
+    });
+    return out;
+  }
+
+  const AUD_COLOR = {}, TOPIC_COLOR = {};
+  EMAIL.audiences.forEach((a, i) => AUD_COLOR[a] = "var(--ch" + ((i % 6) + 1) + ")");
+  EMAIL.topics.forEach((t, i) => TOPIC_COLOR[t] = "var(--ch" + ((i % 6) + 1) + ")");
+
+  /* ---------- local chart helpers (same drawing code as the other tabs, but barChart's
+     width grows with the number of months so labels like "January 2026" have room —
+     Email Statistics can span a full year, unlike the other tabs' one-quarter charts) ---------- */
+  function barChart(host, cfg) {
+    const rows = cfg.rows, ns = cfg.series.length;
+    const W = cfg.width || Math.max(480, rows.length * 110), H = cfg.height || 300;
+    const ML = 58, MR = 12, MT = 14, MB = cfg.sub ? 54 : 36;
+    const iw = W - ML - MR, ih = H - MT - MB;
+    let max = 0;
+    rows.forEach(r => r.values.forEach(v => { if (v != null && v > max) max = v; }));
+    max = max * 1.16 || 1;
+    const y = v => MT + ih - (v / max) * ih;
+    const gw = iw / rows.length;
+    const bw = Math.min(52, (gw * 0.62) / ns), gap = 6;
+    const groupW = bw * ns + gap * (ns - 1);
+
+    let s = '<svg viewBox="0 0 ' + W + ' ' + H + '" style="width:' + W + 'px;max-width:none;height:auto" ' +
+         'role="img" aria-label="' + esc(cfg.aria || "") + '">';
+    const nT = 4;
+    for (let t = 0; t <= nT; t++) {
+      const v = max * t / nT, yy = y(v);
+      s += '<line class="grid" x1="' + ML + '" y1="' + yy + '" x2="' + (W - MR) + '" y2="' + yy + '"/>';
+      s += '<text class="tick" x="' + (ML - 8) + '" y="' + (yy + 3.5) + '" text-anchor="end">' +
+           esc(compact(cfg.kind, v)) + '</text>';
+    }
+    s += '<line class="ax" x1="' + ML + '" y1="' + (MT + ih) + '" x2="' + (W - MR) + '" y2="' + (MT + ih) + '"/>';
+
+    rows.forEach((r, i) => {
+      const cx = ML + gw * i + gw / 2, x0 = cx - groupW / 2;
+      r.values.forEach((v, k) => {
+        const bx = x0 + k * (bw + gap);
+        if (v == null) {
+          s += '<text class="vlbl" x="' + (bx + bw / 2) + '" y="' + (MT + ih - 6) +
+               '" text-anchor="middle" style="font-style:italic">n/a</text>';
+          return;
+        }
+        s += '<rect x="' + bx + '" y="' + y(v) + '" width="' + bw + '" height="' + (MT + ih - y(v)) +
+             '" rx="3" fill="' + cfg.series[k].color + '"/>';
+        s += '<text class="vlbl" x="' + (bx + bw / 2) + '" y="' + (y(v) - 5) + '" text-anchor="middle">' +
+             esc(compact(cfg.kind, v)) + '</text>';
+      });
+      s += '<text x="' + cx + '" y="' + (MT + ih + 19) + '" text-anchor="middle" ' +
+           'style="font-size:12.5px;font-weight:600">' + esc(r.label) + '</text>';
+      if (r.sub) {
+        s += '<text x="' + cx + '" y="' + (MT + ih + 37) + '" text-anchor="middle" style="font-size:11.5px;fill:' +
+             (r.subColor || "var(--muted)") + '">' + esc(r.sub) + '</text>';
+      }
+      if (r.tip) {
+        s += '<rect class="hit" data-tip-id="' + registerTip(r.tip) + '" x="' + (ML + gw * i) +
+             '" y="' + MT + '" width="' + gw + '" height="' + ih + '" rx="4"/>';
+      }
+    });
+    s += "</svg>";
+    host.innerHTML = s;
+    bindTips(host);
+    if (cfg.legend) {
+      cfg.legend.innerHTML = cfg.series.map(sr =>
+        '<span><i class="sw" style="background:' + sr.color + '"></i>' + esc(sr.label) + "</span>").join("");
+    }
+  }
+
+  function lineChart(host, cfg) {
+    const pts = cfg.points;
+    const W = 520, H = 210, ML = 62, MR = 16, MT = 14, MB = 30;
+    const iw = W - ML - MR, ih = H - MT - MB;
+    const max = Math.max(...pts.map(p => p.value || 0)) * 1.12 || 1;
+    const x = i => ML + (pts.length === 1 ? iw / 2 : (iw / (pts.length - 1)) * i);
+    const y = v => MT + ih - (v / max) * ih;
+    const col = cfg.color;
+
+    let s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(cfg.aria || "") + '">';
+    const nT = 3;
+    for (let t = 0; t <= nT; t++) {
+      const v = max * t / nT, yy = y(v);
+      s += '<line class="grid" x1="' + ML + '" y1="' + yy + '" x2="' + (W - MR) + '" y2="' + yy + '"/>';
+      s += '<text class="tick" x="' + (ML - 8) + '" y="' + (yy + 3.5) + '" text-anchor="end">' +
+           esc(compact(cfg.kind, v)) + '</text>';
+    }
+    s += '<line class="ax" x1="' + ML + '" y1="' + (MT + ih) + '" x2="' + (W - MR) + '" y2="' + (MT + ih) + '"/>';
+    pts.forEach((p, i) => {
+      s += '<line class="grid" x1="' + x(i) + '" y1="' + MT + '" x2="' + x(i) + '" y2="' + (MT + ih) + '"/>';
+      s += '<text class="tick" x="' + x(i) + '" y="' + (MT + ih + 18) + '" text-anchor="' +
+           (i === 0 ? "start" : i === pts.length - 1 ? "end" : "middle") + '" style="font-size:12px">' +
+           esc(p.label) + '</text>';
+    });
+    const xy = pts.map((p, i) => [x(i), y(p.value || 0)]);
+    s += '<polygon fill="' + col + '" opacity=".1" points="' + ML + "," + (MT + ih) + " " +
+         xy.map(p => p.join(",")).join(" ") + " " + xy[xy.length - 1][0] + "," + (MT + ih) + '"/>';
+    s += '<polyline fill="none" stroke="' + col + '" stroke-width="2.25" stroke-linejoin="round" points="' +
+         xy.map(p => p.join(",")).join(" ") + '"/>';
+    xy.forEach(p => s += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="3.2" fill="' + col + '"/>');
+    const colW = pts.length > 1 ? iw / (pts.length - 1) : iw;
+    pts.forEach((p, i) => {
+      if (!p.tip) return;
+      const edge = (i === 0 || i === pts.length - 1);
+      s += '<rect class="hit" data-tip-id="' + registerTip(p.tip) + '" x="' +
+           Math.max(ML, x(i) - colW / 2) + '" y="' + MT + '" width="' + (edge ? colW / 2 : colW) +
+           '" height="' + ih + '" rx="3"/>';
+    });
+    s += "</svg>";
+    host.innerHTML = s;
+    bindTips(host);
+  }
+
+  /* ---------- scope banner ---------- */
+  document.getElementById("esScope").innerHTML =
+    "<div>&#9432;</div><div><b>Scope.</b> Computed from " + EMAIL.detail.length + " detail row(s) on the " +
+    "Email Statistics tab (rows " + EMAIL.detail[0].row + "–" + EMAIL.detail[EMAIL.detail.length - 1].row +
+    "), covering " + EMAIL.months.map(m => m.label).join(", ") + " of Q" + ES_Q + " " + ES_YEAR + ". " +
+    "There is no stored monthly or quarterly rollup on this tab, so every total and running sum below is " +
+    "computed on this page from those rows." +
+    (EMAIL.unresolvable_ratios.length
+      ? " " + EMAIL.unresolvable_ratios.map(k => "“" + esc(LABEL[k]) + "”").join(" and ") +
+        " has no stored numerator, so it cannot be recombined across rows and is left blank in every rollup."
+      : "") +
+    "</div>";
+
+  /* ---------- 1. quarter-to-date hero stats ---------- */
+  function renderHeroesES() {
+    document.getElementById("esHeroNote").textContent =
+      "Summed across all " + EMAIL.detail.length + " detail row(s) — " + EMAIL.months.map(m => m.label).join(", ") + ".";
+    const T = EMAIL.totals.metrics;
+    const cards = [
+      {key: "recipients", label: "Recipients"},
+      {key: "raised", label: "Raised"},
+      {key: "donors", label: "Donors", subKey: "donate_rate"},
+      {key: "average", label: "Average gift"},
+      {key: "actions", label: "Actions", subKey: "action_rate"},
+      {key: "unsubs", label: "Unsubs", subKey: "unsub_rate"}
+    ].filter(cd => T[cd.key] && T[cd.key].value != null);
+    const host = document.getElementById("esHeroes");
+    host.innerHTML = "";
+
+    cards.forEach(cd => {
+      const m = T[cd.key];
+      const isRatio = EMAIL.ratios.indexOf(cd.key) >= 0;
+      const comp = RCOMP[cd.key];
+      const el = document.createElement("div");
+      el.className = "hero";
+      const lbl = document.createElement("div");
+      lbl.className = "lbl";
+      lbl.appendChild(document.createTextNode(cd.label));
+      lbl.appendChild(infoBubble({
+        title: cd.label + " — quarter to date",
+        rows: isRatio && comp
+          ? [["Numerator", LABEL[comp[0]] + " = " + fmtM(comp[0], T[comp[0]].value) + " (" +
+               cell(T[comp[0]].cells[0]) + "–" + cell(T[comp[0]].cells[T[comp[0]].cells.length - 1]) + ")"],
+             ["Denominator", LABEL[comp[1]] + " = " + fmtM(comp[1], T[comp[1]].value) + " (" +
+               cell(T[comp[1]].cells[0]) + "–" + cell(T[comp[1]].cells[T[comp[1]].cells.length - 1]) + ")"],
+             ["Result", "<b>" + fmtM(cd.key, m.value) + "</b>"]]
+          : [["Value", "<b>" + fmtM(cd.key, m.value) + "</b>"],
+             ["Rows summed", (m.cells || []).length + " cell(s), " +
+               (m.cells && m.cells.length ? cell(m.cells[0]) + "–" + cell(m.cells[m.cells.length - 1]) : "none")]],
+        calc: isRatio && comp
+          ? fmtM(cd.key, m.value) + " = " + fmtM(comp[0], T[comp[0]].value) + " ÷ " + fmtM(comp[1], T[comp[1]].value) +
+            " — computed on this page from the summed components, not averaged from the per-row ratio."
+          : "SUM(" + cells(m.cells || []) + ") = " + fmtM(cd.key, m.value),
+        caveat: "The Email Statistics tab stores no quarter-to-date total; this is computed on this page from " +
+                "every detail row.",
+        source: ES_SHEET
+      }));
+      el.appendChild(lbl);
+
+      const big = document.createElement("div");
+      big.className = "big";
+      big.textContent = fmtM(cd.key, m.value);
+      el.appendChild(big);
+
+      const of = document.createElement("div");
+      of.className = "of";
+      if (cd.subKey && T[cd.subKey] && T[cd.subKey].value != null) {
+        const rv = T[cd.subKey].value;
+        const txt = KIND[cd.subKey] === "rate" ? rate2(rv) : fmtM(cd.subKey, rv);
+        of.innerHTML = '<span style="font-weight:650">' + txt + "</span> " + LABEL[cd.subKey].toLowerCase();
+      } else if (cd.subText) {
+        of.textContent = cd.subText;
+      }
+      el.appendChild(of);
+      host.appendChild(el);
+    });
+  }
+
+  /* ---------- 2. monthly toplines ---------- */
+  function renderMonthlyES() {
+    const rowsSrc = EMAIL.months;
+    const moneyRows = rowsSrc.map(m => {
+      const M = m.metrics;
+      return {
+        label: m.label,
+        values: [M.raised.value],
+        sub: M.average.value == null ? "no average gift (no donors)" : fmtM("average", M.average.value) + " avg. gift",
+        subColor: "var(--muted)",
+        tip: {
+          title: m.label + " " + ES_YEAR,
+          rows: [
+            ["Raised", fmtM("raised", M.raised.value)],
+            ["Donors", fmtM("donors", M.donors.value)],
+            ["Average gift", fmtM("average", M.average.value)]
+          ],
+          foot: m.rows.length + " detail row(s): " + m.rows.join(", ")
+        }
+      };
+    });
+    barChart(document.getElementById("esChMoney"), {
+      rows: moneyRows, kind: "usd",
+      series: [{label: "Raised", color: "var(--actual)"}],
+      legend: document.getElementById("esLgMoney"),
+      sub: true, aria: "Raised by month"
+    });
+
+    const donorRows = rowsSrc.map(m => {
+      const M = m.metrics;
+      return {
+        label: m.label,
+        values: [M.donors.value],
+        sub: M.donate_rate.value == null ? "—" : rate2(M.donate_rate.value) + " donate rate",
+        subColor: "var(--muted)",
+        tip: {
+          title: m.label + " " + ES_YEAR,
+          rows: [
+            ["Donors", fmtM("donors", M.donors.value)],
+            ["Recipients", fmtM("recipients", M.recipients.value)],
+            ["Donate rate", rate2(M.donate_rate.value)]
+          ],
+          foot: m.rows.length + " detail row(s): " + m.rows.join(", ")
+        }
+      };
+    });
+    barChart(document.getElementById("esChDonors"), {
+      rows: donorRows, kind: "count",
+      series: [{label: "Donors", color: "var(--ch3)"}],
+      legend: document.getElementById("esLgDonors"),
+      sub: true, aria: "Donors by month"
+    });
+
+    document.getElementById("esMonthNote").textContent =
+      EMAIL.months.map(m => m.label).join(", ") + " — each bar sums that month's detail rows; nothing is read " +
+      "from a stored monthly cell because none exists on this tab.";
+
+    const keys = EMAIL.metric_order.filter(k => EMAIL.unresolvable_ratios.indexOf(k) < 0);
+    let t = "<table><thead><tr><th>Month</th>" + keys.map(k => "<th>" + esc(LABEL[k]) + "</th>").join("") + "</tr></thead><tbody>";
+    rowsSrc.forEach(m => {
+      t += "<tr><td>" + esc(m.label) + "</td>" +
+        keys.map(k => "<td>" + (m.metrics[k].value == null ? '<span class="pend">—</span>' : esc(fmtM(k, m.metrics[k].value))) + "</td>").join("") +
+        "</tr>";
+    });
+    t += "</tbody><tfoot><tr><td>Quarter to date</td>" +
+      keys.map(k => "<td>" + (EMAIL.totals.metrics[k].value == null ? "—" : esc(fmtM(k, EMAIL.totals.metrics[k].value))) + "</td>").join("") +
+      "</tr></tfoot></table>";
+    document.getElementById("esTbMonth").innerHTML = t;
+
+    document.querySelector("#es-month .sechead").appendChild(infoBubble({
+      title: "Monthly toplines",
+      rows: EMAIL.months.map(m => [m.label, m.rows.length + " detail row(s): " +
+        cells(m.metrics.raised.cells)]),
+      calc: "Each bar sums that month's detail rows. Rate and average-gift figures are recomputed from the " +
+            "summed components, never averaged from the per-row values.",
+      caveat: "No monthly rollup row exists on this tab — every figure here is computed on this page. " +
+              (EMAIL.unresolvable_ratios.length
+                ? EMAIL.unresolvable_ratios.map(k => "“" + esc(LABEL[k]) + "”").join(" and ") +
+                  " is left out of this table because the sheet has no stored numerator count to sum — " +
+                  "it's still shown per row in the detail table below."
+                : ""),
+      source: ES_SHEET
+    }));
+  }
+
+  /* ---------- 3. cumulative by category ---------- */
+  function renderAccumES() {
+    const state = {metric: EMAIL.accum_keys[0], breakdown: "audience"};
+    const fhost = document.getElementById("esAccumFilters");
+    fhost.innerHTML = "";
+    function group(labelText, values, key) {
+      const g = document.createElement("div");
+      g.className = "fgroup";
+      const l = document.createElement("span");
+      l.className = "flabel";
+      l.textContent = labelText;
+      g.appendChild(l);
+      values.forEach(([val, text]) => {
+        const b = document.createElement("button");
+        b.className = "chip";
+        b.type = "button";
+        b.setAttribute("data-filter", key);
+        b.setAttribute("data-value", val);
+        b.setAttribute("aria-pressed", String(state[key] === val));
+        b.appendChild(document.createTextNode(text));
+        b.addEventListener("click", () => {
+          state[key] = val;
+          fhost.querySelectorAll('[data-filter="' + key + '"]').forEach(o =>
+            o.setAttribute("aria-pressed", String(o.getAttribute("data-value") === val)));
+          draw();
+        });
+        g.appendChild(b);
+      });
+      fhost.appendChild(g);
+    }
+    group("Metric", EMAIL.accum_keys.map(k => [k, LABEL[k]]), "metric");
+    group("Breakdown by", [["audience", "Audience"], ["topic", "Mailing Topic"]], "breakdown");
+
+    function draw() {
+      const key = state.metric;
+      const byCat = state.breakdown === "audience" ? EMAIL.cumulative.by_audience : EMAIL.cumulative.by_topic;
+      const cats = state.breakdown === "audience" ? EMAIL.audiences : EMAIL.topics;
+      const colorOf = state.breakdown === "audience" ? AUD_COLOR : TOPIC_COLOR;
+      const dimLabel = state.breakdown === "audience" ? "Audience" : "Mailing Topic";
+      const host = document.getElementById("esAccum");
+      host.innerHTML = "";
+
+      const boxes = [{label: "All categories", series: EMAIL.cumulative.overall[key], color: "var(--actual)", all: true}]
+        .concat(cats.map(c => ({label: c, series: byCat[c][key], color: colorOf[c]})));
+
+      boxes.forEach(b => {
+        const last = b.series[b.series.length - 1];
+        const box = document.createElement("div");
+        box.className = "sm";
+        const h3 = document.createElement("h3");
+        const sp = document.createElement("span");
+        sp.textContent = b.label;
+        h3.appendChild(sp);
+        h3.appendChild(infoBubble({
+          title: b.label + " — cumulative " + LABEL[key],
+          rows: b.series.map(p => [p.label, p.value == null ? "not yet reported" : fmtM(key, p.value) +
+            (p.step_cells && p.step_cells.length ? " (" + cells(p.step_cells) + ")" : " (no rows that month)")]),
+          calc: "Running sum of the detail rows for " + esc(b.label) + " across " + EMAIL.months.length +
+                " month(s) — computed on this page, not read from any workbook cell.",
+          caveat: b.all
+            ? "Sums every detail row regardless of " + dimLabel.toLowerCase() + "."
+            : "Only rows where " + dimLabel + " = “" + esc(b.label) + "”. A month with no rows for this " +
+              dimLabel.toLowerCase() + " contributes a real zero, not a gap.",
+          source: ES_SHEET
+        }));
+        box.appendChild(h3);
+
+        const cap = document.createElement("p");
+        cap.className = "cap";
+        cap.textContent = (last.value == null ? "no data yet" : fmtM(key, last.value) + " cumulative");
+        box.appendChild(cap);
+
+        const cw = document.createElement("div");
+        cw.className = "chartwrap";
+        box.appendChild(cw);
+        host.appendChild(box);
+
+        lineChart(cw, {
+          kind: KIND[key], color: b.color,
+          aria: "Cumulative " + LABEL[key] + " for " + b.label,
+          points: b.series.map(p => ({
+            label: p.label, value: p.value,
+            tip: {
+              title: b.label + " — through " + p.label,
+              rows: [
+                ["Cumulative", p.value == null ? "not yet reported" : fmtM(key, p.value)],
+                [p.label + " alone", fmtM(key, p.step)]
+              ],
+              foot: (p.step_cells || []).length + " detail cell(s) that month"
+            }
+          }))
+        });
+      });
+
+      let t = "<table><thead><tr><th>" + esc(dimLabel) + "</th>" +
+        EMAIL.months.map(m => "<th>" + esc(m.label) + "</th>").join("") + "</tr></thead><tbody>";
+      t += "<tr><td>All categories</td>" +
+        EMAIL.cumulative.overall[key].map(p => "<td>" + esc(fmtM(key, p.value)) + "</td>").join("") + "</tr>";
+      cats.forEach(c => {
+        t += "<tr><td>" + esc(c) + "</td>" +
+          byCat[c][key].map(p => "<td>" + (p.value == null ? '<span class="pend">—</span>' : esc(fmtM(key, p.value))) + "</td>").join("") +
+          "</tr>";
+      });
+      t += "</tbody></table>";
+      document.getElementById("esTbAccum").innerHTML = t;
+    }
+    draw();
+
+    document.querySelector("#es-accum .sechead").appendChild(infoBubble({
+      title: "Cumulative by category",
+      rows: EMAIL.accum_keys.map(k => [LABEL[k], "additive — summable across rows, e.g. " +
+        cell(EMAIL.metric_columns[k] + EMAIL.detail[0].row) + ":" +
+        cell(EMAIL.metric_columns[k] + EMAIL.detail[EMAIL.detail.length - 1].row)]),
+      calc: "Each small chart is a running total across the reported months, filtered to one audience " +
+            "segment or one mailing topic. Ratio metrics (rates, average gift) are not offered here because a " +
+            "running total of a ratio is not a meaningful number.",
+      caveat: "A category with zero rows in a given month shows as a real zero (it was not part of that " +
+              "month's sends), not as pending — pending only applies to a month with no data at all yet.",
+      source: ES_SHEET
+    }));
+  }
+
+  /* ---------- 4. row-by-row leaderboard ---------- */
+  function renderDetailES() {
+    const state = {month: "all", audience: "all", sort: "raised", dir: -1};
+    const MONTH_LABELS = EMAIL.months.map(m => m.label);
+
+    document.getElementById("esDetailNote").innerHTML =
+      "Every row on the Email Statistics tab — " + EMAIL.detail.length + " row(s) from <code>row " +
+      EMAIL.detail[0].row + "</code> to <code>row " + EMAIL.detail[EMAIL.detail.length - 1].row + "</code>. " +
+      "The filters and the leaderboard below share state.";
+
+    function filtered() {
+      return EMAIL.detail.filter(d =>
+        (state.month === "all" || d.month === state.month) &&
+        (state.audience === "all" || d.audience === state.audience));
+    }
+
+    (function buildFilters() {
+      const host = document.getElementById("esFilters");
+      host.innerHTML = "";
+      function group(labelText, values, key, colorFor) {
+        const g = document.createElement("div");
+        g.className = "fgroup";
+        const l = document.createElement("span");
+        l.className = "flabel";
+        l.textContent = labelText;
+        g.appendChild(l);
+        [["all", "All"]].concat(values.map(v => [v, v])).forEach(([val, text]) => {
+          const b = document.createElement("button");
+          b.className = "chip";
+          b.type = "button";
+          b.setAttribute("data-filter", key);
+          b.setAttribute("data-value", val);
+          b.setAttribute("aria-pressed", String(state[key] === val));
+          if (colorFor && val !== "all") {
+            const dot = document.createElement("i");
+            dot.className = "dot";
+            dot.style.background = colorFor(val);
+            b.appendChild(dot);
+          }
+          b.appendChild(document.createTextNode(text));
+          b.addEventListener("click", () => {
+            state[key] = val;
+            host.querySelectorAll('[data-filter="' + key + '"]').forEach(o =>
+              o.setAttribute("aria-pressed", String(o.getAttribute("data-value") === val)));
+            renderDetail();
+          });
+          g.appendChild(b);
+        });
+        host.appendChild(g);
+      }
+      group("Month", MONTH_LABELS, "month", null);
+      group("Audience", EMAIL.audiences, "audience", a => AUD_COLOR[a]);
+    })();
+
+    const LB_COLS = [
+      {key: "topic", label: "Mailing Topic", type: "text"},
+      {key: "audience", label: "Audience", type: "text"},
+      {key: "month", label: "Month", type: "text"},
+      {key: "sender", label: "Sender", type: "text"},
+      {key: "recipients", label: "Recipients", type: "metric"},
+      {key: "raised", label: "Raised", type: "metric"},
+      {key: "donors", label: "Donors", type: "metric"},
+      {key: "average", label: "Avg Gift", type: "metric"},
+      {key: "donate_rate", label: "Donate Rate", type: "metric"},
+      {key: "open_rate", label: "Open Rate", type: "metric"},
+      {key: "click_rate", label: "Click Rate", type: "metric"},
+      {key: "actions", label: "Actions", type: "metric"},
+      {key: "action_rate", label: "Action Rate", type: "metric"},
+      {key: "unsubs", label: "Unsubs", type: "metric"},
+      {key: "unsub_rate", label: "Unsub Rate", type: "metric"}
+    ].filter(c => c.type === "text" || EMAIL.metric_order.indexOf(c.key) >= 0);
+
+    function renderDetail() {
+      const rows = filtered();
+      const fs = document.getElementById("esFilterStat");
+      if (!rows.length) {
+        fs.innerHTML = "<b>No rows</b> match the current filters.";
+      } else {
+        const tot = totalsOf(rows);
+        fs.innerHTML = "<b>" + rows.length + "</b> of " + EMAIL.detail.length + " rows · " +
+          "recipients <b>" + int(tot.recipients) + "</b> · raised <b>" + usd(tot.raised) + "</b> · " +
+          "donors <b>" + int(tot.donors) + "</b> · donate rate <b>" + rate2(tot.donate_rate) + "</b>" +
+          '<span class="pend"> — totals computed on this page from the filtered rows</span>';
+      }
+      renderLeaderboard(rows);
+    }
+
+    function renderLeaderboard(rows) {
+      const host = document.getElementById("esLeader");
+      if (!rows.length) { host.innerHTML = '<div class="empty">No rows match the current filters.</div>'; return; }
+      const col = LB_COLS.find(c => c.key === state.sort) || LB_COLS[5];
+      const getv = (r, c) => c.type === "text" ? r[c.key] : r.metrics[c.key].value;
+      const sorted = rows.slice().sort((a, b) => {
+        const va = getv(a, col), vb = getv(b, col);
+        if (va == null && vb == null) return 0;
+        if (va == null) return 1;
+        if (vb == null) return -1;
+        if (col.type === "text") return String(va).localeCompare(String(vb)) * state.dir;
+        return (va - vb) * state.dir;
+      });
+      const maxOf = {};
+      LB_COLS.filter(c => c.bar).forEach(c =>
+        maxOf[c.key] = Math.max(...rows.map(r => r.metrics[c.key].value || 0)) || 1);
+
+      let t = '<table class="lb"><thead><tr>';
+      LB_COLS.forEach(c => {
+        const isSort = c.key === state.sort;
+        t += "<th" + (isSort ? ' aria-sort="' + (state.dir < 0 ? "descending" : "ascending") + '"' : "") +
+          ' data-sort="' + c.key + '" title="Sort by ' + esc(c.label) + '">' + esc(c.label) +
+          (isSort ? '<span class="arrow">' + (state.dir < 0 ? "▼" : "▲") + "</span>" : "") + "</th>";
+      });
+      t += "</tr></thead><tbody>";
+      sorted.forEach(r => {
+        const M = r.metrics;
+        t += '<tr data-tip-id="' + registerTip({
+          title: r.topic + " — " + r.audience + " — " + r.month,
+          rows: [["Sender", r.sender || "—"], ["", ""]].concat(
+            EMAIL.metric_order.map(k => [LABEL[k], fmtM(k, M[k].value)])),
+          foot: "row " + r.row
+        }) + '">';
+        LB_COLS.forEach(c => {
+          if (c.type === "text") {
+            const v = r[c.key];
+            t += '<td class="lbl">' + (c.key === "topic"
+              ? '<i class="chdot" style="background:' + AUD_COLOR[r.audience] + '" title="' + esc(r.audience) + '"></i>' +
+                '<b>' + esc(trim(v, 22)) + "</b>"
+              : esc(trim(v, 18))) + "</td>";
+          } else if (c.bar) {
+            const v = M[c.key].value || 0;
+            t += '<td class="cellwrap"><div class="minibar"><i style="width:' +
+              Math.max(1, (v / maxOf[c.key]) * 100) + "%;background:" + TOPIC_COLOR[r.topic] +
+              '"></i><span>' + esc(fmtM(c.key, M[c.key].value)) + "</span></div></td>";
+          } else {
+            const v = M[c.key].value;
+            t += "<td>" + (v == null ? '<span class="pend">—</span>' : esc(fmtM(c.key, v))) + "</td>";
+          }
+        });
+        t += "</tr>";
+      });
+      const tot = totalsOf(rows);
+      t += "</tbody><tfoot><tr>";
+      LB_COLS.forEach((c, i) => {
+        if (i === 0) { t += '<td class="lbl">' + rows.length + " row(s)</td>"; return; }
+        if (c.type === "text") { t += "<td></td>"; return; }
+        const v = tot[c.key];
+        t += "<td>" + (v == null ? "—" : esc(fmtM(c.key, v))) + "</td>";
+      });
+      t += "</tr></tfoot></table>";
+      host.innerHTML = t;
+
+      host.querySelectorAll("th[data-sort]").forEach(th => {
+        th.addEventListener("click", () => {
+          const k = th.getAttribute("data-sort");
+          if (state.sort === k) state.dir = -state.dir;
+          else { state.sort = k; state.dir = LB_COLS.find(c => c.key === k).type === "text" ? 1 : -1; }
+          renderLeaderboard(filtered());
+        });
+      });
+      bindTips(host);
+    }
+
+    renderDetail();
+
+    document.querySelector("#es-detail .sechead").appendChild(infoBubble({
+      title: "Row-by-row breakdown",
+      rows: [
+        ["Rows", "one per email send, " +
+          cell(EMAIL.detail[0].topic_cell) + "–" + cell(EMAIL.detail[EMAIL.detail.length - 1].topic_cell)],
+        ["Mailing topics", EMAIL.topics.length + " distinct value(s)"],
+        ["Audiences", EMAIL.audiences.join(", ")]
+      ],
+      calc: "Sorting and filtering never change a value — only which rows are shown and in what order. The " +
+            "totals row recomputes rates from the filtered sums rather than averaging the per-row ratios.",
+      caveat: "Bar lengths are comparable within a column but not across columns, since each column is " +
+              "scaled independently.",
+      source: ES_SHEET
+    }));
+  }
+
+  renderHeroesES();
+  renderMonthlyES();
+  renderAccumES();
+  renderDetailES();
+}
+
+/* ============================================================
+   HIGH-DOLLAR DONATIONS TAB
+   One row per donation. Unlike every other tab, this sheet has no "Year:" /
+   "Quarter:" label cells at all, so the quarter named in the scope banner is
+   derived from the dates on the detail rows (see extractHighDollar) rather
+   than read from the workbook. There is a single additive metric, amount,
+   and no ratio metrics, so this tab is a simpler version of the P2P/Email
+   pattern rather than a full copy of it.
+   ============================================================ */
+let HD = /*__HD_DATA__*/;
+
+function renderHighDollar() {
+  const tabBtn = document.getElementById("t-hd");
+  const panel = document.getElementById("p-hd");
+  const usable = HD && HD.detail && HD.detail.length;
+  if (tabBtn) tabBtn.hidden = !usable;
+  if (!usable) {
+    if (panel) panel.hidden = true;
+    if (tabBtn && tabBtn.getAttribute("aria-selected") === "true") selectTab("t-overview");
+    return;
+  }
+
+  const trim = (s, n) => (s && s.length > n) ? s.slice(0, n - 1) + "…" : (s || "");
+  const HD_SHEET = 'Tab <code>' + esc(HD.meta.sheet) + '</code> of <code>' + esc(HD.meta.source_workbook) + '</code>.';
+  const HD_YEAR = HD.meta.year.value, HD_Q = HD.meta.quarter.value;
+  const HD_PERIOD = (HD_Q != null && HD_YEAR != null) ? "Q" + HD_Q + " " + HD_YEAR : "the period covered by this tab";
+
+  function compact(v) {
+    if (v == null) return "—";
+    const a = Math.abs(v);
+    if (a >= 1e6) return "$" + (v / 1e6).toFixed(1) + "M";
+    if (a >= 1000) return "$" + Math.round(v / 1000) + "k";
+    return "$" + Math.round(v);
+  }
+
+  const CAT_COLOR = {};
+  HD.categories.forEach((c, i) => CAT_COLOR[c] = "var(--ch" + ((i % 6) + 1) + ")");
+
+  /* ---------- local chart helpers ---------- */
+  function barChart(host, cfg) {
+    const rows = cfg.rows;
+    const W = cfg.width || 480, H = cfg.height || 300;
+    const ML = 58, MR = 12, MT = 14, MB = cfg.sub ? 54 : 36;
+    const iw = W - ML - MR, ih = H - MT - MB;
+    let max = 0;
+    rows.forEach(r => { if (r.value != null && r.value > max) max = r.value; });
+    max = max * 1.16 || 1;
+    const y = v => MT + ih - (v / max) * ih;
+    const gw = iw / rows.length;
+    const bw = Math.min(64, gw * 0.5);
+
+    let s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(cfg.aria || "") + '">';
+    const nT = 4;
+    for (let t = 0; t <= nT; t++) {
+      const v = max * t / nT, yy = y(v);
+      s += '<line class="grid" x1="' + ML + '" y1="' + yy + '" x2="' + (W - MR) + '" y2="' + yy + '"/>';
+      s += '<text class="tick" x="' + (ML - 8) + '" y="' + (yy + 3.5) + '" text-anchor="end">' +
+           esc(compact(v)) + '</text>';
+    }
+    s += '<line class="ax" x1="' + ML + '" y1="' + (MT + ih) + '" x2="' + (W - MR) + '" y2="' + (MT + ih) + '"/>';
+
+    rows.forEach((r, i) => {
+      const cx = ML + gw * i + gw / 2, bx = cx - bw / 2;
+      if (r.value == null) {
+        s += '<text class="vlbl" x="' + cx + '" y="' + (MT + ih - 6) +
+             '" text-anchor="middle" style="font-style:italic">n/a</text>';
+      } else {
+        s += '<rect x="' + bx + '" y="' + y(r.value) + '" width="' + bw + '" height="' + (MT + ih - y(r.value)) +
+             '" rx="3" fill="var(--actual)"/>';
+        s += '<text class="vlbl" x="' + cx + '" y="' + (y(r.value) - 5) + '" text-anchor="middle">' +
+             esc(compact(r.value)) + '</text>';
+      }
+      s += '<text x="' + cx + '" y="' + (MT + ih + 19) + '" text-anchor="middle" ' +
+           'style="font-size:12.5px;font-weight:600">' + esc(r.label) + '</text>';
+      if (r.sub) {
+        s += '<text x="' + cx + '" y="' + (MT + ih + 37) + '" text-anchor="middle" style="font-size:11.5px;fill:var(--muted)">' +
+             esc(r.sub) + '</text>';
+      }
+      if (r.tip) {
+        s += '<rect class="hit" data-tip-id="' + registerTip(r.tip) + '" x="' + (ML + gw * i) +
+             '" y="' + MT + '" width="' + gw + '" height="' + ih + '" rx="4"/>';
+      }
+    });
+    s += "</svg>";
+    host.innerHTML = s;
+    bindTips(host);
+    if (cfg.legend) {
+      cfg.legend.innerHTML = '<span><i class="sw" style="background:var(--actual)"></i>' + esc(cfg.seriesLabel || "Amount") + "</span>";
+    }
+  }
+
+  function lineChart(host, cfg) {
+    const pts = cfg.points;
+    const W = 520, H = 210, ML = 62, MR = 16, MT = 14, MB = 30;
+    const iw = W - ML - MR, ih = H - MT - MB;
+    const max = Math.max(...pts.map(p => p.value || 0)) * 1.12 || 1;
+    const x = i => ML + (pts.length === 1 ? iw / 2 : (iw / (pts.length - 1)) * i);
+    const y = v => MT + ih - (v / max) * ih;
+    const col = cfg.color || "var(--actual)";
+
+    let s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(cfg.aria || "") + '">';
+    const nT = 3;
+    for (let t = 0; t <= nT; t++) {
+      const v = max * t / nT, yy = y(v);
+      s += '<line class="grid" x1="' + ML + '" y1="' + yy + '" x2="' + (W - MR) + '" y2="' + yy + '"/>';
+      s += '<text class="tick" x="' + (ML - 8) + '" y="' + (yy + 3.5) + '" text-anchor="end">' +
+           esc(compact(v)) + '</text>';
+    }
+    s += '<line class="ax" x1="' + ML + '" y1="' + (MT + ih) + '" x2="' + (W - MR) + '" y2="' + (MT + ih) + '"/>';
+    pts.forEach((p, i) => {
+      s += '<line class="grid" x1="' + x(i) + '" y1="' + MT + '" x2="' + x(i) + '" y2="' + (MT + ih) + '"/>';
+      s += '<text class="tick" x="' + x(i) + '" y="' + (MT + ih + 18) + '" text-anchor="' +
+           (i === 0 ? "start" : i === pts.length - 1 ? "end" : "middle") + '" style="font-size:12px">' +
+           esc(p.label) + '</text>';
+    });
+    const xy = pts.map((p, i) => [x(i), y(p.value || 0)]);
+    s += '<polygon fill="' + col + '" opacity=".1" points="' + ML + "," + (MT + ih) + " " +
+         xy.map(p => p.join(",")).join(" ") + " " + xy[xy.length - 1][0] + "," + (MT + ih) + '"/>';
+    s += '<polyline fill="none" stroke="' + col + '" stroke-width="2.25" stroke-linejoin="round" points="' +
+         xy.map(p => p.join(",")).join(" ") + '"/>';
+    xy.forEach(p => s += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="3.2" fill="' + col + '"/>');
+    const colW = pts.length > 1 ? iw / (pts.length - 1) : iw;
+    pts.forEach((p, i) => {
+      if (!p.tip) return;
+      const edge = (i === 0 || i === pts.length - 1);
+      s += '<rect class="hit" data-tip-id="' + registerTip(p.tip) + '" x="' +
+           Math.max(ML, x(i) - colW / 2) + '" y="' + MT + '" width="' + (edge ? colW / 2 : colW) +
+           '" height="' + ih + '" rx="3"/>';
+    });
+    s += "</svg>";
+    host.innerHTML = s;
+    bindTips(host);
+  }
+
+  /* ---------- scope banner ---------- */
+  document.getElementById("hdScope").innerHTML =
+    "<div>&#9432;</div><div><b>Scope.</b> Computed from " + HD.detail.length + " detail row(s) on the " +
+    "High-Dollar Donations tab (rows " + HD.detail[0].row + "–" + HD.detail[HD.detail.length - 1].row +
+    "), covering " + HD.months.map(m => m.label).join(", ") + ". This tab has no “Year:”/“Quarter:” label " +
+    "cells, so " + (HD.meta.year.value != null
+      ? "the " + HD_PERIOD + " scope shown here was derived from the “date” on every detail row"
+      : "no single quarter could be derived from the “date” column (rows span more than one quarter)") +
+    ". There is no stored monthly or quarterly rollup on this tab either, so every total and running sum " +
+    "below is computed on this page from the detail rows." +
+    "</div>";
+
+  /* ---------- 1. quarter-to-date hero stats ---------- */
+  function renderHeroesHD() {
+    document.getElementById("hdHeroNote").textContent =
+      "Summed across all " + HD.detail.length + " detail row(s) — " + HD.months.map(m => m.label).join(", ") + ".";
+    const T = HD.totals.metrics.amount;
+    const count = HD.totals.count;
+    const avg = count ? T.value / count : null;
+    const host = document.getElementById("hdHeroes");
+    host.innerHTML = "";
+
+    const cards = [
+      {label: "Total high-dollar raised", big: usd(T.value),
+       calc: "SUM(" + cells(T.cells) + ") = " + usd(T.value),
+       rows: [["Value", "<b>" + usd(T.value) + "</b>"],
+              ["Rows summed", T.cells.length + " cell(s), " + cell(T.cells[0]) + "–" + cell(T.cells[T.cells.length - 1])]]},
+      {label: "Number of donations", big: int(count),
+       calc: count + " detail row(s), " + cell(HD.detail[0].receipt_id_cell) + "–" +
+             cell(HD.detail[HD.detail.length - 1].receipt_id_cell),
+       rows: [["Value", "<b>" + int(count) + "</b>"], ["Rows", count + " detail row(s)"]]},
+      {label: "Average donation", big: usdc(avg),
+       calc: usdc(avg) + " = " + usd(T.value) + " ÷ " + int(count) +
+             " — computed on this page, not a stored column.",
+       rows: [["Total raised", usd(T.value) + " (" + cell(T.cells[0]) + "–" + cell(T.cells[T.cells.length - 1]) + ")"],
+              ["Donations", int(count) + " row(s) (" + cell(HD.detail[0].receipt_id_cell) + "–" +
+                cell(HD.detail[HD.detail.length - 1].receipt_id_cell) + ")"],
+              ["Result", "<b>" + usdc(avg) + "</b>"]]}
+    ];
+    cards.forEach(cd => {
+      const el = document.createElement("div");
+      el.className = "hero";
+      const lbl = document.createElement("div");
+      lbl.className = "lbl";
+      lbl.appendChild(document.createTextNode(cd.label));
+      lbl.appendChild(infoBubble({
+        title: cd.label + " — quarter to date",
+        rows: cd.rows,
+        calc: cd.calc,
+        caveat: "The High-Dollar Donations tab stores no quarter-to-date total; this is computed on this " +
+                "page from every detail row.",
+        source: HD_SHEET
+      }));
+      el.appendChild(lbl);
+      const big = document.createElement("div");
+      big.className = "big";
+      big.textContent = cd.big;
+      el.appendChild(big);
+      host.appendChild(el);
+    });
+  }
+
+  /* ---------- 2. monthly toplines ---------- */
+  function renderMonthlyHD() {
+    const rowsSrc = HD.months;
+    const rows = rowsSrc.map(m => ({
+      label: m.label,
+      value: m.metrics.amount.value,
+      sub: m.count + " donation(s)",
+      tip: {
+        title: m.label,
+        rows: [["Amount", usd(m.metrics.amount.value)], ["Donations", int(m.count)]],
+        foot: m.rows.length + " detail row(s): " + m.rows.join(", ")
+      }
+    }));
+    barChart(document.getElementById("hdChAmount"), {
+      rows: rows, seriesLabel: "Amount",
+      legend: document.getElementById("hdLgAmount"),
+      sub: true, aria: "High-dollar amount by month"
+    });
+
+    document.getElementById("hdMonthNote").textContent =
+      HD.months.map(m => m.label).join(", ") + " — each bar sums that month's detail rows; nothing is read " +
+      "from a stored monthly cell because none exists on this tab.";
+
+    let t = "<table><thead><tr><th>Month</th><th>Amount</th><th>Donations</th></tr></thead><tbody>";
+    rowsSrc.forEach(m => {
+      t += "<tr><td>" + esc(m.label) + "</td><td>" + esc(usd(m.metrics.amount.value)) + "</td><td>" + int(m.count) + "</td></tr>";
+    });
+    t += "</tbody><tfoot><tr><td>Quarter to date</td><td>" + esc(usd(HD.totals.metrics.amount.value)) +
+      "</td><td>" + int(HD.totals.count) + "</td></tr></tfoot></table>";
+    document.getElementById("hdTbMonth").innerHTML = t;
+
+    document.querySelector("#hd-month .sechead").appendChild(infoBubble({
+      title: "Monthly toplines",
+      rows: HD.months.map(m => [m.label, m.rows.length + " detail row(s): " + cells(m.metrics.amount.cells)]),
+      calc: "Each bar sums that month's detail rows.",
+      caveat: "No monthly rollup row exists on this tab — every figure here is computed on this page.",
+      source: HD_SHEET
+    }));
+  }
+
+  /* ---------- 3. cumulative by category ---------- */
+  function renderAccumHD() {
+    const host = document.getElementById("hdAccum");
+    host.innerHTML = "";
+    document.getElementById("hdAccumFilters").innerHTML = "";
+    const key = "amount";
+
+    const boxes = [{label: "All categories", series: HD.cumulative.overall[key], color: "var(--actual)", all: true}]
+      .concat(HD.categories.map(c => ({label: c, series: HD.cumulative.by_category[c][key], color: CAT_COLOR[c]})));
+
+    boxes.forEach(b => {
+      const last = b.series[b.series.length - 1];
+      const box = document.createElement("div");
+      box.className = "sm";
+      const h3 = document.createElement("h3");
+      const sp = document.createElement("span");
+      sp.textContent = b.label;
+      h3.appendChild(sp);
+      h3.appendChild(infoBubble({
+        title: b.label + " — cumulative amount",
+        rows: b.series.map(p => [p.label, p.value == null ? "not yet reported" : usd(p.value) +
+          (p.step_cells && p.step_cells.length ? " (" + cells(p.step_cells) + ")" : " (no rows that month)")]),
+        calc: "Running sum of the detail rows for " + esc(b.label) + " across " + HD.months.length +
+              " month(s) — computed on this page, not read from any workbook cell.",
+        caveat: b.all
+          ? "Sums every detail row regardless of category."
+          : "Only rows where Category = “" + esc(b.label) + "”. A month with no rows for this category " +
+            "contributes a real zero, not a gap.",
+        source: HD_SHEET
+      }));
+      box.appendChild(h3);
+
+      const cap = document.createElement("p");
+      cap.className = "cap";
+      cap.textContent = (last.value == null ? "no data yet" : usd(last.value) + " cumulative");
+      box.appendChild(cap);
+
+      const cw = document.createElement("div");
+      cw.className = "chartwrap";
+      box.appendChild(cw);
+      host.appendChild(box);
+
+      lineChart(cw, {
+        color: b.color, aria: "Cumulative amount for " + b.label,
+        points: b.series.map(p => ({
+          label: p.label, value: p.value,
+          tip: {
+            title: b.label + " — through " + p.label,
+            rows: [
+              ["Cumulative", p.value == null ? "not yet reported" : usd(p.value)],
+              [p.label + " alone", usd(p.step)]
+            ],
+            foot: (p.step_cells || []).length + " detail cell(s) that month"
+          }
+        }))
+      });
+    });
+
+    let t = "<table><thead><tr><th>Category</th>" +
+      HD.months.map(m => "<th>" + esc(m.label) + "</th>").join("") + "</tr></thead><tbody>";
+    t += "<tr><td>All categories</td>" +
+      HD.cumulative.overall[key].map(p => "<td>" + esc(usd(p.value)) + "</td>").join("") + "</tr>";
+    HD.categories.forEach(c => {
+      t += "<tr><td>" + esc(c) + "</td>" +
+        HD.cumulative.by_category[c][key].map(p => "<td>" + (p.value == null ? '<span class="pend">—</span>' : esc(usd(p.value))) + "</td>").join("") +
+        "</tr>";
+    });
+    t += "</tbody></table>";
+    document.getElementById("hdTbAccum").innerHTML = t;
+
+    document.querySelector("#hd-accum .sechead").appendChild(infoBubble({
+      title: "Cumulative by category",
+      rows: [["Amount", "additive — summable across rows, e.g. " +
+        cell(HD.metric_columns.amount + HD.detail[0].row) + ":" +
+        cell(HD.metric_columns.amount + HD.detail[HD.detail.length - 1].row)]],
+      calc: "Each small chart is a running total of donation amounts across the reported months, filtered to " +
+            "one Category. There is only one metric on this tab, so no metric picker is offered.",
+      caveat: "A category with zero rows in a given month shows as a real zero (no donations of that " +
+              "category that month), not as pending — pending only applies to a month with no data at all yet.",
+      source: HD_SHEET
+    }));
+  }
+
+  /* ---------- 4. donation-by-donation leaderboard ---------- */
+  function renderDetailHD() {
+    const state = {category: "all", sort: "amount", dir: -1};
+
+    document.getElementById("hdDetailNote").innerHTML =
+      "Every row on the High-Dollar Donations tab — " + HD.detail.length + " row(s) from <code>row " +
+      HD.detail[0].row + "</code> to <code>row " + HD.detail[HD.detail.length - 1].row + "</code>. Full donor " +
+      "detail (name and email) is shown here, matching the workbook. The filters and the leaderboard below " +
+      "share state.";
+
+    function filtered() {
+      return HD.detail.filter(d => state.category === "all" || d.category === state.category);
+    }
+
+    (function buildFilters() {
+      const host = document.getElementById("hdFilters");
+      host.innerHTML = "";
+      const g = document.createElement("div");
+      g.className = "fgroup";
+      const l = document.createElement("span");
+      l.className = "flabel";
+      l.textContent = "Category";
+      g.appendChild(l);
+      [["all", "All"]].concat(HD.categories.map(c => [c, c])).forEach(([val, text]) => {
+        const b = document.createElement("button");
+        b.className = "chip";
+        b.type = "button";
+        b.setAttribute("data-filter", "category");
+        b.setAttribute("data-value", val);
+        b.setAttribute("aria-pressed", String(state.category === val));
+        if (val !== "all") {
+          const dot = document.createElement("i");
+          dot.className = "dot";
+          dot.style.background = CAT_COLOR[val];
+          b.appendChild(dot);
+        }
+        b.appendChild(document.createTextNode(text));
+        b.addEventListener("click", () => {
+          state.category = val;
+          host.querySelectorAll('[data-filter="category"]').forEach(o =>
+            o.setAttribute("aria-pressed", String(o.getAttribute("data-value") === val)));
+          renderDetail();
+        });
+        g.appendChild(b);
+      });
+      host.appendChild(g);
+    })();
+
+    const LB_COLS = [
+      {key: "date", label: "Date", type: "text"},
+      {key: "category", label: "Category", type: "text"},
+      {key: "amount", label: "Amount", type: "metric"},
+      {key: "fundraising_page", label: "Fundraising Page", type: "link"},
+      {key: "first", label: "First", type: "text"},
+      {key: "last", label: "Last", type: "text"},
+      {key: "email", label: "Email", type: "text"},
+      {key: "receipt_id", label: "Receipt ID", type: "text"}
+    ];
+
+    function renderDetail() {
+      const rows = filtered();
+      const fs = document.getElementById("hdFilterStat");
+      if (!rows.length) {
+        fs.innerHTML = "<b>No rows</b> match the current filters.";
+      } else {
+        const tot = rows.reduce((a, r) => a + (r.metrics.amount.value || 0), 0);
+        fs.innerHTML = "<b>" + rows.length + "</b> of " + HD.detail.length + " rows · " +
+          "total <b>" + usd(tot) + "</b> · average <b>" + usdc(rows.length ? tot / rows.length : null) + "</b>" +
+          '<span class="pend"> — totals computed on this page from the filtered rows</span>';
+      }
+      renderLeaderboard(rows);
+    }
+
+    function renderLeaderboard(rows) {
+      const host = document.getElementById("hdLeader");
+      if (!rows.length) { host.innerHTML = '<div class="empty">No rows match the current filters.</div>'; return; }
+      const col = LB_COLS.find(c => c.key === state.sort) || LB_COLS[2];
+      const getv = (r, c) => c.key === "amount" ? r.metrics.amount.value : r[c.key];
+      const sorted = rows.slice().sort((a, b) => {
+        const va = getv(a, col), vb = getv(b, col);
+        if (va == null && vb == null) return 0;
+        if (va == null) return 1;
+        if (vb == null) return -1;
+        if (col.type === "text" || col.type === "link") return String(va).localeCompare(String(vb)) * state.dir;
+        return (va - vb) * state.dir;
+      });
+      let t = '<table class="lb"><thead><tr>';
+      LB_COLS.forEach(c => {
+        const isSort = c.key === state.sort;
+        t += "<th" + (isSort ? ' aria-sort="' + (state.dir < 0 ? "descending" : "ascending") + '"' : "") +
+          ' data-sort="' + c.key + '" title="Sort by ' + esc(c.label) + '">' + esc(c.label) +
+          (isSort ? '<span class="arrow">' + (state.dir < 0 ? "▼" : "▲") + "</span>" : "") + "</th>";
+      });
+      t += "</tr></thead><tbody>";
+      sorted.forEach(r => {
+        t += '<tr data-tip-id="' + registerTip({
+          title: (r.first || "") + " " + (r.last || "") + " — " + (r.category || "—"),
+          rows: [["Date", r.date || "—"], ["Amount", usd(r.metrics.amount.value)], ["Email", r.email || "—"],
+                 ["Fundraising page", r.fundraising_page ? trim(r.fundraising_page, 40) : "—"],
+                 ["Finance Claim", String(r.finance_claim)],
+                 ["Authentic Added", String(r.authentic_added)]],
+          foot: "row " + r.row
+        }) + '">';
+        LB_COLS.forEach(c => {
+          if (c.key === "amount") {
+            t += "<td>" + esc(usd(r.metrics.amount.value)) + "</td>";
+          } else if (c.key === "category") {
+            t += '<td class="lbl"><i class="chdot" style="background:' + (CAT_COLOR[r.category] || "var(--muted)") +
+              '"></i>' + esc(r.category || "—") + "</td>";
+          } else if (c.type === "link") {
+            const v = r[c.key];
+            t += "<td>" + (v ? '<a href="' + esc(v) + '" target="_blank" rel="noopener noreferrer">' +
+              esc(trim(v, 34)) + "</a>" : '<span class="pend">—</span>') + "</td>";
+          } else {
+            const v = r[c.key];
+            t += "<td>" + (v == null || v === "" ? '<span class="pend">—</span>' : esc(v)) + "</td>";
+          }
+        });
+        t += "</tr>";
+      });
+      const tot = rows.reduce((a, r) => a + (r.metrics.amount.value || 0), 0);
+      t += "</tbody><tfoot><tr>";
+      LB_COLS.forEach((c, i) => {
+        if (i === 0) { t += '<td class="lbl">' + rows.length + " row(s)</td>"; return; }
+        if (c.key === "amount") { t += "<td>" + esc(usd(tot)) + "</td>"; return; }
+        t += "<td></td>";
+      });
+      t += "</tr></tfoot></table>";
+      host.innerHTML = t;
+
+      host.querySelectorAll("th[data-sort]").forEach(th => {
+        th.addEventListener("click", () => {
+          const k = th.getAttribute("data-sort");
+          if (state.sort === k) state.dir = -state.dir;
+          else { state.sort = k; state.dir = (k === "amount") ? -1 : 1; }
+          renderLeaderboard(filtered());
+        });
+      });
+      bindTips(host);
+    }
+
+    renderDetail();
+
+    document.querySelector("#hd-detail .sechead").appendChild(infoBubble({
+      title: "Donation-by-donation breakdown",
+      rows: [
+        ["Rows", "one per donation, " +
+          cell(HD.detail[0].receipt_id_cell) + "–" + cell(HD.detail[HD.detail.length - 1].receipt_id_cell)],
+        ["Categories", HD.categories.join(", ")]
+      ],
+      calc: "Sorting and filtering never change a value — only which rows are shown and in what order.",
+      caveat: "Donor name and email are shown exactly as recorded on the workbook — this tab is not masked " +
+              "or redacted.",
+      source: HD_SHEET
+    }));
+  }
+
+  renderHeroesHD();
+  renderMonthlyHD();
+  renderAccumHD();
+  renderDetailHD();
+}
+
 /* ==================== tabs ==================== */
 function selectTab(tabId) {
   const tab = document.getElementById(tabId);
@@ -2951,7 +4181,13 @@ function resetChrome() {
    "pmScope", "lgMonth", "lgChannel", "pmLgQSpend", "pmLgQNtl", "pmLgMSpend", "pmLgMNtl",
    "p2Scope", "p2Heroes", "p2ChMoney", "p2ChDonors", "p2LgMoney", "p2LgDonors",
    "p2AccumFilters", "p2Accum", "p2TbMonth", "p2TbAccum",
-   "p2Filters", "p2FilterStat", "p2Leader"
+   "p2Filters", "p2FilterStat", "p2Leader",
+   "esScope", "esHeroes", "esChMoney", "esChDonors", "esLgMoney", "esLgDonors",
+   "esAccumFilters", "esAccum", "esTbMonth", "esTbAccum",
+   "esFilters", "esFilterStat", "esLeader",
+   "hdScope", "hdHeroes", "hdChAmount", "hdLgAmount",
+   "hdAccumFilters", "hdAccum", "hdTbMonth", "hdTbAccum",
+   "hdFilters", "hdFilterStat", "hdLeader"
   ].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = ""; });
 }
 
@@ -2959,7 +4195,7 @@ function renderAll() {
   resetChrome();
 
   // Nothing is shown until a workbook has been loaded.
-  const anything = !!(DATA || PM || P2P);
+  const anything = !!(DATA || PM || P2P || EMAIL || HD);
   document.getElementById("emptyState").hidden = anything;
   ["pgHeader", "pgFoot"].forEach(id => { document.getElementById(id).hidden = !anything; });
   document.querySelector(".srcbar").hidden = !anything;
@@ -2986,11 +4222,12 @@ function renderAll() {
     if (ovPanel) ovPanel.hidden = true;
     document.getElementById("pgTitle").textContent = "Digital Fundraising Report";
     document.getElementById("pgSub").textContent = "The Digital Report tab could not be read — see the report above.";
-    document.getElementById("pgMeta").innerHTML = "";
     document.getElementById("pgFoot").innerHTML = "";
   }
   renderPaidMedia();
   renderP2P();
+  renderEmailStats();
+  renderHighDollar();
 
   // make sure a visible tab is selected
   const tabs = [...document.querySelectorAll(".tab")].filter(t => !t.hidden);
@@ -3081,15 +4318,19 @@ async function loadWorkbookFile(file) {
     const digOk = out.digital && !rep.digitalErrors;
     const paidOk = out.paid && !rep.paidErrors;
     const p2pOk = out.p2p && !rep.p2pErrors;
-    if (!digOk && !paidOk && !p2pOk) {
+    const emailOk = out.email && !rep.emailErrors;
+    const hdOk = out.highDollar && !rep.hdErrors;
+    if (!digOk && !paidOk && !p2pOk && !emailOk && !hdOk) {
       showReport(rep, {fatal: true});
       return;
     }
-    // A loaded workbook replaces all three tabs. A tab that could not be read
+    // A loaded workbook replaces all five tabs. A tab that could not be read
     // is hidden, never left showing the previous file's numbers.
     DATA = digOk ? out.digital : null;
     PM = paidOk ? out.paid : null;
     P2P = p2pOk ? out.p2p : null;
+    EMAIL = emailOk ? out.email : null;
+    HD = hdOk ? out.highDollar : null;
     LOADED = {name: file.name, report: rep};
     renderAll();
     renderSourceBar();
@@ -3114,6 +4355,8 @@ function clearWorkbook() {
   DATA = null;
   PM = null;
   P2P = null;
+  EMAIL = null;
+  HD = null;
   LOADED = null;
   renderAll();
   renderSourceBar();
@@ -3170,7 +4413,7 @@ function clearWorkbook() {
    inspect and drive exactly what a user can, without reaching into
    script-scoped bindings. Harmless in normal use. */
 window.__dashboard = {
-  state: () => ({DATA: DATA, PM: PM, P2P: P2P, LOADED: LOADED}),
+  state: () => ({DATA: DATA, PM: PM, P2P: P2P, EMAIL: EMAIL, HD: HD, LOADED: LOADED}),
   load: f => loadWorkbookFile(f),
   clear: clearWorkbook,
   render: renderAll
