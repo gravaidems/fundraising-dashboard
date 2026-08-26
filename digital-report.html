@@ -219,6 +219,18 @@ svg text{fill:var(--text)}
   padding:10px 13px;margin:0 0 24px;font-size:12.5px;color:var(--muted);line-height:1.5;
 }
 .scope b{color:var(--text)}
+
+/* reconciliation note pinned to the chart or table that shows the bad cells */
+.flagnote{
+  display:flex;gap:9px;align-items:flex-start;background:var(--surface-2);
+  border:1px solid var(--border);border-left:3px solid var(--warn);border-radius:8px;
+  padding:10px 13px;margin:0 0 12px;font-size:12.5px;color:var(--muted);line-height:1.55;
+}
+.flagnote .fmark{color:var(--warn);font-weight:700;flex:none;line-height:1.35}
+.flagnote b{color:var(--warn)}
+.flagnote ul{margin:5px 0 0;padding-left:17px}
+.flagnote li{margin:1px 0;font-family:var(--mono);font-size:11.5px;color:var(--faint)}
+.flagnote .more{font-family:inherit;font-size:12px;list-style:none;margin-left:-17px}
 .subhead{font-size:12.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--faint);
   margin:18px 0 9px;font-weight:650}
 .subhead:first-of-type{margin-top:4px}
@@ -1007,8 +1019,16 @@ footer.page code{font-family:var(--mono)}
 
    Each extractor returns {payload, findings, problems}:
      findings  what was located, to show in the validation report
-     problems  {level: "error"|"warn", text} — errors mean the section
-               cannot be trusted and the page will say so
+     problems  {level: "error"|"warn"|"flag", text}
+
+   The three levels differ in what they cost the reader:
+     error  the section cannot be trusted at all — it is not rendered
+     warn   something was tolerated (a renamed tab, a month with no rows)
+     flag   the section renders, but one stored column disagrees with its
+            own components. Carries `sections` (the ids of the sections that
+            print the offending cells) and `cells` (specific cell refs), so
+            the page can pin the note to the chart or table it concerns
+            instead of dropping the tab.
    ===================================================================== */
 (function (root, factory) {
   const api = factory(root.XlsxReader || (typeof require === "function" ? require("./xlsx-reader.js") : null));
@@ -2382,18 +2402,50 @@ footer.page code{font-family:var(--mono)}
     const problems = [], findings = [];
     const near = (a, b, tol) => a != null && b != null && Math.abs(a - b) <= (tol == null ? 0.02 : tol);
 
+    /* A ratio-identity failure is a FLAG, not an error. The rows parsed
+       cleanly; a single stored ratio cell just disagrees with the components
+       sitting next to it. Hiding the whole tab over that throws away four
+       sound sections to suppress one suspect column, so instead the tab
+       renders and a note is pinned to the chart or table that actually shows
+       the stored cell. Rollup sum mismatches stay errors: there the page's own
+       computed totals would visibly contradict the workbook, and a note under
+       a chart cannot make those numbers safe to read.
+
+       `sections` are the ids of the <section> elements that display the
+       offending cells — not every section on the tab, only the ones reading
+       the stored value. Rollups recomputed from components are unaffected and
+       deliberately carry no note. */
+    const MAX_CELLS = 6;
+    const flag = (text, sections, cells) => problems.push({
+      level: "flag",
+      text: text,
+      sections: sections,
+      cells: (cells || []).slice(0, MAX_CELLS),
+      moreCells: Math.max(0, (cells || []).length - MAX_CELLS)
+    });
+    /* enough precision to see the disagreement, without printing float noise */
+    const shortNum = v => v == null ? "—"
+      : Math.abs(v) >= 1 ? v.toFixed(2)
+      : v.toFixed(6).replace(/0+$/, "").replace(/\.$/, "");
+    const badCell = (cellRef, stored, expected) =>
+      (cellRef || "?") + " shows " + shortNum(stored) + ", components give " + shortNum(expected);
+
     if (dig) {
       let bad = 0, checked = 0;
+      const pctCells = [];
       dig.channels.forEach(c => {
         Object.keys(c.periods).forEach(pk => {
           const p = c.periods[pk];
           if (!p.goal || p.actual == null || p.pct == null) return;
           checked++;
-          if (!near(p.pct, p.actual / p.goal, 1e-6)) bad++;
+          const want = p.actual / p.goal;
+          if (!near(p.pct, want, 1e-6)) { bad++; pctCells.push(badCell(p.pct_cell, p.pct, want)); }
         });
       });
-      if (bad) problems.push({level: "error",
-        text: bad + " of " + checked + " “% to goal” cells on the Digital Report do not equal actual ÷ goal."});
+      // stored percentages drive the hero cards and the channel bars; the
+      // monthly chart recomputes its own percentages and is unaffected
+      if (bad) flag(bad + " of " + checked + " “% to goal” cells on the Digital Report do not equal actual ÷ goal.",
+        ["s-hero", "s-channel"], pctCells);
       else if (checked) findings.push("All " + checked + " “% to goal” cells equal actual ÷ goal.");
 
       const tr = dig.overall && dig.overall.total_raised;
@@ -2418,23 +2470,42 @@ footer.page code{font-family:var(--mono)}
     }
 
     if (paid) {
-      const rows = paid.quarters.concat(paid.months).concat(paid.detail);
+      // Every row group on this tab is displayed from its stored cells, so a
+      // mismatch is routed to whichever groups it actually turned up in.
+      const groups = [
+        [paid.quarters, ["pm-hero", "pm-quarter"]],
+        [paid.months, ["pm-month"]],
+        [paid.detail, ["pm-detail"]]
+      ];
       let cpaBad = 0, roasBad = 0, cpaN = 0, roasN = 0;
-      rows.forEach(r => {
-        const M = r.metrics, sp = M.gross_spend && M.gross_spend.value,
-              ntl = M.ntl && M.ntl.value, cpa = M.gross_cpa && M.gross_cpa.value;
-        if (sp != null && ntl) { cpaN++; if (!near(cpa, sp / ntl, Math.max(0.02, Math.abs(sp / ntl) * 1e-6))) cpaBad++; }
-        [["immediate_roas", "immediate_raised"], ["lifetime_roas", "lifetime_raised"],
-         ["total_roas", "total_raised"]].forEach(([rk, ak]) => {
-          if (!M[rk] || !M[ak] || !sp) return;
-          roasN++;
-          if (!near(M[rk].value, M[ak].value / sp, 1e-6)) roasBad++;
+      const cpaCells = [], roasCells = [], cpaSec = [], roasSec = [];
+      const mark = (list, secs) => secs.forEach(s => { if (list.indexOf(s) < 0) list.push(s); });
+      groups.forEach(([rows, secs]) => {
+        rows.forEach(r => {
+          const M = r.metrics, sp = M.gross_spend && M.gross_spend.value,
+                ntl = M.ntl && M.ntl.value, cpa = M.gross_cpa && M.gross_cpa.value;
+          if (sp != null && ntl) {
+            cpaN++;
+            const want = sp / ntl;
+            if (!near(cpa, want, Math.max(0.02, Math.abs(want) * 1e-6))) {
+              cpaBad++; cpaCells.push(badCell(M.gross_cpa.cell, cpa, want)); mark(cpaSec, secs);
+            }
+          }
+          [["immediate_roas", "immediate_raised"], ["lifetime_roas", "lifetime_raised"],
+           ["total_roas", "total_raised"]].forEach(([rk, ak]) => {
+            if (!M[rk] || !M[ak] || !sp) return;
+            roasN++;
+            const want = M[ak].value / sp;
+            if (!near(M[rk].value, want, 1e-6)) {
+              roasBad++; roasCells.push(badCell(M[rk].cell, M[rk].value, want)); mark(roasSec, secs);
+            }
+          });
         });
       });
-      if (cpaBad) problems.push({level: "error",
-        text: cpaBad + " of " + cpaN + " Gross CPA cells on the Paid Media tab do not equal spend ÷ NTL."});
-      if (roasBad) problems.push({level: "error",
-        text: roasBad + " of " + roasN + " ROAS cells on the Paid Media tab do not equal raised ÷ spend."});
+      if (cpaBad) flag(cpaBad + " of " + cpaN + " Gross CPA cells on the Paid Media tab do not equal spend ÷ NTL.",
+        cpaSec, cpaCells);
+      if (roasBad) flag(roasBad + " of " + roasN + " ROAS cells on the Paid Media tab do not equal raised ÷ spend.",
+        roasSec, roasCells);
       if (!cpaBad && !roasBad && (cpaN || roasN)) {
         findings.push("All " + cpaN + " CPA and " + roasN + " ROAS cells match their components.");
       }
@@ -2491,14 +2562,21 @@ footer.page code{font-family:var(--mono)}
       ].filter(c => p2p.metric_order.indexOf(c[0]) >= 0);
       checks.forEach(([rk, nk, dk, label, desc]) => {
         let bad = 0, n = 0;
+        const cells = [];
         p2p.detail.forEach(r => {
           const M = r.metrics, num = M[nk] && M[nk].value, den = M[dk] && M[dk].value, ratio = M[rk] && M[rk].value;
           if (num == null || !den) return;
           n++;
-          if (!near(ratio, num / den, Math.max(0.02, Math.abs(num / den) * 1e-6))) bad++;
+          const want = num / den;
+          if (!near(ratio, want, Math.max(0.02, Math.abs(want) * 1e-6))) {
+            bad++; cells.push(badCell(M[rk].cell, ratio, want));
+          }
         });
-        if (bad) problems.push({level: "error",
-          text: bad + " of " + n + " " + label + " cells on the P2P Statistics tab do not equal " + desc + "."});
+        // Only the row-by-row leaderboard prints these stored cells. The
+        // toplines and monthly charts rebuild every ratio from summed
+        // components, so they stay correct and stay unannotated.
+        if (bad) flag(bad + " of " + n + " " + label + " cells on the P2P Statistics tab do not equal " +
+          desc + ".", ["p2-detail"], cells);
         else if (n) findings.push("All " + n + " " + label + " cells on the P2P Statistics tab equal " + desc + ".");
       });
     }
@@ -2516,14 +2594,19 @@ footer.page code{font-family:var(--mono)}
       ].filter(c => email.metric_order.indexOf(c[0]) >= 0);
       checks.forEach(([rk, nk, dk, label, desc]) => {
         let bad = 0, n = 0;
+        const cells = [];
         email.detail.forEach(r => {
           const M = r.metrics, num = M[nk] && M[nk].value, den = M[dk] && M[dk].value, ratio = M[rk] && M[rk].value;
           if (num == null || !den) return;
           n++;
-          if (!near(ratio, num / den, Math.max(0.02, Math.abs(num / den) * 1e-6))) bad++;
+          const want = num / den;
+          if (!near(ratio, want, Math.max(0.02, Math.abs(want) * 1e-6))) {
+            bad++; cells.push(badCell(M[rk].cell, ratio, want));
+          }
         });
-        if (bad) problems.push({level: "error",
-          text: bad + " of " + n + " " + label + " cells on the Email Statistics tab do not equal " + desc + "."});
+        // as on P2P: the leaderboard is the only place these stored cells surface
+        if (bad) flag(bad + " of " + n + " " + label + " cells on the Email Statistics tab do not equal " +
+          desc + ".", ["es-detail"], cells);
         else if (n) findings.push("All " + n + " " + label + " cells on the Email Statistics tab equal " + desc + ".");
       });
     }
@@ -2609,8 +2692,10 @@ footer.page code{font-family:var(--mono)}
       r.findings.forEach(f => findings.push("High-Dollar Donations: " + f));
       r.problems.forEach(p => hdProblems.push({level: p.level, text: "High-Dollar Donations: " + p.text}));
     }
-    // Reconciliation failures are attributed to the tab they concern, so one
-    // broken tab never suppresses a good one.
+    // Reconciliation results are attributed to the tab they concern, so one
+    // broken tab never suppresses a good one. Errors hide their tab; flags
+    // (level "flag") do not — they ride along and get pinned to the sections
+    // named in p.sections once the tab renders.
     const rec = reconcile(dig, paid, p2p, email, hd);
     rec.problems.forEach(p => {
       if (/paid media/i.test(p.text)) paidProblems.push(p);
@@ -2636,6 +2721,7 @@ footer.page code{font-family:var(--mono)}
         problems: problems,
         errors: count(problems, "error"),
         warnings: count(problems, "warn"),
+        flagged: count(problems, "flag"),
         digitalErrors: count(digProblems, "error"),
         paidErrors: count(paidProblems, "error"),
         p2pErrors: count(p2pProblems, "error"),
@@ -6214,6 +6300,53 @@ function resetChrome() {
   ].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = ""; });
 }
 
+/* ==================== reconciliation notes ====================
+   A ratio cell that disagrees with its own components does not invalidate the
+   tab it sits on, so the tab renders and the disagreement is reported where it
+   is visible: a note directly above the chart or table that prints the stored
+   cells. Each flag names its own target sections (see reconcile() in
+   extract-report.js), which is why sections that rebuild their figures from
+   components get no note — they are not affected. */
+let FLAGS = [];   // [{text, sections:[id], cells:[str], moreCells:n}]
+
+function renderFlags() {
+  document.querySelectorAll(".flagnote").forEach(n => n.remove());
+
+  const bySection = {};
+  FLAGS.forEach(f => (f.sections || []).forEach(id => {
+    (bySection[id] = bySection[id] || []).push(f);
+  }));
+
+  Object.keys(bySection).forEach(id => {
+    const sec = document.getElementById(id);
+    if (!sec) return;
+    // sit below the heading and its standing explanatory note, directly on
+    // top of the chart or table the flag is about
+    let anchor = sec.querySelector(".sechead");
+    if (!anchor) return;
+    const after = anchor.nextElementSibling;
+    if (after && after.classList.contains("note")) anchor = after;
+
+    bySection[id].forEach(f => {
+      const el = document.createElement("div");
+      el.className = "flagnote";
+      el.setAttribute("role", "note");
+      let h = '<div class="fmark" aria-hidden="true">&#9888;</div><div>' +
+        "<b>Does not reconcile.</b> " + esc(f.text);
+      if (f.cells && f.cells.length) {
+        h += "<ul>" + f.cells.map(c => "<li>" + esc(c) + "</li>").join("") +
+          (f.moreCells ? '<li class="more">…and ' + f.moreCells + " more.</li>" : "") + "</ul>";
+      }
+      h += "<div style='margin-top:6px'>These figures are printed exactly as the workbook " +
+        "stores them — nothing on this page recomputes them. Totals and rollups elsewhere on " +
+        "this tab are rebuilt from the underlying components and are unaffected.</div></div>";
+      el.innerHTML = h;
+      anchor.parentNode.insertBefore(el, anchor.nextSibling);
+      anchor = el;   // keep multiple flags in the order they were reported
+    });
+  });
+}
+
 function renderAll() {
   resetChrome();
 
@@ -6251,6 +6384,7 @@ function renderAll() {
   renderP2P();
   renderEmailStats();
   renderHighDollar();
+  renderFlags();   // after the sections exist, so the notes land on real charts
 
   // make sure a visible tab is selected
   const tabs = [...document.querySelectorAll(".tab")].filter(t => !t.hidden);
@@ -6287,15 +6421,18 @@ function showReport(rep, opts) {
   const host = document.getElementById("report");
   const errs = rep.problems.filter(p => p.level === "error");
   const warns = rep.problems.filter(p => p.level === "warn");
-  const cls = opts.fatal || errs.length ? "bad" : warns.length ? "warn" : "ok";
+  const flags = rep.problems.filter(p => p.level === "flag");
+  const cls = opts.fatal || errs.length ? "bad" : (warns.length || flags.length) ? "warn" : "ok";
   const tag = opts.fatal ? "Not loaded" : errs.length ? "Loaded with errors" :
+              flags.length ? "Loaded with notes" :
               warns.length ? "Loaded with warnings" : "Loaded and reconciled";
   let h = '<h3><span class="tag">' + esc(tag) + "</span><span>" + esc(rep.workbookName || "workbook") +
     "</span><button class='close' type='button' aria-label='Dismiss'>&times;</button></h3>";
 
-  if (errs.length || warns.length) {
+  if (errs.length || warns.length || flags.length) {
     h += "<ul>";
     errs.forEach(p => h += '<li class="err">' + p.text + "</li>");
+    flags.forEach(p => h += '<li class="wrn">' + p.text + "</li>");
     warns.forEach(p => h += '<li class="wrn">' + p.text + "</li>");
     h += "</ul>";
   }
@@ -6303,9 +6440,15 @@ function showReport(rep, opts) {
     h += "<p style='margin:8px 0 0;color:var(--bad)'>Nothing was changed — " +
          (LOADED ? "still showing <b>" + esc(LOADED.name) + "</b>."
                  : "no workbook is loaded.") + "</p>";
-  } else if (errs.length) {
-    h += "<p style='margin:8px 0 0'>Sections with errors above are hidden rather than shown with " +
-         "numbers that do not reconcile.</p>";
+  } else {
+    if (errs.length) {
+      h += "<p style='margin:8px 0 0'>Sections with errors above are hidden rather than shown with " +
+           "numbers that do not reconcile.</p>";
+    }
+    if (flags.length) {
+      h += "<p style='margin:8px 0 0'>The tabs above still load. Each note is repeated on the chart " +
+           "or table that prints the affected cells, so you can see which figures it applies to.</p>";
+    }
   }
   if (rep.findings && rep.findings.length) {
     h += "<details><summary>What was found (" + rep.findings.length + ")</summary><ul>" +
@@ -6348,12 +6491,20 @@ async function loadWorkbookFile(file) {
       return;
     }
     // A loaded workbook replaces all five tabs. A tab that could not be read
-    // is hidden, never left showing the previous file's numbers.
+    // is hidden, never left showing the previous file's numbers. "Could not be
+    // read" means a structural failure or a rollup that does not add up — a
+    // single stored ratio disagreeing with its components is a flag instead,
+    // and the tab loads carrying a note on the affected chart.
     DATA = digOk ? out.digital : null;
     PM = paidOk ? out.paid : null;
     P2P = p2pOk ? out.p2p : null;
     EMAIL = emailOk ? out.email : null;
     HD = hdOk ? out.highDollar : null;
+    // Flags belong to tabs that did render — a flag on a tab that was dropped
+    // for a structural error has nothing to point at, and the load report
+    // already lists it.
+    const shown = {digital: digOk, paid: paidOk, p2p: p2pOk, email: emailOk, hd: hdOk};
+    FLAGS = rep.problems.filter(p => p.level === "flag" && shown[p.tab]);
     LOADED = {name: file.name, report: rep};
     renderAll();
     renderSourceBar();
@@ -6380,6 +6531,7 @@ function clearWorkbook() {
   P2P = null;
   EMAIL = null;
   HD = null;
+  FLAGS = [];
   LOADED = null;
   renderAll();
   renderSourceBar();

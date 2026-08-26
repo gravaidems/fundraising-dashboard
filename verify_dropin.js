@@ -11,6 +11,9 @@
  *   4. A workbook missing one tab hides that tab rather than showing stale
  *      numbers from the previous file.
  *   5. After a load, the rendered figures come from the new file.
+ *   6. A stored ratio that disagrees with its own components annotates the
+ *      chart that prints it, rather than hiding the whole tab — and leaves
+ *      sections that recompute from components alone.
  *
  * Usage: node verify_dropin.js [digital-report.html] [workbook.xlsx]
  */
@@ -468,6 +471,47 @@ function paidSpec(detailRows, months) {
     check(/errors above are hidden/i.test(txt(doc.getElementById("report"))),
       "the report explains that failing sections were hidden",
       txt(doc.getElementById("report")).slice(0, 200));
+  }
+
+  /* ---- 5b. a stored ratio that disagrees with its components annotates the
+     chart instead of hiding the tab. The rows themselves are sound and the
+     sums still reconcile, so dropping four good sections to suppress one
+     suspect column would cost more than it saves. ---- */
+  {
+    const {w, doc} = makePage();
+    const months = [{label: "October", goalCol: "G", actualCol: "H", pctCol: "I"}];
+    const spec = digitalSpec([{name: "Email", goals: [1000], actuals: [400]}], months);
+    // E14 is the channel's quarterly "% to Goal": 400 ÷ 1000 = 0.40. Leave the
+    // goal and actual alone so every sum still reconciles and only the stored
+    // percentage is wrong.
+    spec.E14 = 0.99;
+    const buf = synthWorkbook({"Digital Report": spec});
+    await w.__dashboard.load(fakeFile("bad-pct.xlsx", buf));
+
+    const rep = txt(doc.getElementById("report"));
+    check(/% to goal.*do not equal actual/i.test(rep),
+      "a stored % to goal that disagrees with its components is reported", rep.slice(0, 200));
+    check(w.__dashboard.state().DATA !== null && !doc.getElementById("t-overview").hidden,
+      "the tab still loads rather than being hidden wholesale",
+      "overview hidden=" + doc.getElementById("t-overview").hidden +
+      ", DATA " + (w.__dashboard.state().DATA ? "set" : "null"));
+
+    const flagged = id => doc.querySelectorAll("#" + id + " .flagnote").length;
+    check(flagged("s-channel") === 1 && flagged("s-hero") === 1,
+      "a note is attached to the sections that print the stored percentage",
+      "s-hero=" + flagged("s-hero") + ", s-channel=" + flagged("s-channel"));
+    check(flagged("s-month") === 0,
+      "sections that recompute their own percentages are left unannotated",
+      "s-month carries " + flagged("s-month") + " note(s)");
+    const note = txt(doc.querySelector("#s-channel .flagnote"));
+    check(/E14/.test(note) && /0\.99/.test(note) && /0\.4/.test(note),
+      "the note names the offending cell and both values", note.slice(0, 240));
+
+    // and a clean reload clears them again
+    await w.__dashboard.load(fakeFile(path.basename(wbPath), realBuf));
+    check(doc.querySelectorAll(".flagnote").length === 0,
+      "notes are cleared when a workbook that reconciles is loaded",
+      doc.querySelectorAll(".flagnote").length + " note(s) left behind");
   }
 
   /* ---- 6. a workbook missing a tab hides that tab ---- */

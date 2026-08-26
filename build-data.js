@@ -46,7 +46,14 @@ function arg(flag, dflt) {
   const rep = out.report;
   console.log("tabs: " + rep.sheetNames.length + " — " + rep.sheetNames.join(", "));
   rep.findings.forEach(f => console.log("  · " + f));
-  rep.problems.forEach(p => console.log("  " + (p.level === "error" ? "ERROR" : "warn ") + ": " + p.text));
+  const LVL = {error: "ERROR", flag: "FLAG ", warn: "warn "};
+  rep.problems.forEach(p => {
+    console.log("  " + (LVL[p.level] || "warn ") + ": " + p.text);
+    // a flag names the exact cells; print them so a build log is enough to
+    // go and look at the workbook
+    (p.cells || []).forEach(c => console.log("           · " + c));
+    if (p.moreCells) console.log("           · …and " + p.moreCells + " more");
+  });
 
   if (rep.errors) {
     console.error("\n" + rep.errors + " error(s) — refusing to write snapshot files.");
@@ -79,5 +86,8 @@ function arg(flag, dflt) {
     console.log("wrote " + outHD + " (" + out.highDollar.months.length + " months, " +
       out.highDollar.detail.length + " detail rows, " + out.highDollar.categories.length + " categories)");
   }
+  // Flags do not block the snapshot: the rows extracted cleanly, and the page
+  // reports the disagreement on the chart that shows the affected cells.
+  if (rep.flagged) console.log(rep.flagged + " reconciliation flag(s) — see above.");
   if (rep.warnings) console.log(rep.warnings + " warning(s) — see above.");
 })().catch(e => { console.error(e.stack || String(e)); process.exit(1); });
